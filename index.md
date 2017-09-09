@@ -67,10 +67,3 @@ TBD
 #### Other stuff:
 - [Markdown Cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)
 - [Syllabus](https://blackboard.albany.edu/bbcswebdav/pid-2797614-dt-content-rid-13779337_1/courses/2179-ICSI-402-8613/CSI%20402%20-%20FALL%202017%20Policy%283%29.pdf)
-
-
-|Name          |Student ID |Email               |Phone       |
-| ------------ | --------- | ------------------ | ---------- |
-|Luke Prescott |001252879  |lprescott@albany.edu|518-466-8280|
-|Tommy Li      |001209184  |tli3@albany.edu     |917-833-7701|
-|Rob Rose      |001247373  |rwrose@albany.edu   |631-487-1752|

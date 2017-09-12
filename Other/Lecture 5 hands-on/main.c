@@ -20,19 +20,19 @@ void main( int argc, char *argv[] )  {
       printf("The character in the %ld position is %c.", pos, getc(fp));
 
       //Print the character with offset = 5 from the beginning (also print the offset value)
-      fseek(fp, 5, SEEK_SET);
+      fseek(fp, 4, SEEK_SET);
       pos = ftell(fp);
-      printf("\nThe character in position %ld is %c.", pos, getc(fp));
+      printf("The character in the %ld position is %c.", pos, getc(fp));
 
       //Print the character whose offset is 3 plus the current offset (also print the offset value)
-      fseek(fp, 3, SEEK_CUR);
+      fseek(fp, 2, SEEK_CUR);
       pos = ftell(fp);
-      printf("\nThe character in position %ld is %c.", pos, getc(fp));
+      printf("The character in the %ld position is %c.", pos, getc(fp));
 
       //Print the character whose offset is 4 less thatn the current offset (also print the offset value)
-      fseek(fp, -4, SEEK_CUR);
+      fseek(fp, -3, SEEK_CUR);
       pos = ftell(fp);
-      printf("\nThe character in position %ld is %c.", pos, getc(fp));
+      printf("The character in the %ld position is %c.", pos, getc(fp));
 
       //Close the input file
       fclose(fp);

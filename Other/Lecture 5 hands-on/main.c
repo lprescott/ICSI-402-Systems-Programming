@@ -7,6 +7,7 @@ void main( int argc, char *argv[] )  {
       printf("The input file supplied is \"%s\"\n", argv[1]);
 
       long pos;
+
       FILE * fp;
       fp = fopen(argv[1], "r");
 

@@ -1,5 +1,7 @@
 # ICSI-402-Systems-Programming
 
+##### In class on Sep. 26th, our professor stated that extra credit can be given if we time our programs execution.
+
 #### Programming Assignments: 
 There will be five (5) programming assignments. These assignments
 must be done using the machines provided by the Information Technology Services (ITS)

@@ -8,6 +8,8 @@
 
 #include <stdio.h>
 #include <string.h>
+#include "protoOne.h"
+#include "protoTwo.h"
 
 int main(void) {
 

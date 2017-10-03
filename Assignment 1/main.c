@@ -8,6 +8,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <dirent.h>
 #include "protoOne.h"
 #include "protoTwo.h"
 
@@ -24,14 +25,39 @@ typedef struct loglist {
 
 int main( int argc, char *argv[] )  {
 
-   if( argc == 2 ) {
-     /* Operate in the specified directory */
-     printf("The argument supplied is %s\n", argv[1]);
+  DIR * dp;
+  struct dirent *d;
+
+  FILE * inputFile;
+  FILE * outputFile;
+
+
+  if( argc == 2 ) {
+   /* Operate in the specified directory */
+   printf("This programm will operate in the following directory: %s\n", argv[1]);
+
+   /* Define */
+  }
+  else if( argc > 2 ) {
+    fprintf(stderr, "Too many arguments supplied.\n");
+  }
+  else {
+   /* Operate in the current working directory. */
+   printf("This program will operate in the current working directory.");
+
+   if((dp = opendir(".")) == NULL){
+     fprintf(stderr, "Cannot open current working directory.\n");
+     exit(1);
    }
-   else if( argc > 2 ) {
-      fprintf(stderr, "Too many arguments supplied.\n");
+
+   while((d = readdir(dp)) != NULL){
+     /* Open the current file. */
+
+     /* Add to outputFile */
+
    }
-   else {
-     /* Operate in the current working directory. */
-   }
+
+   closedir(dp);
+  }
+
 }

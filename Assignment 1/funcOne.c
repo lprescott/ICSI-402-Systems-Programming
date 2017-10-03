@@ -7,6 +7,30 @@
 
 logline* parseLine(string line);
 void deleteList(loglist* l);
-void printLines(logList* l) {
+
+void printLines(logList* l) {  
+   
+   logList * next;
+   char tempLevel[];
+   char tempTimestamp[];
+   char tempMessage[];
+   
+   tempLevel = l->level;
+   tempTimestamp = l->timestamp;
+   tempMessage = l->message;
+   
+   printf("%s,%s,%s", tempLevel, tempMessage, tempTimestamp);
+ 
+   nextL = l->next;
+   
+   while (next != null) {
+      tempLevel = nextL->level;
+      tempTimestamp = nextL->timestamp;
+      tempMessage = nextL->message;
+   
+      printf("%s,%s,%s", tempLevel, tempMessage, tempTimestamp);\
+      
+      next = nextL->next;
+   }
    
 }

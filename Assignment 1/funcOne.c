@@ -5,6 +5,8 @@
 //Course:  ICSI 402
 //Desc:    This file contains the parseLine, deleteList, and printLine functions to be used in main.c
 
+
+//Parses a log file line into a logline struct
 logline* parseLine(char[] line) {
    char str[] = strdup(line);
    
@@ -17,6 +19,7 @@ logline* parseLine(char[] line) {
    return parsed;
 }
 
+//frees up all memory for the list
 void deleteList(loglist* l) {
    
    loglist * head = l;
@@ -31,6 +34,7 @@ void deleteList(loglist* l) {
    l = NULL;
 }
 
+//prints all loglines in a loglist
 void printLines(logList* l) {  
    
    logList * next;

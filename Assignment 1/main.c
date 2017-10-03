@@ -31,32 +31,57 @@ int main( int argc, char *argv[] )  {
   FILE * inputFile;
   FILE * outputFile;
 
+  int length = 1024;
+  char tempLine[length];
 
   if( argc == 2 ) {
-   /* Operate in the specified directory */
-   printf("This programm will operate in the following directory: %s\n", argv[1]);
+    /* Operate in the specified directory */
+    printf("This program will operate in the following directory: %s\n",       argv[1]);
 
-   /* Define */
-  }
+    if((dp = opendir(argv[1])) == NULL){
+     fprintf(stderr, "Cannot open current working directory.\n");
+     exit(1);
+
+     while((d = readdir(dp)) != NULL){
+      /* Open the current file. */
+      //d->d_name is the name of the file
+      inputFile = fopen(d->d_name, "r");
+
+      if(inputFile != NULL){
+        //do stuff
+        fgets(&tempLine, length, inputFile);
+        //parseLine(tem0pLine);
+        fclose(inputFile);
+        }
+      closedir(dp);
+      }
+    }
+
   else if( argc > 2 ) {
     fprintf(stderr, "Too many arguments supplied.\n");
   }
+
   else {
-   /* Operate in the current working directory. */
+    /* Operate in the current working directory. */
    printf("This program will operate in the current working directory.");
 
    if((dp = opendir(".")) == NULL){
-     fprintf(stderr, "Cannot open current working directory.\n");
-     exit(1);
+    fprintf(stderr, "Cannot open current working directory.\n");
+    exit(1);
    }
 
    while((d = readdir(dp)) != NULL){
-     /* Open the current file. */
+    /* Open the current file. */
+    //d->d_name is the name of the file
+    inputFile = fopen(d->d_name, "r");
 
-     /* Add to outputFile */
-
+    if(inputFile != NULL){
+      //do stuff
+      fgets(&tempLine, length, inputFile);
+      //parseLine(tempLine);
+      fclose(inputFile);
+    }
    }
-
    closedir(dp);
   }
 

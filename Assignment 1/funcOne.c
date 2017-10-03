@@ -6,7 +6,20 @@
 //Desc:    This file contains the parseLine, deleteList, and printLine functions to be used in main.c
 
 logline* parseLine(string line);
-void deleteList(loglist* l);
+
+void deleteList(loglist* l) {
+   
+   loglist * head = l;
+   loglist * next;
+   
+   while (current != NULL) {
+      next = current->next;
+      free(current);
+      current = next;
+   }
+   
+   l = NULL;
+}
 
 void printLines(logList* l) {  
    
@@ -23,7 +36,7 @@ void printLines(logList* l) {
  
    nextL = l->next;
    
-   while (next != null) {
+   while (next != NULL) {
       tempLevel = nextL->level;
       tempTimestamp = nextL->timestamp;
       tempMessage = nextL->message;

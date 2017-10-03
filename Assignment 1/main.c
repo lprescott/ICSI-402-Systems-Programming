@@ -1,3 +1,4 @@
+<<<<<<< current
 //Project: Prog1
 //Names:   Luke Prescott, Rob Rose, Tommy Li
 //Roles:   Leader, Monitor, Recorder Respectively
@@ -25,12 +26,22 @@ typedef struct loglist {
 int main( int argc, char *argv[] )  {
 
    if( argc == 2 ) {
-      printf("The argument supplied is %s\n", argv[1]);
+     /* Operate in the specified directory */
+     printf("The argument supplied is %s\n", argv[1]);
    }
    else if( argc > 2 ) {
-      printf("Too many arguments supplied.\n");
+      fprintf(stderr, "Too many arguments supplied.\n");
    }
    else {
-      printf("One argument expected.\n");
+     /* Operate in the current working directory. */
    }
 }
+=======
+//Project: Prog1
+//Names:   Luke Prescott, Rob Rose, Tommy Li
+//Roles:   Leader, Monitor, Recorder Respectively
+//Date:    10/3/2017
+//Course:  ICSI 402
+//Desc:    This program takes directory full of log files then concatonates them into
+//         a single log file, where the order is based on the time of each log.
+>>>>>>> before discard

@@ -1,5 +1,5 @@
 CC = gcc
-CGLAGS  = -g
+CFLAGS  = -g
 OBJECTS = main.o functions.o
 
 prog: $(OBJECTS)

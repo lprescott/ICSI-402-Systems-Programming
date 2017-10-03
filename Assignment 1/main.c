@@ -5,3 +5,7 @@
 //Course:  ICSI 402
 //Desc:    This program takes directory full of log files then concatonates them into
 //         a single log file, where the order is based on the time of each log. 
+
+int main(void) {
+  
+}

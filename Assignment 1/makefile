@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS  = -g
-OBJECTS = main.o functions.o
+OBJECTS = main.o funcOne.o funcTwo.o
 
 prog: $(OBJECTS)
       $(CC) $(CFLAGS) $(OBJECTS) -o mylogger

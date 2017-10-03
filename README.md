@@ -65,6 +65,8 @@ TBD
 ### Assignment 5:
 TBD
 
+#### Programming Style Guide:
+https://www.cs.siue.edu/programming-style-guide
 
 #### Other stuff:
 - [Markdown Cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)

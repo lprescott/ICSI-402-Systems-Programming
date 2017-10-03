@@ -50,11 +50,8 @@ available to you, it may fail on the new data sets. It is your responsibility to
 thoroughly (e.g., by preparing additional input data sets) before the program is submitted. It is not
 possible for the Instructor to identify or fix the bugs in the submitted version of your program.
 
-### Assignment 0:
-TBD
-
 ### Assignment 1:
-TBD
+[Assignment Here](https://github.com/lprescott/ICSI-402-Systems-Programming/blob/master/Assignment%201/prog1.pdf)
 
 ### Assignment 2:
 TBD

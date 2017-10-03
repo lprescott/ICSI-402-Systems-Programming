@@ -5,7 +5,17 @@
 //Course:  ICSI 402
 //Desc:    This file contains the parseLine, deleteList, and printLine functions to be used in main.c
 
-logline* parseLine(string line);
+logline* parseLine(string line) {
+   char str[] = strdup(line);
+   
+   char *levelP = strtok(str, ",");
+   char *timestampP = strtok(NULL, ",");
+   char *messageP = strtok(NULL, " ");
+   
+   logline parsed = { .level = levelP, .timestamp = timestampP, .message = messageP }
+   
+   return parsed;
+}
 
 void deleteList(loglist* l) {
    

@@ -46,7 +46,7 @@ void deleteList(loglist* l) {
 }
 
 //prints all loglines in a loglist
-void printLines(logList* l) {  
+void printLines(loglist* l) {  
    
    //initalizes all the temp variables
    logList * next;
@@ -78,16 +78,16 @@ void printLines(logList* l) {
 }
 
 //Inserts a logLine into a logList, sorting them as it goes.
-void insert(logList * head, logLine ins) {
+void insert(loglist * head, logLine ins) {
    
-   logList toInsert = {.line = ins, next = NULL};
+   loglist toInsert = {.line = ins, next = NULL};
    
    if (head == NULL) {
       head = toInsert;
       return;
    }
    
-   logList * current = head;
+   loglist * current = head;
    while (current->next != NULL) {
       current = current->next;
    }

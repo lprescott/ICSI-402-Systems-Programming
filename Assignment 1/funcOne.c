@@ -16,8 +16,9 @@ logline* parseLine(char[] line) {
    char *timestampP = strtok(NULL, ",");
    char *messageP = strtok(NULL, " ");
    
-   //stores all temp values into a logline struct
-   logline parsed = { .level = levelP, .timestamp = timestampP, .message = messageP }
+   //stores all temp values into a logline struck
+   logline parsed = (logline*) malloc(sizeOf(logline))
+   parsed = { .level = levelP, .timestamp = timestampP, .message = messageP }
    
    //returns logline
    return parsed;

@@ -5,6 +5,7 @@
 //Course:  ICSI 402
 //Desc:    This file contains the parseLine, deleteList, and printLine functions to be used in main.c
 
+#include "structs.h"
 
 //Parses a log file line into a logline struct
 logline* parseLine(char[] line) {

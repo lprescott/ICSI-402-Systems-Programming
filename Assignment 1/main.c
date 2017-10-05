@@ -10,7 +10,7 @@
 #include <string.h>
 #include <dirent.h>
 #include <stdlib.h>
-//#include "protoOne.h"
+#include "protoOne.h"
 //#include "protoTwo.h"
 
 typedef struct logline{
@@ -24,6 +24,10 @@ typedef struct loglist {
   struct loglist *next;
 } loglist_t;
 
+/* Global variables here. */
+loglist head = (loglist *)malloc(sizeof(loglist));
+
+
 void funcName ( char directory [] );
 
 int main( int argc, char *argv[] )  {
@@ -31,6 +35,7 @@ int main( int argc, char *argv[] )  {
     /* Operate in the specified directory */
     printf("This program will operate in the following directory: %s\n", argv[1]);
     funcName(argv[1]);
+    puts("Done.");
   }
 
   else if( argc > 2 ) {
@@ -64,13 +69,13 @@ void funcName ( char directory [] ){
    //d->d_name is the name of the file
 
    inputFile = fopen(d->d_name, "r");
-   //puts(d->d_name);
+   puts(d->d_name);
 
    if(inputFile != NULL){
      //do stuff
      while(fgets(tempLine, sizeof tempLine, inputFile)!= NULL) {
        fprintf(stdout, "%s", tempLine);
-       //parseLine(tem0pLine);
+       insert(head, parseLine(tempLine));
      }
      fclose(inputFile);
    }

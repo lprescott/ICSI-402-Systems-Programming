@@ -9,10 +9,11 @@
 #include <stdio.h>
 #include <string.h>
 #include <dirent.h>
-#include "protoOne.h"
-#include "protoTwo.h"
+#include <stdlib.h>
+//#include "protoOne.h"
+//#include "protoTwo.h"
 
-struct logline{
+typedef struct logline{
   char level[20];
   char timestamp[20];
   char message[100];
@@ -24,7 +25,6 @@ typedef struct loglist {
 } loglist_t;
 
 int main( int argc, char *argv[] )  {
-
   DIR * dp;
   struct dirent *d;
 
@@ -36,26 +36,28 @@ int main( int argc, char *argv[] )  {
 
   if( argc == 2 ) {
     /* Operate in the specified directory */
-    printf("This program will operate in the following directory: %s\n",       argv[1]);
+    printf("This program will operate in the following directory: %s\n", argv[1]);
 
     if((dp = opendir(argv[1])) == NULL){
-     fprintf(stderr, "Cannot open current working directory.\n");
-     exit(1);
+      fprintf(stderr, "Cannot open current working directory.\n");
+      exit(1);
 
-     while((d = readdir(dp)) != NULL){
+      while((d = readdir(dp)) != NULL){
       /* Open the current file. */
       //d->d_name is the name of the file
       inputFile = fopen(d->d_name, "r");
 
       if(inputFile != NULL){
         //do stuff
-        fgets(&tempLine, length, inputFile);
+        fgets(tempLine, length, inputFile);
         //parseLine(tem0pLine);
         fclose(inputFile);
-        }
-      closedir(dp);
       }
+
+      closedir(dp);
     }
+  }
+}
 
   else if( argc > 2 ) {
     fprintf(stderr, "Too many arguments supplied.\n");
@@ -63,26 +65,25 @@ int main( int argc, char *argv[] )  {
 
   else {
     /* Operate in the current working directory. */
-   printf("This program will operate in the current working directory.");
+    printf("This program will operate in the current working directory.");
 
-   if((dp = opendir(".")) == NULL){
-    fprintf(stderr, "Cannot open current working directory.\n");
-    exit(1);
-   }
+    if((dp = opendir(".")) == NULL){
+      fprintf(stderr, "Cannot open current working directory.\n");
+      exit(1);
+    }
 
    while((d = readdir(dp)) != NULL){
-    /* Open the current file. */
-    //d->d_name is the name of the file
-    inputFile = fopen(d->d_name, "r");
+     /* Open the current file. */
+     //d->d_name is the name of the file
+     inputFile = fopen(d->d_name, "r");
 
-    if(inputFile != NULL){
-      //do stuff
-      fgets(&tempLine, length, inputFile);
-      //parseLine(tempLine);
-      fclose(inputFile);
-    }
+     if(inputFile != NULL){
+       //do stuff
+       fgets(tempLine, length, inputFile);
+       //parseLine(tempLine);
+       fclose(inputFile);
+     }
    }
    closedir(dp);
-  }
-
+ }
 }

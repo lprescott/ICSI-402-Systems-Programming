@@ -84,4 +84,10 @@ void insert(logList * head, logLine ins) {
       return;
    }
    
+   logList * current = head;
+   while (current->next != NULL) {
+      current = current->next;
+   }
+   current->next = toInsert;
+   
 }

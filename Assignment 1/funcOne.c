@@ -73,3 +73,15 @@ void printLines(logList* l) {
    }
    
 }
+
+//Inserts a logLine into a logList, sorting them as it goes.
+void insert(logList * head, logLine ins) {
+   
+   logList toInsert = {.line = ins, next = NULL};
+   
+   if (head == NULL) {
+      head = toInsert;
+      return;
+   }
+   
+}

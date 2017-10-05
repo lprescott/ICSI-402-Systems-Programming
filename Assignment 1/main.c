@@ -62,13 +62,14 @@ void funcName ( char directory [] ){
  while((d = readdir(dp)) != NULL){
    /* Open the current file. */
    //d->d_name is the name of the file
+
    inputFile = fopen(d->d_name, "r");
-   puts(d->d_name);
+   //puts(d->d_name);
 
    if(inputFile != NULL){
      //do stuff
      while(fgets(tempLine, sizeof tempLine, inputFile)!= NULL) {
-       //fprintf(stdout, "%s", tempLine);
+       fprintf(stdout, "%s", tempLine);
        //parseLine(tem0pLine);
      }
      fclose(inputFile);

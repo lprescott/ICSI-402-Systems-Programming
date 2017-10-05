@@ -49,8 +49,11 @@ int main( int argc, char *argv[] )  {
 
       if(inputFile != NULL){
         //do stuff
-        fgets(tempLine, length, inputFile);
-        //parseLine(tem0pLine);
+        while(fgets(tempLine, sizeof tempLine, inputFile)!= NULL) {
+          fprintf(stdout, "%s", tempLine);
+          //parseLine(tem0pLine);
+        }
+
         fclose(inputFile);
       }
 
@@ -79,8 +82,10 @@ int main( int argc, char *argv[] )  {
 
      if(inputFile != NULL){
        //do stuff
-       fgets(tempLine, length, inputFile);
-       //parseLine(tempLine);
+       while(fgets(tempLine, sizeof tempLine, inputFile)!= NULL) {
+         fprintf(stdout, "%s", tempLine); 
+         //parseLine(tem0pLine);
+       }
        fclose(inputFile);
      }
    }

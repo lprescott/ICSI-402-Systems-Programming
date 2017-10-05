@@ -8,7 +8,7 @@
 #include "structs.h"
 
 //Parses a log file line into a logline struct
-logline* parseLine(char[] line) {
+logline* parseLine(char line []) {
    //duplicates the argument line into str
    char str[] = strdup(line);
    

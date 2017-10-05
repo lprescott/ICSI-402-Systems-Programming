@@ -35,6 +35,7 @@ void deleteList(loglist* l) {
    //loops through list and frees up all memory
    while (current != NULL) {
       next = current->next;
+      free(current->line);
       free(current);
       current = next;
    }

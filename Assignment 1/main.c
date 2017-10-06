@@ -13,18 +13,21 @@
 #include "structs.h"
 #include "protoOne.h"
 //#include "protoTwo.h"
+#include "funcOne.c"
 
 /* Global variables here. */
-loglist head = (loglist *)malloc(sizeof(loglist));
 
-
-void funcName ( char directory [] );
+void scanDirectory ( char directory [] );
 
 int main( int argc, char *argv[] )  {
+
+  struct loglist_t * head = (struct loglist_t *) malloc(sizeof(loglist_t));
+  struct logline_t * headLine = (struct logline_t *) malloc(sizeof(logline_t));
+
   if( argc == 2 ) {
     /* Operate in the specified directory */
     printf("This program will operate in the following directory: %s\n", argv[1]);
-    funcName(argv[1]);
+    scanDirectory(argv[1]);
     puts("Done.");
   }
 
@@ -35,11 +38,11 @@ int main( int argc, char *argv[] )  {
   else {
     /* Operate in the current working directory. */
     printf("This program will operate in the current working directory.");
-    funcName(".");
+    scanDirectory(".");
  }
 }
 
-void funcName ( char directory [] ){
+void scanDirectory ( char directory [] ){
   DIR * dp;
   struct dirent *d;
 
@@ -65,7 +68,8 @@ void funcName ( char directory [] ){
      //do stuff
      while(fgets(tempLine, sizeof tempLine, inputFile)!= NULL) {
        fprintf(stdout, "%s", tempLine);
-       insert(head, parseLine(tempLine));
+
+       //insert(head, parseLine(tempLine));
      }
      fclose(inputFile);
    }

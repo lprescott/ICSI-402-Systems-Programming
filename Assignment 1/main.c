@@ -113,13 +113,23 @@ note: memory must be allocated for each new loglist AND linelist for functionali
 void addOnEnd (loglist_t * head, logline_t line){
   //create new node
      loglist_t * newNode = (loglist_t*)malloc(sizeof(loglist_t));
+     logline_t * newLine = (logline_t*)malloc(sizeof(logline_t));
 
      if(newNode == NULL){
          fprintf(stderr, "Unable to allocate memory for new node\n");
          exit(-1);
      }
 
-     newNode->line = line;
+     if(newLine == NULL){
+         fprintf(stderr, "Unable to allocate memory for new line\n");
+         exit(-1);
+     }
+
+     strcpy(newLine->level , line.level);
+     strcpy(newLine->timestamp , line.timestamp);
+     strcpy(newLine->message , line.message);
+
+     newNode->line = * newLine;
      newNode->next = NULL;
 
      //check for first insertion

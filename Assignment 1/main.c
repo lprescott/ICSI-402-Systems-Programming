@@ -39,9 +39,13 @@ int main( int argc, char *argv[] )  {
   else {
     /* Operate in the current working directory. */
     printf("This program will operate in the current working directory.");
+
+    //Scans every file line by line inputtng parsedlines into inlist (unsorted atm)
     scanDirectory(".");
+
     puts("Done.");
  }
+
 }
 
 void scanDirectory ( char directory [] ){
@@ -68,6 +72,7 @@ void scanDirectory ( char directory [] ){
    //d->d_name is the name of the file
 
    struct loglist * inlist = malloc(sizeof(struct loglist));
+   // struct logline * inlineHead = malloc(sizeof(struct logline));
 
    inputFile = fopen(d->d_name, "r");
    //puts(d->d_name);
@@ -85,7 +90,7 @@ void scanDirectory ( char directory [] ){
      }
      fclose(inputFile);
    }
-
+   //printLines(inlist);
  }
  closedir(dp);
 }

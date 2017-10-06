@@ -12,6 +12,7 @@
 
 /* External variables */
 extern struct loglist * inlist;
+//extern struct logline * inlineHead;
 //extern logline_t * headLine;
 
 /*
@@ -69,57 +70,42 @@ void deleteList(loglist* l) {
    l = NULL;
 }
 
+*/
 //prints all loglines in a loglist
-void printLines(loglist* l) {
+void printLines(struct loglist* l) {
+
+    if (l == NULL){
+      puts("The list is empty");
+      return;
+    }
 
    //initalizes all the temp variables
-   logList * next;
-   char tempLevel[];
-   char tempTimestamp[];
-   char tempMessage[];
+   struct logList * next;
+   char tempLevel[64];
+   char tempTimestamp[64];
+   char tempMessage[64];
 
    //sets all things to their temp things
-   tempLevel = l->level;
-   tempTimestamp = l->timestamp;
-   tempMessage = l->message;
+   strcpy(tempLevel, l->line.level);
+   strcpy(tempTimestamp, l->line.timestamp);
+   strcpy(tempMessage, l->line.message);
 
    //print the head data
    printf("%s,%s,%s", tempLevel, tempMessage, tempTimestamp);
 
-   nextL = l->next;
-
    //repeat but for the rest of the list
-   while (next != NULL) {
-      tempLevel = nextL->level;
-      tempTimestamp = nextL->timestamp;
-      tempMessage = nextL->message;
+   while (l->next != NULL) {
+      strcpy(tempLevel, l->next->line.level);
+      strcpy(tempTimestamp, l->next->line.timestamp);
+      strcpy(tempMessage, l->next->line.message);
 
       printf("%s,%s,%s", tempLevel, tempMessage, tempTimestamp);\
 
-      next = nextL->next;
+      l->next = l->next->next;
    }
-
 }
-*/
-
-/*Reference push.
-
-void push(node_t * head, int val) {
-    node_t * current = head;
-    while (current->next != NULL) {
-        current = current->next;
-    }
-
-    current->next = malloc(sizeof(node_t));
-    current->next->val = val;
-    current->next->next = NULL;
-}
-
-//NOT WORKING ATM
 
 //Inserts a logLine into a logList.
-
-*/
 
 void insert(loglist_t * head, logline_t headLine) {
   loglist_t * current = head;
@@ -128,26 +114,7 @@ void insert(loglist_t * head, logline_t headLine) {
   }
 
   current->next = malloc(sizeof(loglist_t));
+  //current->next->line = malloc(sizeof(logline_t));
   current->next->line = headLine;
   current->next->next = NULL;
 }
-
-/*
-
-void insert(loglist_t * head, logline_t headLine) {
-
-   struct loglist toInsert = {.line = headLine, next = NULL};
-
-   if (head == NULL) {
-      head = toInsert;
-      return;
-   }
-
-   struct loglist * current = head;
-   while (current->next != NULL) {
-      current = current->next;
-   }
-   current->next = toInsert;
-
-}
-*/

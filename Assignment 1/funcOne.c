@@ -39,6 +39,7 @@ struct logline * parseLine(char line []) {
 
    //stores all temp values into a logline struck
    struct logline * parsed = (struct logline *) malloc(sizeof(logline_t));
+
    strcpy(parsed->level , levelP);
    strcpy(parsed->timestamp , timestampP);
    strcpy(parsed->message , messageP);
@@ -70,7 +71,7 @@ void deleteList(loglist* l) {
    l = NULL;
 }
 
-*/
+
 //prints all loglines in a loglist
 void printLines(struct loglist* l) {
 
@@ -104,17 +105,4 @@ void printLines(struct loglist* l) {
       l->next = l->next->next;
    }
 }
-
-//Inserts a logLine into a logList.
-
-void insert(loglist_t * head, logline_t headLine) {
-  loglist_t * current = head;
-  while (current->next != NULL) {
-      current = current->next;
-  }
-
-  current->next = malloc(sizeof(loglist_t));
-  //current->next->line = malloc(sizeof(logline_t));
-  current->next->line = headLine;
-  current->next->next = NULL;
-}
+*/

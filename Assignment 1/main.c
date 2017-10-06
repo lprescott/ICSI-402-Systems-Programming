@@ -21,13 +21,18 @@
 
 /* Global variables here. */
 
+/* Protypes here. */
 void scanDirectory ( char directory [] );
+void addOnEnd (loglist_t * head, logline_t line);
 
+/* Begin main method here. */
 int main( int argc, char *argv[] )  {
 
   if( argc == 2 ) {
     /* Operate in the specified directory */
     printf("This program will operate in the following directory: %s\n", argv[1]);
+
+    //Scans every file line by line inputtng parsedlines into inlist (unsorted atm)
     scanDirectory(argv[1]);
     puts("Done.");
   }
@@ -42,16 +47,12 @@ int main( int argc, char *argv[] )  {
 
     //Scans every file line by line inputtng parsedlines into inlist (unsorted atm)
     scanDirectory(".");
-
     puts("Done.");
  }
+} /*End main*/
 
-}
-
+/* Begin scanDirectory */
 void scanDirectory ( char directory [] ){
-
-  //struct loglist_t * head = (struct loglist_t *) malloc(sizeof(loglist_t));
-  //struct logline_t * headLine = (struct logline_t *) malloc(sizeof(logline_t));
 
   DIR * dp;
   struct dirent *d;
@@ -62,6 +63,10 @@ void scanDirectory ( char directory [] ){
   int length = 1024;
   char tempLine[length];
 
+  /* Dynamically allcoated memory for loglist inlist */
+  struct loglist * inlist = NULL;
+  inlist = malloc(sizeof(struct loglist));
+
   if((dp = opendir(directory)) == NULL){
     fprintf(stderr, "Cannot open current working directory.\n");
     exit(1);
@@ -70,9 +75,6 @@ void scanDirectory ( char directory [] ){
  while((d = readdir(dp)) != NULL){
    /* Open the current file. */
    //d->d_name is the name of the file
-
-   struct loglist * inlist = malloc(sizeof(struct loglist));
-   // struct logline * inlineHead = malloc(sizeof(struct logline));
 
    inputFile = fopen(d->d_name, "r");
    //puts(d->d_name);
@@ -83,10 +85,13 @@ void scanDirectory ( char directory [] ){
        if (tempLine[0] == '#') continue;
         printf(tempLine);
         struct logline * tempParsedLine =  parseLine(tempLine);
-        //printf(tempParsedLine->level);
-        //printf(tempParsedLine->timestamp);
-        //printf(tempParsedLine->message);
-        insert(inlist, * tempParsedLine);
+
+        printf("\nRead level: %s\n", tempParsedLine->level);
+        printf("\nRead timestamp: %s\n",tempParsedLine->timestamp);
+        printf("\nRead message: %s\n",tempParsedLine->message);
+
+        /* Insert tempParsedLine into inlist here. */
+        addOnEnd(inlist, * tempParsedLine);
      }
      fclose(inputFile);
    }
@@ -94,3 +99,13 @@ void scanDirectory ( char directory [] ){
  }
  closedir(dp);
 }
+
+/* Begin addOnEnd --
+https://stackoverflow.com/questions/5797548/c-linked-list-inserting-node-at-the-end
+
+note: memory must be allocated for each new loglist AND linelist for functionality
+*/
+void addOnEnd (loglist_t * head, logline_t line){
+
+
+} /*End addOnEnd */

@@ -5,31 +5,49 @@
 //Course:  ICSI 402
 //Desc:    This file contains the parseLine, deleteList, and printLine functions to be used in main.c
 
+#include <stdlib.h>
+#include <stdio.h>
 #include "protoOne.h"
 #include "structs.h"
 
 /* External variables */
 extern loglist_t * head;
-extern logline_t * headLine;
+//extern logline_t * headLine;
 
 /*
+
+typedef struct logline{
+  char level[20];
+  char timestamp[20];
+  char message[100];
+} logline_t;
+
+
+*/
+
 //Parses a log file line into a logline struct
-logline* parseLine(char line []) {
+struct logline * parseLine(char line []) {
    //duplicates the argument line into str
-   char str[] = strdup(line);
+   char str[1024];
+   strcpy(str, line);
 
    //tokenizes str and splits the string by ","
-   char *levelP = strtok(str, ",");
-   char *timestampP = strtok(NULL, ",");
-   char *messageP = strtok(NULL, " ");
+   char * levelP = strtok(str, ",");
+   char * timestampP = strtok(NULL, ",");
+   char * messageP = strtok(NULL, " ");
 
    //stores all temp values into a logline struck
-   logline parsed = (logline*) malloc(sizeOf(logline))
-   parsed = { .level = levelP, .timestamp = timestampP, .message = messageP }
+   struct logline * parsed = (struct logline *) malloc(sizeof(logline_t));
+   strcpy(parsed->level , "levelP");
+   strcpy(parsed->timestamp , "timestampP");
+   strcpy(parsed->message , "messageP");
 
    //returns logline
    return parsed;
 }
+
+/*
+
 
 //frees up all memory for the list
 void deleteList(loglist* l) {
@@ -97,11 +115,21 @@ void push(node_t * head, int val) {
     current->next->next = NULL;
 }
 
-*/
-
 //NOT WORKING ATM
 
 //Inserts a logLine into a logList.
+
+
+void insert(loglist_t * head, logline_t headLine) {
+  loglist_t * current = head;
+  while (current->next != NULL) {
+      current = current->next;
+  }
+
+  current->next = malloc(sizeof(loglist_t));
+  current->next->line = headLine;
+  current->next->next = NULL;
+}
 
 
 void insert(loglist_t * head, logline_t headLine) {
@@ -120,3 +148,4 @@ void insert(loglist_t * head, logline_t headLine) {
    current->next = toInsert;
 
 }
+*/

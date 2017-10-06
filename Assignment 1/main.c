@@ -10,10 +10,14 @@
 #include <string.h>
 #include <dirent.h>
 #include <stdlib.h>
+
 #include "structs.h"
+
 #include "protoOne.h"
 //#include "protoTwo.h"
+
 #include "funcOne.c"
+//#include "funcTwo.c"
 
 /* Global variables here. */
 
@@ -39,6 +43,7 @@ int main( int argc, char *argv[] )  {
     /* Operate in the current working directory. */
     printf("This program will operate in the current working directory.");
     scanDirectory(".");
+    puts("Done.");
  }
 }
 
@@ -62,13 +67,13 @@ void scanDirectory ( char directory [] ){
    //d->d_name is the name of the file
 
    inputFile = fopen(d->d_name, "r");
-   puts(d->d_name);
+   //puts(d->d_name);
 
    if(inputFile != NULL){
      //do stuff
      while(fgets(tempLine, sizeof tempLine, inputFile)!= NULL) {
-       fprintf(stdout, "%s", tempLine);
-
+       if (tempLine[0] == '#') continue;
+        printf(tempLine);
        //insert(head, parseLine(tempLine));
      }
      fclose(inputFile);

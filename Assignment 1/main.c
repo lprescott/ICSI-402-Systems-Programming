@@ -74,6 +74,10 @@ void scanDirectory ( char directory [] ){
      while(fgets(tempLine, sizeof tempLine, inputFile)!= NULL) {
        if (tempLine[0] == '#') continue;
         printf(tempLine);
+        struct logline * tempParsedLine =  parseLine(tempLine);
+        //printf(tempParsedLine->level);
+        //printf(tempParsedLine->timestamp);
+        //printf(tempParsedLine->message);
        //insert(head, parseLine(tempLine));
      }
      fclose(inputFile);

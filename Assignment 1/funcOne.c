@@ -38,9 +38,9 @@ struct logline * parseLine(char line []) {
 
    //stores all temp values into a logline struck
    struct logline * parsed = (struct logline *) malloc(sizeof(logline_t));
-   strcpy(parsed->level , "levelP");
-   strcpy(parsed->timestamp , "timestampP");
-   strcpy(parsed->message , "messageP");
+   strcpy(parsed->level , levelP);
+   strcpy(parsed->timestamp , timestampP);
+   strcpy(parsed->message , messageP);
 
    //returns logline
    return parsed;

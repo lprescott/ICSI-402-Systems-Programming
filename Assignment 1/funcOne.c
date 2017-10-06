@@ -11,7 +11,7 @@
 #include "structs.h"
 
 /* External variables */
-extern loglist_t * head;
+extern struct loglist * inlist;
 //extern logline_t * headLine;
 
 /*
@@ -119,6 +119,7 @@ void push(node_t * head, int val) {
 
 //Inserts a logLine into a logList.
 
+*/
 
 void insert(loglist_t * head, logline_t headLine) {
   loglist_t * current = head;
@@ -131,6 +132,7 @@ void insert(loglist_t * head, logline_t headLine) {
   current->next->next = NULL;
 }
 
+/*
 
 void insert(loglist_t * head, logline_t headLine) {
 

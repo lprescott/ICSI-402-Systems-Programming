@@ -25,9 +25,6 @@ void scanDirectory ( char directory [] );
 
 int main( int argc, char *argv[] )  {
 
-  struct loglist_t * head = (struct loglist_t *) malloc(sizeof(loglist_t));
-  struct logline_t * headLine = (struct logline_t *) malloc(sizeof(logline_t));
-
   if( argc == 2 ) {
     /* Operate in the specified directory */
     printf("This program will operate in the following directory: %s\n", argv[1]);
@@ -48,6 +45,10 @@ int main( int argc, char *argv[] )  {
 }
 
 void scanDirectory ( char directory [] ){
+
+  //struct loglist_t * head = (struct loglist_t *) malloc(sizeof(loglist_t));
+  //struct logline_t * headLine = (struct logline_t *) malloc(sizeof(logline_t));
+
   DIR * dp;
   struct dirent *d;
 
@@ -66,6 +67,8 @@ void scanDirectory ( char directory [] ){
    /* Open the current file. */
    //d->d_name is the name of the file
 
+   struct loglist * inlist = malloc(sizeof(struct loglist));
+
    inputFile = fopen(d->d_name, "r");
    //puts(d->d_name);
 
@@ -78,10 +81,11 @@ void scanDirectory ( char directory [] ){
         //printf(tempParsedLine->level);
         //printf(tempParsedLine->timestamp);
         //printf(tempParsedLine->message);
-       //insert(head, parseLine(tempLine));
+        insert(inlist, * tempParsedLine);
      }
      fclose(inputFile);
    }
+
  }
  closedir(dp);
 }

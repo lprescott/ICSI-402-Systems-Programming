@@ -67,9 +67,14 @@ void scanDirectory ( char directory [] ){
   struct loglist * inlist = NULL;
   inlist = malloc(sizeof(struct loglist));
 
+  if(inlist == NULL){
+    fprintf(stderr, "Unable to allocate memory for new node\n");
+    exit(-1);
+  }
+
   if((dp = opendir(directory)) == NULL){
     fprintf(stderr, "Cannot open current working directory.\n");
-    exit(1);
+    exit(-1);
   }
 
  while((d = readdir(dp)) != NULL){
@@ -106,6 +111,33 @@ https://stackoverflow.com/questions/5797548/c-linked-list-inserting-node-at-the-
 note: memory must be allocated for each new loglist AND linelist for functionality
 */
 void addOnEnd (loglist_t * head, logline_t line){
+  //create new node
+     loglist_t * newNode = (loglist_t*)malloc(sizeof(loglist_t));
 
+     if(newNode == NULL){
+         fprintf(stderr, "Unable to allocate memory for new node\n");
+         exit(-1);
+     }
+
+     newNode->line = line;
+     newNode->next = NULL;
+
+     //check for first insertion
+     if(head->next == NULL){
+         head->next = newNode;
+         printf("added at beginning\n");
+     }
+
+     else
+     {
+         //else loop through the list and find the last
+         //node, insert next to it
+         loglist_t *current = head;
+         while (current->next != NULL) {
+           current = current->next;
+         }
+         current->next = newNode;
+         printf("added later\n");
+     }
 
 } /*End addOnEnd */

@@ -40,6 +40,11 @@ struct logline * parseLine(char line []) {
    //stores all temp values into a logline struck
    struct logline * parsed = (struct logline *) malloc(sizeof(logline_t));
 
+   if(parsed == NULL){
+    fprintf(stderr, "Unable to allocate memory for new line\n");
+    exit(-1);
+    }
+
    strcpy(parsed->level , levelP);
    strcpy(parsed->timestamp , timestampP);
    strcpy(parsed->message , messageP);

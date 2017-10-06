@@ -35,7 +35,7 @@ struct logline * parseLine(char line []) {
    //tokenizes str and splits the string by ","
    char * levelP = strtok(str, ",");
    char * timestampP = strtok(NULL, ",");
-   char * messageP = strtok(NULL, " ");
+   char * messageP = strtok(NULL, ",");
 
    //stores all temp values into a logline struck
    struct logline * parsed = (struct logline *) malloc(sizeof(logline_t));

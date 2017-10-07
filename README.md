@@ -2,6 +2,8 @@
 
 ##### In class on Sep. 26th, our professor stated that extra credit can be given if we time our programs execution.
 
+#https://hangouts.google.com/call/OS9LileLObM-UWqJR3H4AAEE
+
 #### Programming Assignments: 
 There will be five (5) programming assignments. These assignments
 must be done using the machines provided by the Information Technology Services (ITS)

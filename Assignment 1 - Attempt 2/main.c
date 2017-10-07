@@ -5,10 +5,6 @@
 #include "headersTwo.h"
 #include "headersOther.h"
 
-#include "functionsOne.c"
-#include "functionsTwo.c"
-#include "functionsOther.c"
-
 int main( int argc, char *argv[] )  {
 
 	if( argc == 2 ) {

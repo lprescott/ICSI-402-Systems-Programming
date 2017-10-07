@@ -1,3 +1,3 @@
-logline* parseLine(string line);
-void deleteList(loglist* l);
-void printLines(LineList* l);
+struct logline * parseLine(char line []);
+void deleteList(struct loglist* l);
+void printLines(struct loglist* l);

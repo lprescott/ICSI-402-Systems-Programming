@@ -5,34 +5,69 @@
 //Course:  ICSI 402
 //Desc:    This file contains the parseLine, deleteList, and printLine functions to be used in main.c
 
+<<<<<<< HEAD
+#include "structs.h"
+=======
+#include <stdlib.h>
+#include <stdio.h>
+#include "protoOne.h"
 #include "structs.h"
 
+/* External variables */
+extern struct loglist * inlist;
+//extern struct logline * inlineHead;
+//extern logline_t * headLine;
+
+/*
+
+typedef struct logline{
+  char level[20];
+  char timestamp[20];
+  char message[100];
+} logline_t;
+
+
+*/
+>>>>>>> 035f884a7dea4ca2364e7a30559337f592f64d0d
+
 //Parses a log file line into a logline struct
-logline* parseLine(char[] line) {
+struct logline * parseLine(char line []) {
    //duplicates the argument line into str
-   char str[] = strdup(line);
-   
+   char str[1024];
+   strcpy(str, line);
+
    //tokenizes str and splits the string by ","
-   char *levelP = strtok(str, ",");
-   char *timestampP = strtok(NULL, ",");
-   char *messageP = strtok(NULL, " ");
-   
+   char * levelP = strtok(str, ",");
+   char * timestampP = strtok(NULL, ",");
+   char * messageP = strtok(NULL, ",");
+
    //stores all temp values into a logline struck
-   logline parsed = (logline*) malloc(sizeOf(logline))
-   parsed = { .level = levelP, .timestamp = timestampP, .message = messageP }
-   
+   struct logline * parsed = (struct logline *) malloc(sizeof(logline_t));
+
+   if(parsed == NULL){
+    fprintf(stderr, "Unable to allocate memory for new line\n");
+    exit(-1);
+    }
+
+   strcpy(parsed->level , levelP);
+   strcpy(parsed->timestamp , timestampP);
+   strcpy(parsed->message , messageP);
+
    //returns logline
    return parsed;
 }
 
+/*
+
+
 //frees up all memory for the list
 void deleteList(loglist* l) {
-   
+
    //initializes necessary variables
    loglist * head = l;
    loglist * next;
-   
-   
+
+
    //loops through list and frees up all memory
    while (current != NULL) {
       next = current->next;
@@ -40,57 +75,43 @@ void deleteList(loglist* l) {
       free(current);
       current = next;
    }
-   
+
    //sets the initial list to null, freeing all the memory
    l = NULL;
 }
 
+
 //prints all loglines in a loglist
-void printLines(logList* l) {  
-   
+void printLines(struct loglist* l) {
+
+    if (l == NULL){
+      puts("The list is empty");
+      return;
+    }
+
    //initalizes all the temp variables
-   logList * next;
-   char tempLevel[];
-   char tempTimestamp[];
-   char tempMessage[];
-   
+   struct logList * next;
+   char tempLevel[64];
+   char tempTimestamp[64];
+   char tempMessage[64];
+
    //sets all things to their temp things
-   tempLevel = l->level;
-   tempTimestamp = l->timestamp;
-   tempMessage = l->message;
-   
+   strcpy(tempLevel, l->line.level);
+   strcpy(tempTimestamp, l->line.timestamp);
+   strcpy(tempMessage, l->line.message);
+
    //print the head data
    printf("%s,%s,%s", tempLevel, tempMessage, tempTimestamp);
- 
-   nextL = l->next;
-   
-   //repeat but for the rest of the list
-   while (next != NULL) {
-      tempLevel = nextL->level;
-      tempTimestamp = nextL->timestamp;
-      tempMessage = nextL->message;
-   
-      printf("%s,%s,%s", tempLevel, tempMessage, tempTimestamp);\
-      
-      next = nextL->next;
-   }
-   
-}
 
-//Inserts a logLine into a logList, sorting them as it goes.
-void insert(logList * head, logLine ins) {
-   
-   logList toInsert = {.line = ins, next = NULL};
-   
-   if (head == NULL) {
-      head = toInsert;
-      return;
+   //repeat but for the rest of the list
+   while (l->next != NULL) {
+      strcpy(tempLevel, l->next->line.level);
+      strcpy(tempTimestamp, l->next->line.timestamp);
+      strcpy(tempMessage, l->next->line.message);
+
+      printf("%s,%s,%s", tempLevel, tempMessage, tempTimestamp);\
+
+      l->next = l->next->next;
    }
-   
-   logList * current = head;
-   while (current->next != NULL) {
-      current = current->next;
-   }
-   current->next = toInsert;
-   
 }
+*/

@@ -3,6 +3,7 @@
 #ifndef HEADERSOTHER_H
 #define HEADERSOTHER_H
 
-char * getExtension(char * fileName);
+int isLogFile(char * fileName);
+int containsTwoCommas(char * line);
 
 #endif

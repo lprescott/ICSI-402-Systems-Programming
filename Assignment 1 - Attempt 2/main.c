@@ -14,7 +14,7 @@ int main( int argc, char *argv[] )  {
 	/* Local variables */
 	DIR * dp;
 	struct dirent * d;
-	FILE * inputFile;
+	FILE * inputFile = NULL;
 	char tempLine [128];
 	char directory [128];
 	struct stat buffer;
@@ -46,17 +46,23 @@ int main( int argc, char *argv[] )  {
 	/* Read through names of files in opened directory */
 	while((d=readdir(dp)) != NULL){
 		/* The file names are d->d_name */
-		if(strcmp(getExtension(d->d_name), ".log") == 0){
+		//if((isLogFile(d->d_name)) == 1){
+		//	fputs(d->d_name, stdout);
+
+			if(inputFile != NULL){
+				fclose(inputFile);
+			}
 			/* Open the file for reading */
 			if((inputFile = fopen(d->d_name, "r")) != NULL){
 
+				/* Check if file begins with # */
 				/*
 				if(fgets(tempLine, sizeof tempLine, inputFile)!= NULL){
 
 					printf("The first character is: %c \n", tempLine[0]);
 				}
 				*/
-			
+
 				/* Declare inlist here */
 				loglist_t * inlist = NULL;
 				if((inlist = malloc(sizeof(loglist_t))) == NULL){
@@ -64,15 +70,33 @@ int main( int argc, char *argv[] )  {
 					exit(-1);
 				}
 
+				logline_t * tempLineStruct = NULL;
+				if((tempLineStruct = malloc(sizeof(logline_t))) == NULL){
+					fprintf(stderr, "Unable to allocate memory for new temp line structure.\n");
+					exit(-1);
+				}
+
 				/* Read line by line */
 				while(fgets(tempLine, sizeof tempLine, inputFile)!= NULL){
 					/* tempLine contains the current line's text */
-					/* Add parsed lines to inlist */
+					if (strstr(tempLine, "#")){
+						continue;
+					}
 
-					/* Check for formatting of strings here */
-					//if (strstr(tempLine, "#") == NULL) {
+					/* Check if each line contains at least two commas */
+					if (containsTwoCommas(tempLine) == 0){
+						fprintf(stderr, "1. Unexpected formatting encountered.\n");
+						exit(-1);
+					}
+
+					/* Check if Log entry doesn't look" like <level>,<timestamp>,<message>. */
+					if ((strstr(tempLine, ",") == NULL) || (strstr(tempLine, "-") == NULL) || (strstr(tempLine, ":") == NULL)) {
+						fprintf(stderr, "2. Unexpected formatting encountered.\n");
+						exit(-1);
+					}
+
+					/* Add parsed lines to inlist */
 					fputs(tempLine, stdout);
-					//}
 						
 				}
 
@@ -84,12 +108,13 @@ int main( int argc, char *argv[] )  {
 
 				/* Call deleteList on inlist */
 				//deleteList(loglist* inlist);
+				
 
-			}
+			//
 
-			else{
-				fprintf(stderr, "Error opening file.\n");
-			}
+			//else{
+			//	fprintf(stderr, "Error opening file.\n");
+			//}
 
 		}
 	

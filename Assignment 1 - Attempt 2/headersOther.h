@@ -5,5 +5,6 @@
 
 int isLogFile(char * fileName);
 int containsCommas(char * line);
+void insert(loglist_t * head, logline_t line);
 
 #endif

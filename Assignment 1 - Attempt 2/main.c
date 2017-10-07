@@ -99,12 +99,14 @@ int main( int argc, char *argv[] )  {
 					//fputs(tempLine, stdout);	
 					tempLineStruct = parseLine(tempLine);
 					
-					fputs(tempLineStruct->level, stdout);
-					puts("\n");
-					fputs(tempLineStruct->timestamp, stdout);
-					puts("\n");
-					fputs(tempLineStruct->message, stdout);
-					puts("\n");
+					/*
+					tempLineStruct->level
+					tempLineStruct->timestamp
+					tempLineStruct->message
+					*/
+
+					/* Insert to inlist here. */
+					//insert 
 				}
 
 				/* Sort inlistHere */
@@ -115,6 +117,9 @@ int main( int argc, char *argv[] )  {
 
 				/* Call deleteList on inlist */
 				//deleteList(loglist* inlist);
+
+				free(inlist);
+				free(tempLineStruct);
 				
 
 			//

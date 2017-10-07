@@ -109,13 +109,8 @@ int main( int argc, char *argv[] )  {
 					tempLineStruct->message
 					*/
 
-<<<<<<< HEAD
-					/* Insert to inlist here. */
-					add(inlist, tempLineStruct);
-=======
 					/* Add to inlist here. */
 					add(inlist, * tempLineStruct);
->>>>>>> 778a62812e164976181b07d0658ad468036a2e71
 				}
 
 				/* Sort inlistHere */

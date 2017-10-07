@@ -23,10 +23,7 @@ int containsCommas(char * line){
 }
 
 void add(loglist_t * head, logline_t line){
-<<<<<<< HEAD
-=======
-    
->>>>>>> 778a62812e164976181b07d0658ad468036a2e71
+
     loglist_t * newNode = (loglist_t*)malloc(sizeof(loglist_t));
     logline_t * newLine = (logline_t*)malloc(sizeof(logline_t));
 
@@ -45,20 +42,20 @@ void add(loglist_t * head, logline_t line){
     strcpy(newLine->message , line.message);
 
     newNode->line = * newLine;
-    newNode->next = NULL;  
-    
+    newNode->next = NULL;
+
     if(head == NULL){
         head = newNode;
         return;
     }
-    
-  
+
+
     while(head->next != NULL){
         head = head -> next;
     }
 
     head = newNode;
-    
+
 
     return;
 } /*End insert */

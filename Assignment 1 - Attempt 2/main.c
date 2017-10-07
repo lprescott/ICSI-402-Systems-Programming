@@ -9,6 +9,10 @@
 #include "headersTwo.h"
 #include "headersOther.h"
 
+/*
+	https://stackoverflow.com/questions/10162152/how-to-work-with-string-fields-in-a-c-struct
+*/
+
 int main( int argc, char *argv[] )  {
 
 	/* Local variables */

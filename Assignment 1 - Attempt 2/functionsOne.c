@@ -1,7 +1,6 @@
 #include "structs.h"
 #include "headersOne.h"
 
-
 /*
 	Function logline* parseLine(string line) to construct a logline with 3 elds
 	based on the input string. Note that this function allocates memory.

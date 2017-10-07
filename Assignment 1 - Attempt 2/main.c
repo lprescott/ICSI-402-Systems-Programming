@@ -110,7 +110,7 @@ int main( int argc, char *argv[] )  {
 					*/
 
 					/* Add to inlist here. */
-					add(inlist, * tempLineStruct);
+					add(&inlist, *tempLineStruct);
 				}
 
 				/* Sort inlistHere */

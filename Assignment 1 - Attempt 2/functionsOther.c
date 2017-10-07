@@ -22,11 +22,11 @@ int containsCommas(char * line){
     else return 0;
 }
 
-void add(loglist_t * head, logline_t line){
+void add(loglist_t ** head, logline_t line){
     
     loglist_t * newNode = (loglist_t*)malloc(sizeof(loglist_t));
     logline_t * newLine = (logline_t*)malloc(sizeof(logline_t));
-
+    
     if(newNode == NULL){
         fprintf(stderr, "Unable to allocate memory for new node\n");
         exit(-1);
@@ -42,20 +42,19 @@ void add(loglist_t * head, logline_t line){
     strcpy(newLine->message , line.message);
 
     newNode->line = * newLine;
-    newNode->next = NULL;  
-    
-    if(head == NULL){
-        head = newNode;
-        return;
-    }
-    
-  
-    while(head->next != NULL){
-        head = head -> next;
+    newNode->next = NULL; 
+
+    loglist_t * temp = * head;
+    if (*head = NULL){
+        *head=newNode;
     }
 
-    head = newNode;
-    
+    else{
+        while(temp->next!=NULL){
+            temp=temp->next;
+        }
 
+        temp->next=newNode;
+    }
     return;
 } /*End insert */

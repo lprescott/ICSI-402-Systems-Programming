@@ -22,7 +22,7 @@ int containsCommas(char * line){
     else return 0;
 }
 
-void insert(loglist_t * head, logline_t line){
+void add(loglist_t * head, logline_t line){
     loglist_t * newNode = (loglist_t*)malloc(sizeof(loglist_t));
     logline_t * newLine = (logline_t*)malloc(sizeof(logline_t));
 

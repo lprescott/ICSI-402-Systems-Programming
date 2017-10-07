@@ -40,7 +40,7 @@ int main( int argc, char *argv[] )  {
 		if((dp = opendir(directory)) == NULL){
 			fprintf(stderr, "Error opening directory.\n");
 			exit(-1);
-		} 
+		}
 	}
 
 	/* Read through names of files in opened directory */
@@ -96,9 +96,9 @@ int main( int argc, char *argv[] )  {
 					}
 
 					/* Add parsed lines to inlist */
-					//fputs(tempLine, stdout);	
+					//fputs(tempLine, stdout);
 					tempLineStruct = parseLine(tempLine);
-					
+
 					/*
 					tempLineStruct->level
 					tempLineStruct->timestamp
@@ -106,11 +106,11 @@ int main( int argc, char *argv[] )  {
 					*/
 
 					/* Insert to inlist here. */
-					//insert 
+					add(inlist, tempLineStruct);
 				}
 
 				/* Sort inlistHere */
-				//sortList(inlist);
+				sortList(inlist);
 
 				/* Call mergeLists */
 				//loglist* mergeLists(loglist* resultlist, loglist* inlist);
@@ -118,9 +118,8 @@ int main( int argc, char *argv[] )  {
 				/* Call deleteList on inlist */
 				//deleteList(loglist* inlist);
 
-				free(inlist);
 				free(tempLineStruct);
-				
+
 
 			//
 
@@ -129,7 +128,7 @@ int main( int argc, char *argv[] )  {
 			//}
 
 		}
-	
+
 	/* Call printLines  */
 	//printLines(loglist_t * resultList){
 

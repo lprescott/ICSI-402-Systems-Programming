@@ -1,45 +1,44 @@
+//Project: Prog1
+//Names:   Luke Prescott, Rob Rose, Tommy Li
+//Roles:   Leader, Monitor, Recorder Respectively
+//Date:    10/3/2017
+//Course:  ICSI 402
 //Desc:    This file contains the parseLine, deleteList, and printLine functions to be used in main.c
-<<<<<<< HEAD
 
 #include <stdlib.h>
 #include <stdio.h>
 #include "protoOne.h"
-=======
->>>>>>> 67b7c8c00923d9621e77c3e9b957dad1ca4f1672
 #include "structs.h"
-#include "headersOnes.h"
-
 
 /* External variables */
 extern struct loglist * inlist;
+//extern struct logline * inlineHead;
+//extern logline_t * headLine;
 
 /*
-    Function logline* parseLine(string line) to construct a logline with 3 fields
-    based on the input string. Note that this function allocates memory.
 
-    Must check if inputted char line [] has atleast two commas, and print to
-    stderr if not.
-    
-    Must check if log entry looks like <level>,<timestamp>,<message>,
-    and print to stderr if not.
+typedef struct logline{
+  char level[20];
+  char timestamp[20];
+  char message[100];
+} logline_t;
+
+
 */
-<<<<<<< HEAD
 
-=======
->>>>>>> 67b7c8c00923d9621e77c3e9b957dad1ca4f1672
 //Parses a log file line into a logline struct
-struct logline_t * parseLine(char line []) {
+struct logline * parseLine(char line []) {
    //duplicates the argument line into str
-   char str[1000];
-   strcpy(str, line);// copies the string into a line.
+   char str[1024];
+   strcpy(str, line);
 
    //tokenizes str and splits the string by ","
    char * levelP = strtok(str, ",");
    char * timestampP = strtok(NULL, ",");
    char * messageP = strtok(NULL, ",");
 
-   //stores all temp values into a logline struct
-   struct logline_t * parsed = (struct logline *) malloc(sizeof(logline_t));
+   //stores all temp values into a logline struck
+   struct logline * parsed = (struct logline *) malloc(sizeof(logline_t));
 
    if(parsed == NULL){
     fprintf(stderr, "Unable to allocate memory for new line\n");
@@ -54,60 +53,61 @@ struct logline_t * parseLine(char line []) {
    return parsed;
 }
 
+/*
 
 
 //frees up all memory for the list
-void deleteList(loglist_t* head) {
+void deleteList(loglist* l) {
 
-loglist* current = head// head is equal to a pointer of the current node
-loglist* next;// next is equal to a pointer of the current node
-
-
-while(current != NULL)
-{
- next= current -> next;
- free(current->line);
- free(current);// deallocates memory from the current node
- current= next;// takes the current node and makes it equal to the next nude
+   //initializes necessary variables
+   loglist * head = l;
+   loglist * next;
 
 
+   //loops through list and frees up all memory
+   while (current != NULL) {
+      next = current->next;
+      free(current->line);
+      free(current);
+      current = next;
+   }
+
+   //sets the initial list to null, freeing all the memory
+   l = NULL;
 }
-   
-   head=NULL;
 
-}
 
 //prints all loglines in a loglist
-void printLines(struct loglist_t* head) {
+void printLines(struct loglist* l) {
 
-    if (head == NULL){
-      printf("Empty List");
+    if (l == NULL){
+      puts("The list is empty");
       return;
     }
 
    //initalizes all the temp variables
-   struct logList_t * next;
-   char levelTemp[100];
-   char timestampTemp[100];
-   char messageTemp[100];
+   struct logList * next;
+   char tempLevel[64];
+   char tempTimestamp[64];
+   char tempMessage[64];
 
    //sets all things to their temp things
-   strcpy(tempLevel, head->line.level);
-   strcpy(tempTimestamp, head->line.timestamp);
-   strcpy(tempMessage, head->line.message);
+   strcpy(tempLevel, l->line.level);
+   strcpy(tempTimestamp, l->line.timestamp);
+   strcpy(tempMessage, l->line.message);
 
-   //prints the data elements of the head, which include the level, message, and the timestamp
-   printf("%s,%s,%s", levelTemp, messageTemp, timestampTemp);
+   //print the head data
+   printf("%s,%s,%s", tempLevel, tempMessage, tempTimestamp);
 
-   // repeats the same process, but for the rest of the linked list.
-   while (head->next != NULL) {
-      strcpy(levelTemp, l->next->line.level);
-      strcpy(timestampTemp, l->next->line.timestamp);
-      strcpy(messageTemp, l->next->line.message);
+   //repeat but for the rest of the list
+   while (l->next != NULL) {
+      strcpy(tempLevel, l->next->line.level);
+      strcpy(tempTimestamp, l->next->line.timestamp);
+      strcpy(tempMessage, l->next->line.message);
 
-      printf("%s,%s,%s", levelTemp, messageTemp, timestampTemp);\
+      printf("%s,%s,%s", tempLevel, tempMessage, tempTimestamp);\
 
-      head->next = head->next->next;// traversing the linked list.
-   
+      l->next = l->next->next;
+   }
 }
-
+*/

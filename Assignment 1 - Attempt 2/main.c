@@ -9,6 +9,10 @@
 #include "headersTwo.h"
 #include "headersOther.h"
 
+/*
+	https://stackoverflow.com/questions/10162152/how-to-work-with-string-fields-in-a-c-struct
+*/
+
 int main( int argc, char *argv[] )  {
 
 	/* Local variables */
@@ -105,8 +109,13 @@ int main( int argc, char *argv[] )  {
 					tempLineStruct->message
 					*/
 
+<<<<<<< HEAD
 					/* Insert to inlist here. */
 					add(inlist, tempLineStruct);
+=======
+					/* Add to inlist here. */
+					add(inlist, * tempLineStruct);
+>>>>>>> 778a62812e164976181b07d0658ad468036a2e71
 				}
 
 				/* Sort inlistHere */

@@ -106,7 +106,7 @@ int main( int argc, char *argv[] )  {
 					*/
 
 					/* Insert to inlist here. */
-					//insert 
+					add(inlist, tempLineStruct);
 				}
 
 				/* Sort inlistHere */
@@ -118,7 +118,6 @@ int main( int argc, char *argv[] )  {
 				/* Call deleteList on inlist */
 				//deleteList(loglist* inlist);
 
-				free(inlist);
 				free(tempLineStruct);
 				
 

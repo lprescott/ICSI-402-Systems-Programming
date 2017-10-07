@@ -15,7 +15,7 @@ int isLogFile(char * fileName){
     }
 }
 
-int containsTwoCommas(char * line){
+int containsCommas(char * line){
     if (strstr(line, ",") != NULL) return 1;
     else return 0;
 }

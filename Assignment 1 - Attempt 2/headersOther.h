@@ -4,6 +4,6 @@
 #define HEADERSOTHER_H
 
 int isLogFile(char * fileName);
-int containsTwoCommas(char * line);
+int containsCommas(char * line);
 
 #endif

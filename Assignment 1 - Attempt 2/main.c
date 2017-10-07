@@ -84,7 +84,7 @@ int main( int argc, char *argv[] )  {
 					}
 
 					/* Check if each line contains at least two commas */
-					if (containsTwoCommas(tempLine) == 0){
+					if (containsCommas(tempLine) == 0){
 						fprintf(stderr, "1. Unexpected formatting encountered.\n");
 						exit(-1);
 					}
@@ -96,8 +96,10 @@ int main( int argc, char *argv[] )  {
 					}
 
 					/* Add parsed lines to inlist */
-					fputs(tempLine, stdout);
-						
+					fputs(tempLine, stdout);	
+					tempLineStruct = parseLine(tempLine);
+					
+					
 				}
 
 				/* Sort inlistHere */

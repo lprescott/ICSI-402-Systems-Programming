@@ -18,6 +18,7 @@ int main( int argc, char *argv[] )  {
 	char tempLine [128];
 	char directory [128];
 	struct stat buffer;
+	char c;
 
 	/* Declare resultlist */
 
@@ -42,15 +43,6 @@ int main( int argc, char *argv[] )  {
 		} 
 	}
 
-	/* Check permissions of directory */
-	stat(directory, &buffer);
-	mode_t bits = buffer.st_mode;
-	if((bits & S_IRUSR) == 0){
-    	//User doesn't have read 
-		fprintf(stderr, "Error reading directory.\n");
-		exit(-1);
-	}
-
 	/* Read through names of files in opened directory */
 	while((d=readdir(dp)) != NULL){
 		/* The file names are d->d_name */
@@ -59,11 +51,35 @@ int main( int argc, char *argv[] )  {
 			if((inputFile = fopen(d->d_name, "r")) != NULL){
 			
 			/* Declare inlist here */
+			loglist_t * inlist = NULL;
+  			inlist = malloc(sizeof(loglist_t));
+
+  			if(inlist == NULL){
+    			fprintf(stderr, "Unable to allocate memory for new node\n");
+    			exit(-1);
+ 			}
+
+			/* Check if file starts with # */
+
+			/*
+			fseek(inputFile, 0, SEEK_SET );
+			c = fgetc(inputFile);
+			if ('c' == '#'){
+				fprintf(stderr, "No # at start of log.");
+			}
+			rewind(inputFile);
+			*/
+
 
 			/* Read line by line */
 			while(fgets(tempLine, sizeof tempLine, inputFile)!= NULL){
 				/* tempLine contains the current line's text */
 				/* Add parsed lines to inlist */
+
+				/* Check for formatting of strings here */
+				//if (strstr(tempLine, "#") == NULL) {
+				fputs(tempLine, stdout);
+				//}
 					
 			}
 
@@ -82,10 +98,7 @@ int main( int argc, char *argv[] )  {
 				fprintf(stderr, "Error opening file.\n");
 			}
 
-			fclose(inputFile);
 		}
-
-	fclose(inputFile);
 	
 	/* Call printLines  */
 	//printLines(loglist_t * resultList){
@@ -97,5 +110,6 @@ int main( int argc, char *argv[] )  {
 		fprintf(stderr, "Error closing directory.\n");
 	}
 
+	fclose(inputFile);
 	return 1;
 }

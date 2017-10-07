@@ -18,7 +18,7 @@ int main( int argc, char *argv[] )  {
 	char tempLine [128];
 	char directory [128];
 	struct stat buffer;
-	char c;
+	char firstChar = '#';
 
 	/* Declare resultlist */
 
@@ -49,48 +49,41 @@ int main( int argc, char *argv[] )  {
 		if(strcmp(getExtension(d->d_name), ".log") == 0){
 			/* Open the file for reading */
 			if((inputFile = fopen(d->d_name, "r")) != NULL){
+
+				/*
+				if(fgets(tempLine, sizeof tempLine, inputFile)!= NULL){
+
+					printf("The first character is: %c \n", tempLine[0]);
+				}
+				*/
 			
-			/* Declare inlist here */
-			loglist_t * inlist = NULL;
-  			inlist = malloc(sizeof(loglist_t));
+				/* Declare inlist here */
+				loglist_t * inlist = NULL;
+				if((inlist = malloc(sizeof(loglist_t))) == NULL){
+					fprintf(stderr, "Unable to allocate memory for new node\n");
+					exit(-1);
+				}
 
-  			if(inlist == NULL){
-    			fprintf(stderr, "Unable to allocate memory for new node\n");
-    			exit(-1);
- 			}
+				/* Read line by line */
+				while(fgets(tempLine, sizeof tempLine, inputFile)!= NULL){
+					/* tempLine contains the current line's text */
+					/* Add parsed lines to inlist */
 
-			/* Check if file starts with # */
+					/* Check for formatting of strings here */
+					//if (strstr(tempLine, "#") == NULL) {
+					fputs(tempLine, stdout);
+					//}
+						
+				}
 
-			/*
-			fseek(inputFile, 0, SEEK_SET );
-			c = fgetc(inputFile);
-			if ('c' == '#'){
-				fprintf(stderr, "No # at start of log.");
-			}
-			rewind(inputFile);
-			*/
+				/* Sort inlistHere */
+				//sortList(inlist);
 
+				/* Call mergeLists */
+				//loglist* mergeLists(loglist* resultlist, loglist* inlist);
 
-			/* Read line by line */
-			while(fgets(tempLine, sizeof tempLine, inputFile)!= NULL){
-				/* tempLine contains the current line's text */
-				/* Add parsed lines to inlist */
-
-				/* Check for formatting of strings here */
-				//if (strstr(tempLine, "#") == NULL) {
-				fputs(tempLine, stdout);
-				//}
-					
-			}
-
-            /* Sort inlistHere */
-			//sortList(inlist);
-
-			/* Call mergeLists */
-			//loglist* mergeLists(loglist* resultlist, loglist* inlist);
-
-			/* Call deleteList on inlist */
-			//deleteList(loglist* inlist);
+				/* Call deleteList on inlist */
+				//deleteList(loglist* inlist);
 
 			}
 

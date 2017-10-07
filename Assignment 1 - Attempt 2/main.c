@@ -96,10 +96,15 @@ int main( int argc, char *argv[] )  {
 					}
 
 					/* Add parsed lines to inlist */
-					fputs(tempLine, stdout);	
+					//fputs(tempLine, stdout);	
 					tempLineStruct = parseLine(tempLine);
 					
-					
+					fputs(tempLineStruct->level, stdout);
+					puts("\n");
+					fputs(tempLineStruct->timestamp, stdout);
+					puts("\n");
+					fputs(tempLineStruct->message, stdout);
+					puts("\n");
 				}
 
 				/* Sort inlistHere */

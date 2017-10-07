@@ -1,3 +1,7 @@
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+
 #include "structs.h"
 #include "headersOne.h"
 
@@ -12,7 +16,24 @@
 	and print to stderr if not.
 */
 logline_t * parseLine(char line []){
-	
+	char str[128];
+	strcpy(str, line);
+
+	char * levelP = strtok(str, ",");
+	char * timestampP = strtok(NULL, ",");
+	char * messageP = strtok(NULL, ",");
+
+	logline_t * parsed = NULL;
+	if((parsed = malloc(sizeof(logline_t))) == NULL){
+		fprintf(stderr, "Unable to allocate memory for new parsed structure.\n");
+		exit(-1);
+	}
+
+	strcpy(parsed->level , levelP);
+	strcpy(parsed->timestamp , timestampP);
+	strcpy(parsed->message , messageP);
+
+	return parsed;
 }
 
 /*

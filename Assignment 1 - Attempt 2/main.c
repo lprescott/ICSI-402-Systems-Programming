@@ -1,5 +1,14 @@
 #include <stdio.h>
 
+#include "structs.h"
+#include "headersOne.h"
+#include "headersTwo.h"
+#include "headersOther.h"
+
+#include "functionsOne.c"
+#include "functionsTwo.c"
+#include "functionsOther.c"
+
 int main( int argc, char *argv[] )  {
 
 	if( argc == 2 ) {
@@ -11,4 +20,6 @@ int main( int argc, char *argv[] )  {
 	else {
 		printf("One argument expected.\n");
 	}
+
+	return 1;
 }

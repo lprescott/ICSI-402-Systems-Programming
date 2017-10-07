@@ -12,4 +12,9 @@ typedef struct loglist {
 	struct loglist *next;
 } loglist_t;
 
+/*
+	Because of the typedefs, refer to these structure types as (for example) struct loglist or just loglist_t.
+	I.E. struct loglist == loglist_t 
+*/
+
 #endif

@@ -114,8 +114,12 @@ int main( int argc, char *argv[] )  {
 					add(inlist, tempLineStruct);
 =======
 					/* Add to inlist here. */
+<<<<<<< HEAD
 					add(inlist, * tempLineStruct);
 >>>>>>> 778a62812e164976181b07d0658ad468036a2e71
+=======
+					add(&inlist, *tempLineStruct);
+>>>>>>> f1bdcd3f9a64d51c0b4043ca102f14773b217b0c
 				}
 
 				/* Sort inlistHere */

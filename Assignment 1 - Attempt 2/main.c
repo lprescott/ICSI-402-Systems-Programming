@@ -105,8 +105,8 @@ int main( int argc, char *argv[] )  {
 					tempLineStruct->message
 					*/
 
-					/* Insert to inlist here. */
-					add(inlist, tempLineStruct);
+					/* Add to inlist here. */
+					add(inlist, * tempLineStruct);
 				}
 
 				/* Sort inlistHere */

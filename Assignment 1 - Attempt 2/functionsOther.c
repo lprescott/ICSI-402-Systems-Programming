@@ -32,7 +32,7 @@ void add(loglist_t * head, logline_t line){
     }
 
     if(newLine == NULL){
-         fprintf(stderr, "Unable to allocate memory for new line\n");
+        fprintf(stderr, "Unable to allocate memory for new line\n");
         exit(-1);
     }
 
@@ -41,24 +41,20 @@ void add(loglist_t * head, logline_t line){
     strcpy(newLine->message , line.message);
 
     newNode->line = * newLine;
-    newNode->next = NULL;
-
-    //check for first insertion
-    if(head->next == NULL){
-        head->next = newNode;
-        printf("added at beginning\n");
+    newNode->next = NULL;  
+    
+    if(head == NULL){
+        head = newNode;
+        return;
+    }
+  
+    while(head->next != NULL){
+        head = head -> next;
     }
 
-    else
-    {
-        //else loop through the list and find the last
-        //node, insert next to it
-        loglist_t * current = head;
-        while (current->next != NULL) {
-        current = current->next;
-        }
-        current->next = newNode;
-        printf("added later\n");
-    }
-
+    head->next->line.level = newLine->level;
+    head->next->timestamp
+    head->next->message
+    
+    return;
 } /*End insert */

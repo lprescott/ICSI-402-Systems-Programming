@@ -3,8 +3,19 @@
 #include "structs.h"
 #include "headersOther.h"
 
-char * getExtension(char * fileName){
+int isLogFile(char * fileName){
     char * dot;
     dot = strchr(fileName, '.');
-    return dot;
+    if(strcmp(dot, ".log") == 0){
+        return 1;
+    }
+
+    else{
+        return 0;
+    }
+}
+
+int containsCommas(char * line){
+    if (strstr(line, ",") != NULL) return 1;
+    else return 0;
 }

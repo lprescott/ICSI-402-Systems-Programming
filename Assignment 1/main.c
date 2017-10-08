@@ -9,10 +9,6 @@
 #include "headersTwo.h"
 #include "headersOther.h"
 
-/*
-	https://stackoverflow.com/questions/10162152/how-to-work-with-string-fields-in-a-c-struct
-*/
-
 int main( int argc, char *argv[] )  {
 
 	/* Local variables */
@@ -23,8 +19,6 @@ int main( int argc, char *argv[] )  {
 	char directory [128];
 	struct stat buffer;
 	char firstChar = '#';
-
-	/* Declare resultlist */
 
 	/* Determine directory */
 	if( argc == 2 ) {
@@ -50,91 +44,88 @@ int main( int argc, char *argv[] )  {
 	/* Read through names of files in opened directory */
 	while((d=readdir(dp)) != NULL){
 		/* The file names are d->d_name */
-		//if((isLogFile(d->d_name)) == 1){
-		//	fputs(d->d_name, stdout);
+		
+		/* Print for piece of mind */
+		printf("File name: %s\n", d->d_name);	
 
-			if(inputFile != NULL){
-				fclose(inputFile);
+		/* Open the file for reading */
+		if((inputFile = fopen(d->d_name, "r")) != NULL){
+
+			/* Check if file begins with # */
+
+			/* Declare inlist here */
+			loglist_t * inlist = NULL;
+			if((inlist = malloc(sizeof(loglist_t))) == NULL){
+				fprintf(stderr, "Unable to allocate memory for new node\n");
+				exit(-1);
 			}
-			/* Open the file for reading */
-			if((inputFile = fopen(d->d_name, "r")) != NULL){
 
-				/* Check if file begins with # */
-				/*
-				if(fgets(tempLine, sizeof tempLine, inputFile)!= NULL){
+			logline_t * tempLineStruct = NULL;
+			if((tempLineStruct = malloc(sizeof(logline_t))) == NULL){
+				fprintf(stderr, "Unable to allocate memory for new temp line structure.\n");
+				exit(-1);
+			}
 
-					printf("The first character is: %c \n", tempLine[0]);
+			/* Read line by line */
+			while(fgets(tempLine, sizeof tempLine, inputFile)!= NULL){
+				/* tempLine contains the current line's text */
+				if (strstr(tempLine, "#")){
+					continue;
 				}
+
+				/* Check if each line contains commas */
+				if (containsCommas(tempLine) == 0){
+					fprintf(stderr, "1. Unexpected formatting encountered.\n");
+					exit(-1);
+				}
+
+				/* Check if Log entry doesn't look" like <level>,<timestamp>,<message>. */
+				if ((strstr(tempLine, ",") == NULL) || (strstr(tempLine, "-") == NULL) || (strstr(tempLine, ":") == NULL)) {
+					fprintf(stderr, "2. Unexpected formatting encountered.\n");
+					exit(-1);
+				}
+
+				/* Add parsed lines to inlist */
+				tempLineStruct = parseLine(tempLine);
+				
+				/* Print for piece of mind */
+				fputs(tempLine, stdout);	
+				
+				
+				/*
+				tempLineStruct->level
+				tempLineStruct->timestamp
+				tempLineStruct->message
 				*/
 
-				/* Declare inlist here */
-				loglist_t * inlist = NULL;
-				if((inlist = malloc(sizeof(loglist_t))) == NULL){
-					fprintf(stderr, "Unable to allocate memory for new node\n");
-					exit(-1);
-				}
+				/* Add to inlist here. */
+				//add(inlist, * tempLineStruct);
 
-				logline_t * tempLineStruct = NULL;
-				if((tempLineStruct = malloc(sizeof(logline_t))) == NULL){
-					fprintf(stderr, "Unable to allocate memory for new temp line structure.\n");
-					exit(-1);
-				}
 
-				/* Read line by line */
-				while(fgets(tempLine, sizeof tempLine, inputFile)!= NULL){
-					/* tempLine contains the current line's text */
-					if (strstr(tempLine, "#")){
-						continue;
-					}
+			}
 
-					/* Check if each line contains at least two commas */
-					if (containsCommas(tempLine) == 0){
-						fprintf(stderr, "1. Unexpected formatting encountered.\n");
-						exit(-1);
-					}
+			/* Free tempLineStruct */
+			free(tempLineStruct);
 
-					/* Check if Log entry doesn't look" like <level>,<timestamp>,<message>. */
-					if ((strstr(tempLine, ",") == NULL) || (strstr(tempLine, "-") == NULL) || (strstr(tempLine, ":") == NULL)) {
-						fprintf(stderr, "2. Unexpected formatting encountered.\n");
-						exit(-1);
-					}
+			/* Temporary print inlist here */
+			//printLines(inlist);
 
-					/* Add parsed lines to inlist */
-					//fputs(tempLine, stdout);	
-					tempLineStruct = parseLine(tempLine);
-					
-					/*
-					tempLineStruct->level
-					tempLineStruct->timestamp
-					tempLineStruct->message
-					*/
+			/* Sort inlistHere */
+			//sortList(inlist);
 
-					/* Add to inlist here. */
-					add(inlist, * tempLineStruct);
-				}
+			/* Call mergeLists */
+			//loglist* mergeLists(loglist* resultlist, loglist* inlist);
 
-				/* Sort inlistHere */
-				//sortList(inlist);
+			/* Call deleteList on inlist */
+			//deleteList(loglist* inlist);
 
-				/* Call mergeLists */
-				//loglist* mergeLists(loglist* resultlist, loglist* inlist);
-
-				/* Call deleteList on inlist */
-				//deleteList(loglist* inlist);
-
-				free(tempLineStruct);
-				
-
-			//
-
-			//else{
-			//	fprintf(stderr, "Error opening file.\n");
-			//}
-
+			/* Free inlist */
+			free(inlist);
+			
 		}
 	
-	/* Call printLines  */
-	//printLines(loglist_t * resultList){
+		/* Call printLines  */
+		//printLines(loglist_t * resultList){
 
 	}
 

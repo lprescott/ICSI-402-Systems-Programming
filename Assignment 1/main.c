@@ -9,131 +9,137 @@
 #include "headersTwo.h"
 #include "headersOther.h"
 
-int main( int argc, char *argv[] )  {
+/*
+To do:
+The out of the program should be combinedlogs.log
+
+
+*/
+int main( int argc, char *argv[] ) {
 
 	/* Local variables */
 	DIR * dp;
 	struct dirent * d;
-	FILE * inputFile = NULL;
+	FILE * inputFile;
 	char tempLine [128];
-	char directory [128];
 	struct stat buffer;
-	char firstChar = '#';
+
+	/* Declare inlist head here */
+	loglist_t * inlist = malloc(sizeof(loglist_t));
+	if (inlist == NULL){
+		fprintf(stderr, "Failed to allocated memory for head of inlist.\n");
+		exit(-1);
+	}
+
+	/* Declare resultlist head here */
+	loglist_t * resultlist = malloc(sizeof(loglist_t));
+	if (resultlist == NULL){
+		fprintf(stderr, "Failed to allocated memory for head of resultlist.\n");
+		exit(-1);
+	}
 
 	/* Determine directory */
-	if( argc == 2 ) {
-		char * directory = argv[1];
-		if((dp = opendir(directory)) == NULL){
-			fprintf(stderr, "Error opening directory.\n");
+  if( argc == 2 ) {
+    if((dp = opendir(argv[1])) == NULL){
+      perror("Error");
+      exit(-1);
+    }
+		printf("The directory opened is: \"%s\"\n", argv[1]);
+  }
+  else if( argc > 2 ) {
+    perror("Error");
+  }
+  else {
+		if((dp = opendir(".")) == NULL){
+			perror("Error");
 			exit(-1);
 		}
-	}
-
-	else if( argc > 2 ) {
-		fprintf(stderr, "Too many arguments supplied.\n");
-	}
-
-	else {
-		char * directory = ".";
-		if((dp = opendir(directory)) == NULL){
-			fprintf(stderr, "Error opening directory.\n");
-			exit(-1);
-		} 
-	}
+		printf("\nThe directory to open is: \".\"\n\n");
+  }
 
 	/* Read through names of files in opened directory */
 	while((d=readdir(dp)) != NULL){
 		/* The file names are d->d_name */
-		
-		/* Print for piece of mind */
-		printf("File name: %s\n", d->d_name);	
-
-		/* Open the file for reading */
-		if((inputFile = fopen(d->d_name, "r")) != NULL){
-
-			/* Check if file begins with # */
-
-			/* Declare inlist here */
-			loglist_t * inlist = NULL;
-			if((inlist = malloc(sizeof(loglist_t))) == NULL){
-				fprintf(stderr, "Unable to allocate memory for new node\n");
-				exit(-1);
-			}
-
-			logline_t * tempLineStruct = NULL;
-			if((tempLineStruct = malloc(sizeof(logline_t))) == NULL){
-				fprintf(stderr, "Unable to allocate memory for new temp line structure.\n");
-				exit(-1);
-			}
-
-			/* Read line by line */
-			while(fgets(tempLine, sizeof tempLine, inputFile)!= NULL){
-				/* tempLine contains the current line's text */
-				if (strstr(tempLine, "#")){
+		if(strstr(d->d_name, ".log")){
+			printf("File to be read: \"%s\"\n", d->d_name);
+			puts("Lines to be parsed:");
+			/* Open the file for reading */
+			if((inputFile = fopen(d->d_name, "r")) != NULL){
+				/* Check if file starts with # */
+				char buf[4];
+				fseek(inputFile, 0, SEEK_SET);
+				fread(buf, sizeof(buf), 1, inputFile);
+				printf("\tThe first char of the file: %c\n", buf[0]);
+				rewind(inputFile);
+				/* Check if file begins with hashtag */
+				if(buf[0] != '#'){
+					fprintf(stderr, "File does not begin with a hashtag.\n");
 					continue;
 				}
+				/* Read line by line */
+				while(fgets(tempLine, sizeof tempLine, inputFile)!= NULL){
+					/* Look at lines only without hashtags */
+					if (strstr(tempLine, "#") != NULL){
+						continue;
+					}
+					// Check if tempLine contains at least two commas
+					else if ((containsTwoPlusCommas(tempLine)) == 0){
+						fprintf(stderr, "Log entry does not contains at least two commas.\n");
+						exit(-1);
+					}
+					/*
+					// Check if tempLine looks like <level>,<timestamp,<message>
+					else if ((looksCorrect(tempLine)) == 0){
+						fprintf(stderr, "Log entry does not looks like <level>,<timestamp,<message>.\n");
+						exit(-1);
+					}
+					*/
+					else{
+						/* Print for piece of mind */
+						fputs(tempLine, stdout);
 
-				/* Check if each line contains commas */
-				if (containsCommas(tempLine) == 0){
-					fprintf(stderr, "1. Unexpected formatting encountered.\n");
-					exit(-1);
+						/* Declare templogline struct here */
+						logline_t * templogline = malloc(sizeof(logline_t));
+						if (templogline == NULL){
+							fprintf(stderr, "Failed to allocated memory for head of templogline.\n");
+							exit(-1);
+						}
+
+						/* Parse tempLine into templogline struct here */
+						templogline = parseLine(tempLine);
+
+						/* Add templogline to inlist*/
+						inlist = addFirst(inlist, * templogline);
+
+						/* Free templogline memory */
+						free(templogline);
+					}
 				}
+				/* Print for peace of mind */
+				fprintf(stdout, "\n\nThe third to last line message in inlist: %s", inlist->next->next->line.message);
 
-				/* Check if Log entry doesn't look" like <level>,<timestamp>,<message>. */
-				if ((strstr(tempLine, ",") == NULL) || (strstr(tempLine, "-") == NULL) || (strstr(tempLine, ":") == NULL)) {
-					fprintf(stderr, "2. Unexpected formatting encountered.\n");
-					exit(-1);
-				}
+				/*Close input file. */
+				fclose(inputFile);
 
-				/* Add parsed lines to inlist */
-				tempLineStruct = parseLine(tempLine);
-				
-				/* Print for piece of mind */
-				fputs(tempLine, stdout);	
-				
-				
-				/*
-				tempLineStruct->level
-				tempLineStruct->timestamp
-				tempLineStruct->message
-				*/
+				/* Sort inlist here. */
 
-				/* Add to inlist here. */
-				//add(inlist, * tempLineStruct);
+				/* Merge inlist and resultlist. */
 
+				/* Delete inlist */
 
 			}
+			else{
+				perror("Error");
+				exit(-1);
+			}
 
-			/* Free tempLineStruct */
-			free(tempLineStruct);
-
-			/* Temporary print inlist here */
-			//printLines(inlist);
-
-			/* Sort inlistHere */
-			//sortList(inlist);
-
-			/* Call mergeLists */
-			//loglist* mergeLists(loglist* resultlist, loglist* inlist);
-
-			/* Call deleteList on inlist */
-			//deleteList(loglist* inlist);
-
-			/* Free inlist */
-			free(inlist);
-			
+			puts("\n");
 		}
-	
-		/* Call printLines  */
-		//printLines(loglist_t * resultList){
-
 	}
+	/* Print resultlist to stdout and file <combinedlogs.log> */
 
-	/* Close directory */
-	if(closedir(dp) != 0){
-		fprintf(stderr, "Error closing directory.\n");
-	}
+	/* Delete resultlist */
 
-	fclose(inputFile);
-	return 1;
+	/* Print for piece of mind */
+	fputs("Done.", stdout);
 }

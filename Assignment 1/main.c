@@ -12,8 +12,6 @@
 /*
 To do:
 The out of the program should be combinedlogs.log
-
-
 */
 int main( int argc, char *argv[] ) {
 
@@ -61,8 +59,10 @@ int main( int argc, char *argv[] ) {
 	while((d=readdir(dp)) != NULL){
 		/* The file names are d->d_name */
 		if(strstr(d->d_name, ".log")){
+			puts("I got here.");
 			printf("File to be read: \"%s\"\n", d->d_name);
 			puts("Lines to be parsed:");
+			errno =  0;
 			/* Open the file for reading */
 			if((inputFile = fopen(d->d_name, "r")) != NULL){
 				/* Check if file starts with # */
@@ -128,7 +128,7 @@ int main( int argc, char *argv[] ) {
 				/* Delete inlist */
 
 			}
-			else{
+			else if (inputFile == NULL){
 				perror("Error");
 				exit(-1);
 			}
@@ -141,5 +141,6 @@ int main( int argc, char *argv[] ) {
 	/* Delete resultlist */
 
 	/* Print for piece of mind */
+	perror("Error");
 	fputs("Done.", stdout);
 }

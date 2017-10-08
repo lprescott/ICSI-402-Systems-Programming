@@ -1,5 +1,7 @@
+#include <stdio.h>
 #include "structs.h"
 #include "headersTwo.h"
+#include "headersOther.h"
 
 /*
 	Function loglist* mergeLists(loglist* resultlist, loglist* inlist) to merge
@@ -7,17 +9,18 @@
 	combined list.
 */
 loglist_t * mergeLists(loglist_t * resultlist, loglist_t * inlist){
-	
+
 }
 
 /*
 	Function loglist* sortList(loglist* inlist) to sort the provided linked list inlist
 	and return a pointer to the head of the sorted list.
 */
+
 void sortedInsert(loglist_t ** inlist, loglist_t * newnode) {
   loglist_t * current;
 
-  if (*inlist == NULL || (strcmp (*inlist->line.timestamp , newnode->line.timestamp) >= 0)) {
+  if ((*inlist == NULL) || (strcmp (*inlist->line.timestamp , newnode->line.timestamp) >= 0)) {
     newnode->next == inlist;
     *inlist = newnode;
   } else {

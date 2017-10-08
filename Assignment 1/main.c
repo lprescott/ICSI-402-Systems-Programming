@@ -12,6 +12,12 @@
 /*
 To do:
 The out of the program should be combinedlogs.log
+addFirst must re redone to add on the end of the list
+garbage values are being printed in printLines
+merge will have to be implemented 
+sort will have to be tested
+Comments must be completed
+Testing with other files no supplied
 */
 int main( int argc, char *argv[] ) {
 
@@ -22,7 +28,7 @@ int main( int argc, char *argv[] ) {
 	char tempLine [128];
 	struct stat buffer;
 
-	/* Declare inlist head here */
+	/* Declare inlist head here TEMPORARY */
 	loglist_t * inlist = malloc(sizeof(loglist_t));
 	if (inlist == NULL){
 		fprintf(stderr, "Failed to allocated memory for head of inlist.\n");
@@ -59,17 +65,25 @@ int main( int argc, char *argv[] ) {
 	while((d=readdir(dp)) != NULL){
 		/* The file names are d->d_name */
 		if(strstr(d->d_name, ".log")){
-			puts("I got here.");
-			printf("File to be read: \"%s\"\n", d->d_name);
-			puts("Lines to be parsed:");
+			//printf("File to be read: \"%s\"\n", d->d_name);
+			//puts("Lines to be parsed:");
 			errno =  0;
 			/* Open the file for reading */
 			if((inputFile = fopen(d->d_name, "r")) != NULL){
+
+				// Final location of declaring inlist
+				/*
+				loglist_t * inlist = malloc(sizeof(loglist_t));
+				if (inlist == NULL){
+					fprintf(stderr, "Failed to allocated memory for head of inlist.\n");
+					exit(-1);
+				}
+				*/
 				/* Check if file starts with # */
 				char buf[4];
 				fseek(inputFile, 0, SEEK_SET);
 				fread(buf, sizeof(buf), 1, inputFile);
-				printf("\tThe first char of the file: %c\n", buf[0]);
+				//printf("\tThe first char of the file: %c\n", buf[0]);
 				rewind(inputFile);
 				/* Check if file begins with hashtag */
 				if(buf[0] != '#'){
@@ -81,7 +95,7 @@ int main( int argc, char *argv[] ) {
 					/* Look at lines only without hashtags */
 					if (strstr(tempLine, "#") != NULL){
 						continue;
-					}
+                    }
 					// Check if tempLine contains at least two commas
 					else if ((containsTwoPlusCommas(tempLine)) == 0){
 						fprintf(stderr, "Log entry does not contains at least two commas.\n");
@@ -96,7 +110,7 @@ int main( int argc, char *argv[] ) {
 					*/
 					else{
 						/* Print for piece of mind */
-						fputs(tempLine, stdout);
+						//fputs(tempLine, stdout);
 
 						/* Declare templogline struct here */
 						logline_t * templogline = malloc(sizeof(logline_t));
@@ -116,24 +130,27 @@ int main( int argc, char *argv[] ) {
 					}
 				}
 				/* Print for peace of mind */
-				fprintf(stdout, "\n\nThe third to last line message in inlist: %s", inlist->next->next->line.message);
+				//fprintf(stdout, "\n\nThe third to last line message in inlist: %s", inlist->next->next->line.message);
 
 				/*Close input file. */
 				fclose(inputFile);
 
-				/* Sort inlist here. */
-
 				/* Merge inlist and resultlist. */
 
+				/* Print for peace of mind */
+				printLines(inlist);
+
 				/* Delete inlist */
+				deleteList(inlist);
+				
+				/* Set head of inlist to null */
+				inlist = NULL;
 
 			}
 			else if (inputFile == NULL){
 				perror("Error");
 				exit(-1);
 			}
-
-			puts("\n");
 		}
 	}
 	/* Print resultlist to stdout and file <combinedlogs.log> */
@@ -141,6 +158,6 @@ int main( int argc, char *argv[] ) {
 	/* Delete resultlist */
 
 	/* Print for piece of mind */
-	perror("Error");
 	fputs("Done.", stdout);
+	//perror("ERROR");
 }

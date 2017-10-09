@@ -11,7 +11,29 @@
 	combined list.
 */
 loglist_t * mergeLists(loglist_t * resultlist, loglist_t * inlist){
-	
+
+	loglist_t dummy;
+
+	loglist_t * tail = &dummy;
+
+	dummy.next = NULL;
+
+	while (1) {
+		if (resultlist == NULL) {
+			tail->next = inlist;
+			break;
+		} else if (inlist == NULL) {
+			tail->next = resultlist;
+			break;
+		}
+		if (strcmp(resultlist->line.timestamp, inlist->line.timestamp) <= 0)
+			moveNode(&(tail->next), &resultlist);
+		else
+			moveNode(&(tail->next), &inlist);
+
+		tail = tail->next;
+	}
+	return (dummy.next);
 }
 
 /*

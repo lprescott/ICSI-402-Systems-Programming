@@ -3,6 +3,7 @@
 #include <dirent.h>
 #include <stdlib.h>
 #include <sys/stat.h>
+#include <errno.h>
 
 #include "structs.h"
 #include "headersOne.h"
@@ -126,8 +127,8 @@ int main( int argc, char *argv[] ) {
 				//fprintf(stdout, "\n\nThe third line message in inlist: %s", inlist->next->next->line.message);
 
 				// merge here
-				//puts("Merge attempted.");
-
+				puts("Merge attempted.");
+				resultlist = mergeLists(resultlist, inlist);
 
 				/* inlist is deleted */
 				deleteList(inlist);
@@ -139,6 +140,7 @@ int main( int argc, char *argv[] ) {
 		}
 	}
 
+	printLines(resultlist);
 
 	/* Close directory */
 	if(closedir(dp) != 0){

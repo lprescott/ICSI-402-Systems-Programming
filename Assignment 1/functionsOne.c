@@ -73,4 +73,5 @@ void printLines( loglist_t * head){
     	printf("%s,%s,%s", temp->line.level, temp->line.timestamp, temp->line.message);
     	temp=temp->next;
     }
+		puts("\n");
 }

@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 #include "structs.h"
 #include "headersTwo.h"
@@ -11,7 +12,30 @@
 	combined list.
 */
 loglist_t * mergeLists(loglist_t * resultlist, loglist_t * inlist){
-	
+
+	loglist_t * temp;
+	temp = inlist->next;
+
+	/* Find the end of resultList */
+	if (temp == NULL){
+		return resultlist;
+	}
+	else{
+		while(temp != NULL){
+			logline_t * templine = malloc(sizeof(logline_t));
+			if (templine == NULL){
+				fprintf(stderr, "Unable to allocate memory for new temp line structure.\n");
+				exit(-1);
+			}
+			* templine = temp->line;
+			addLast(resultlist, * templine);
+			temp = temp->next;
+		}
+	}
+
+	/* Loop through inlist item by item, adding lines to resultList */
+
+	return resultlist;
 }
 
 /*

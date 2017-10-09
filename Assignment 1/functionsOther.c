@@ -69,3 +69,15 @@ void addLast(loglist_t * list, logline_t templogline){
         };
     }
 }
+
+void moveNode(loglist_t ** dest, loglist_t ** source) {
+
+	loglist_t *newnode = *source;
+
+	*source = newnode->next;
+
+	newnode->next = *dest;
+
+	*dest = newnode;
+
+}

@@ -62,3 +62,22 @@ loglist_t * addLast(loglist_t * list, logline_t templogline){
       return list;
     }
 }
+
+void swap(loglist_t * first, loglist_t * second){
+  logline_t * temp = malloc(sizeof(logline_t));
+  if (temp == NULL){
+    fprintf(stderr, "Unable to allocate memory for new temp line.\n");
+    exit(-1);
+  }
+
+  * temp = first->line;
+
+  strcpy(first->line.level , second->line.level);
+  strcpy(first->line.timestamp , second->line.timestamp);
+  strcpy(first->line.message , second->line.message);
+
+  strcpy(second->line.level , temp->level);
+  strcpy(second->line.timestamp , temp->timestamp);
+  strcpy(second->line.message , temp->message);
+
+}

@@ -142,6 +142,12 @@ int main( int argc, char *argv[] ) {
 
 	printLines(resultlist);
 
+	puts("\nSort attempted.\n");
+	sortList(resultlist);
+
+	puts("\n");
+	printLines(resultlist);
+
 	/* Close directory */
 	if(closedir(dp) != 0){
 		fprintf(stderr, "Error closing directory.\n");

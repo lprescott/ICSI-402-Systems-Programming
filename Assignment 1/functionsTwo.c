@@ -43,14 +43,28 @@ loglist_t * mergeLists(loglist_t * resultlist, loglist_t * inlist){
 	and return a pointer to the head of the sorted list.
 */
 loglist_t * sortList(loglist_t * inlist) {
-	loglist_t * current = inlist, * current2 = inlist->next, * temp;
-	while(current->next->next != NULL){
-			if((strcmp(current->line.timestamp, current2->line.timestamp)) < 0){
-					temp = current;
-					current = current2;
-					current2 = temp;
-			}
-			current = current->next;
+	if (inlist == NULL){
+		printf("Empty List\n");
+		return NULL;
 	}
-	current->next = NULL;
+
+	//initalizes all the temp variables
+	loglist_t * temp = malloc(sizeof(loglist_t));
+	if (temp == NULL){
+		fprintf(stderr, "Unable to allocate memory for new temp structure.\n");
+		exit(-1);
+	}
+	temp = inlist -> next;
+
+	do{
+		int boolean = 0;
+		while(temp!=NULL)
+		{
+			if(strcmp(temp->line.timestamp, temp->next->line.timestamp) > 0){
+				swap(temp, temp->next);
+			}
+			temp = temp->next;
+		}
+	}
+
 }

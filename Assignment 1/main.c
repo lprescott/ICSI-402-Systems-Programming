@@ -124,7 +124,9 @@ int main( int argc, char *argv[] ) {
 					}
 				}
 
+				inlist = inlist->next;
 				/* inlist is ready */
+
 
 				/* Print lines of inlist again for peace of mind */
 				puts("\n");

@@ -63,6 +63,12 @@ int main( int argc, char *argv[] ) {
 			exit(-1);
 		}
 
+		loglist_t * mergeList = malloc(sizeof(loglist_t));
+		if (mergeList == NULL){
+			fprintf(stderr, "Failed to allocated memory for head of inlist.\n");
+			exit(-1);
+		}
+
 		/* The file names are d->d_name */
 		if(strstr(d->d_name, ".log")){
 			printf("\nFile to be read: \"%s\"\n", d->d_name);
@@ -123,19 +129,19 @@ int main( int argc, char *argv[] ) {
 
 					}
 				}
-
-				inlist = inlist->next;
 				/* inlist is ready */
-
+				//sort
+				inlist = sortList(inlist);
 
 				/* Print lines of inlist again for peace of mind */
 				puts("\n");
 				printLines(inlist);
 
 				/* Print for peace of mind */
-				//fprintf(stdout, "\n\nThe third to last line message in inlist: %s", inlist->next->next->line.message);
+				fprintf(stdout, "\n\nThe third line message in inlist: %s", inlist->next->next->line.message);
 
 				// merge here
+
 
 				/* inlist is deleted */
 				deleteList(inlist);

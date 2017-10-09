@@ -10,7 +10,6 @@ int looksCorrect(char * line){
     if(){
         return 1;
     }
-
     else{
       else return 0;
     }
@@ -48,10 +47,6 @@ void addLast(loglist_t * list, logline_t templogline){
 
     //initalizes all the temp variables
   	loglist_t * temp;
-    if ((temp = malloc(sizeof(loglist_t))) == NULL){
-      fprintf(stderr, "Unable to allocate memory for new temp structure.\n");
-      exit(-1);
-    }
   	temp = list;
 
     //check for first insertion

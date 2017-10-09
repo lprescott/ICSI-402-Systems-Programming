@@ -8,7 +8,6 @@
 /*
 	Function logline* parseLine(string line) to construct a logline with 3 elds
 	based on the input string. Note that this function allocates memory.
-
 */
 logline_t * parseLine(char line []){
 	char str[128];
@@ -59,13 +58,9 @@ void printLines( loglist_t * head){
 		printf("Empty List\n");
 		return;
 	}
-	loglist_t * temp = NULL;
 	//initalizes all the temp variables
-	if ((temp = malloc(sizeof(loglist_t))) == NULL){
-		fprintf(stderr, "Unable to allocate memory for new temp structure.\n");
-		exit(-1);
-	}
-	temp = head -> next;
+	loglist_t * temp;
+	temp = head;
 	//prints the data elements of the head, which include the level, message, and the timestamp
 	printf("%s,%s,%s", temp->line.level, temp->line.timestamp, temp->line.message);
 	// repeats the same process, but for the rest of the linked list.

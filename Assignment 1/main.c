@@ -14,7 +14,7 @@ To do:
 The out of the program should be combinedlogs.log
 addFirst must re redone to add on the end of the list
 garbage values are being printed in printLines
-merge will have to be implemented 
+merge will have to be implemented
 sort will have to be tested
 Comments must be completed
 Testing with other files no supplied
@@ -58,15 +58,15 @@ int main( int argc, char *argv[] ) {
 			perror("Error");
 			exit(-1);
 		}
-		printf("\nThe directory to open is: \".\"\n\n");
+		printf("\nThe directory to open is: \".\"\n");
   }
 
 	/* Read through names of files in opened directory */
 	while((d=readdir(dp)) != NULL){
 		/* The file names are d->d_name */
 		if(strstr(d->d_name, ".log")){
-			//printf("File to be read: \"%s\"\n", d->d_name);
-			//puts("Lines to be parsed:");
+			printf("\nFile to be read: \"%s\"\n", d->d_name);
+			puts("Lines to be parsed:");
 			errno =  0;
 			/* Open the file for reading */
 			if((inputFile = fopen(d->d_name, "r")) != NULL){
@@ -79,17 +79,19 @@ int main( int argc, char *argv[] ) {
 					exit(-1);
 				}
 				*/
-				/* Check if file starts with # */
+				/* Check if file starts with #
 				char buf[4];
 				fseek(inputFile, 0, SEEK_SET);
 				fread(buf, sizeof(buf), 1, inputFile);
-				//printf("\tThe first char of the file: %c\n", buf[0]);
+				printf("\tThe first char of the file: %c\n", buf[0]);
 				rewind(inputFile);
-				/* Check if file begins with hashtag */
+				*/
+				/* Check if file begins with hashtag
 				if(buf[0] != '#'){
 					fprintf(stderr, "File does not begin with a hashtag.\n");
 					continue;
 				}
+				*/
 				/* Read line by line */
 				while(fgets(tempLine, sizeof tempLine, inputFile)!= NULL){
 					/* Look at lines only without hashtags */
@@ -110,7 +112,7 @@ int main( int argc, char *argv[] ) {
 					*/
 					else{
 						/* Print for piece of mind */
-						//fputs(tempLine, stdout);
+						fputs(tempLine, stdout);
 
 						/* Declare templogline struct here */
 						logline_t * templogline = malloc(sizeof(logline_t));
@@ -122,13 +124,15 @@ int main( int argc, char *argv[] ) {
 						/* Parse tempLine into templogline struct here */
 						templogline = parseLine(tempLine);
 
-						/* Add templogline to inlist*/
-						inlist = addFirst(inlist, * templogline);
+						/* Add templogline to on end of inlist*/
+						addLast(inlist, * templogline);
 
 						/* Free templogline memory */
 						free(templogline);
 					}
 				}
+
+				puts("\n");
 				/* Print for peace of mind */
 				//fprintf(stdout, "\n\nThe third to last line message in inlist: %s", inlist->next->next->line.message);
 
@@ -138,13 +142,13 @@ int main( int argc, char *argv[] ) {
 				/* Merge inlist and resultlist. */
 
 				/* Print for peace of mind */
-				printLines(inlist);
+				//printLines(inlist);
 
 				/* Delete inlist */
 				deleteList(inlist);
-				
+
 				/* Set head of inlist to null */
-				inlist = NULL;
+				//inlist = NULL;
 
 			}
 			else if (inputFile == NULL){
@@ -156,6 +160,7 @@ int main( int argc, char *argv[] ) {
 	/* Print resultlist to stdout and file <combinedlogs.log> */
 
 	/* Delete resultlist */
+	//deleteList(resultlist);
 
 	/* Print for piece of mind */
 	fputs("Done.", stdout);

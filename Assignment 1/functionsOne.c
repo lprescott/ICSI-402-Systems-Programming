@@ -35,6 +35,10 @@ logline_t * parseLine(char line []){
 	Function void deleteList(loglist* l) to free all memory allocated for the list.
 */
 void deleteList(loglist_t * head){
+	if (head == NULL){
+		return;
+	}
+
 	loglist_t * current = head;
 	loglist_t * next;
 
@@ -43,14 +47,14 @@ void deleteList(loglist_t * head){
 		free(current);
 		current = next;
 	}
-	head = NULL;
+	free(head);
 }
 
 /*
 	Function void printLines(LineList* l) to print all the lines contained in the list.
 */
 void printLines( loglist_t * head){
-	
+
 	if (head == NULL){
 		printf("Empty List\n");
 		return;
@@ -82,6 +86,6 @@ void printLines( loglist_t * head){
 		printf("%s,%s,%s", levelTemp, timestampTemp, messageTemp);
 
 		head->next = head->next->next;// traversing the linked list.
-	
+
 	}
 }

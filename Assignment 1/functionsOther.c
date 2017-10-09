@@ -34,14 +34,22 @@ int containsTwoPlusCommas(char * line){
     else return 0;
 }
 
-loglist_t * addFirst(loglist_t * list, logline_t templogline){
+void addLast(loglist_t * list, logline_t templogline){
     /* Declare newNode  here */
     loglist_t * newNode = (loglist_t*)malloc(sizeof(loglist_t));
     if (newNode == NULL){
-      fprintf(stderr, "Failed to allocated memory for head of newNode.\n");
+      fprintf(stderr, "Failed to allocated memory newNode.\n");
       exit(-1);
     }
+
+    loglist_t * temp;
     newNode->line = templogline;
-    newNode->next = list;
-    return newNode;
+
+    /* Find tail of list */
+    temp = list;
+    while(temp->next != NULL){
+      temp = temp->next;
+    }
+    temp->next = newNode;
+    newNode->next = NULL;
 }

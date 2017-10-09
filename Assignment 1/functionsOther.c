@@ -37,19 +37,36 @@ int containsTwoPlusCommas(char * line){
 void addLast(loglist_t * list, logline_t templogline){
     /* Declare newNode  here */
     loglist_t * newNode = (loglist_t*)malloc(sizeof(loglist_t));
+
     if (newNode == NULL){
       fprintf(stderr, "Failed to allocated memory newNode.\n");
       exit(-1);
     }
 
-    loglist_t * temp;
     newNode->line = templogline;
-
-    /* Find tail of list */
-    temp = list;
-    while(temp->next != NULL){
-      temp = temp->next;
-    }
-    temp->next = newNode;
     newNode->next = NULL;
+
+    //initalizes all the temp variables
+  	loglist_t * temp;
+  	temp = list;
+
+    //check for first insertion
+    if(temp->next == NULL){
+      temp->next = newNode;
+      printf("... was added at beginning\n");
+    }
+    else{
+        //else loop through the list and find the last
+        //node, insert next to it
+        loglist_t * current = temp;
+        while (1) { // Change 2
+            if(current->next == NULL)
+            {
+                current->next = newNode;
+                printf(" ...was added later\n");
+                break; // Change 3
+            }
+            current = current->next;
+        };
+    }
 }

@@ -47,7 +47,7 @@ void deleteList(loglist_t * head){
 		free(current);
 		current = next;
 	}
-	free(head);
+	head = NULL;
 }
 
 /*
@@ -61,31 +61,14 @@ void printLines( loglist_t * head){
 	}
 
 	//initalizes all the temp variables
-	loglist_t * next;
-	char levelTemp[100];
-	char timestampTemp[100];
-	char messageTemp[100];
-
-	//sets all things to their temp things
-	strcpy(levelTemp, head->line.level);
-	strcpy(timestampTemp, head->line.timestamp);
-	strcpy(messageTemp, head->line.message);
-
+	loglist_t * temp;
+	temp = head;
 	//prints the data elements of the head, which include the level, message, and the timestamp
-	printf("%s,%s,%s", levelTemp, timestampTemp, messageTemp);
-
+	printf("%s,%s,%s", temp->line.level, temp->line.timestamp, temp->line.message);
 	// repeats the same process, but for the rest of the linked list.
-	while (head->next != NULL) {
-		strcpy(levelTemp, head->next->line.level);
-		strcpy(timestampTemp, head->next->line.timestamp);
-		strcpy(messageTemp, head->next->line.message);
-
-		if((strstr(levelTemp, "(")) !=  NULL || (strstr(timestampTemp, "(")) !=  NULL || (strstr(messageTemp, "(")) !=  NULL ){
-			continue;
-		}
-		printf("%s,%s,%s", levelTemp, timestampTemp, messageTemp);
-
-		head->next = head->next->next;// traversing the linked list.
-
-	}
+	while(temp!=NULL)
+    {
+    	printf("%s,%s,%s", temp->line.level, temp->line.timestamp, temp->line.message);
+    	temp=temp->next;
+    }
 }

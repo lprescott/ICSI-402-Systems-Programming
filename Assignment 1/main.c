@@ -26,14 +26,7 @@ int main( int argc, char *argv[] ) {
 	struct dirent * d;
 	FILE * inputFile;
 	char tempLine [128];
-	struct stat buffer;
-
-	/* Declare inlist head here TEMPORARY */
-	loglist_t * inlist = malloc(sizeof(loglist_t));
-	if (inlist == NULL){
-		fprintf(stderr, "Failed to allocated memory for head of inlist.\n");
-		exit(-1);
-	}
+	//struct stat buffer;
 
 	/* Declare resultlist head here */
 	loglist_t * resultlist = malloc(sizeof(loglist_t));
@@ -63,6 +56,13 @@ int main( int argc, char *argv[] ) {
 
 	/* Read through names of files in opened directory */
 	while((d=readdir(dp)) != NULL){
+
+		loglist_t * inlist = malloc(sizeof(loglist_t));
+		if (inlist == NULL){
+			fprintf(stderr, "Failed to allocated memory for head of inlist.\n");
+			exit(-1);
+		}
+
 		/* The file names are d->d_name */
 		if(strstr(d->d_name, ".log")){
 			printf("\nFile to be read: \"%s\"\n", d->d_name);
@@ -71,14 +71,7 @@ int main( int argc, char *argv[] ) {
 			/* Open the file for reading */
 			if((inputFile = fopen(d->d_name, "r")) != NULL){
 
-				// Final location of declaring inlist
-				/*
-				loglist_t * inlist = malloc(sizeof(loglist_t));
-				if (inlist == NULL){
-					fprintf(stderr, "Failed to allocated memory for head of inlist.\n");
-					exit(-1);
-				}
-				*/
+
 				/* Check if file starts with #
 				char buf[4];
 				fseek(inputFile, 0, SEEK_SET);
@@ -111,8 +104,6 @@ int main( int argc, char *argv[] ) {
 					}
 					*/
 					else{
-						/* Print for piece of mind */
-						fputs(tempLine, stdout);
 
 						/* Declare templogline struct here */
 						logline_t * templogline = malloc(sizeof(logline_t));
@@ -124,32 +115,28 @@ int main( int argc, char *argv[] ) {
 						/* Parse tempLine into templogline struct here */
 						templogline = parseLine(tempLine);
 
+						/* Print for piece of mind */
+						fputs(tempLine, stdout);
+
 						/* Add templogline to on end of inlist*/
 						addLast(inlist, * templogline);
 
-						/* Free templogline memory */
-						free(templogline);
 					}
 				}
 
+				/* inlist is ready */
+
+				/* Print lines of inlist again for peace of mind */
 				puts("\n");
+				printLines(inlist);
+
 				/* Print for peace of mind */
 				//fprintf(stdout, "\n\nThe third to last line message in inlist: %s", inlist->next->next->line.message);
 
-				/*Close input file. */
-				fclose(inputFile);
+				// merge here
 
-				/* Merge inlist and resultlist. */
-
-				/* Print for peace of mind */
-				//printLines(inlist);
-
-				/* Delete inlist */
+				/* inlist is deleted */
 				deleteList(inlist);
-
-				/* Set head of inlist to null */
-				//inlist = NULL;
-
 			}
 			else if (inputFile == NULL){
 				perror("Error");
@@ -157,12 +144,18 @@ int main( int argc, char *argv[] ) {
 			}
 		}
 	}
-	/* Print resultlist to stdout and file <combinedlogs.log> */
 
-	/* Delete resultlist */
-	//deleteList(resultlist);
+
+	/* Close directory */
+	if(closedir(dp) != 0){
+		fprintf(stderr, "Error closing directory.\n");
+	}
+
 
 	/* Print for piece of mind */
-	fputs("Done.", stdout);
+	fputs("\nDone.", stdout);
 	//perror("ERROR");
+	fclose(inputFile);
+ 	return 1;
+
 }

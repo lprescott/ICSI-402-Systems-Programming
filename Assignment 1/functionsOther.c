@@ -33,7 +33,7 @@ int containsTwoPlusCommas(char * line){
     else return 0;
 }
 
-void addLast(loglist_t * list, logline_t templogline){
+loglist_t * addLast(loglist_t * list, logline_t templogline){
     /* Declare newNode  here */
     loglist_t * newNode = (loglist_t*)malloc(sizeof(loglist_t));
 
@@ -45,39 +45,20 @@ void addLast(loglist_t * list, logline_t templogline){
     newNode->line = templogline;
     newNode->next = NULL;
 
-    //initalizes all the temp variables
-  	loglist_t * temp;
-  	temp = list;
-
     //check for first insertion
-    if(temp->next == NULL){
-      temp->next = newNode;
-      printf("... was added at beginning\n");
+    if(list == NULL){
+      list = newNode;
+      return list;
     }
     else{
-        //else loop through the list and find the last
-        //node, insert next to it
-        loglist_t * current = temp;
-        while (1) { // Change 2
-            if(current->next == NULL)
-            {
-                current->next = newNode;
-                printf(" ...was added later\n");
-                break; // Change 3
-            }
-            current = current->next;
-        };
+      //initalizes all the temp variables
+      loglist_t * temp = list;
+
+      while (temp -> next != NULL){
+        temp = temp->next;
+      }
+
+      temp->next = newNode;
+      return list;
     }
-}
-
-void moveNode(loglist_t ** dest, loglist_t ** source) {
-
-	loglist_t *newnode = *source;
-
-	*source = newnode->next;
-
-	newnode->next = *dest;
-
-	*dest = newnode;
-
 }

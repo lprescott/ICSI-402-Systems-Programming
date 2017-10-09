@@ -5,6 +5,6 @@
 
 //int looksCorrect(tempLine);
 int containsTwoPlusCommas(char * line);
-void addLast(loglist_t * list, logline_t templogline);
+loglist_t * addLast(loglist_t * list, logline_t templogline);
 
 #endif

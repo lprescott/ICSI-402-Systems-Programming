@@ -26,7 +26,6 @@ int main( int argc, char *argv[] ) {
 	struct dirent * d;
 	FILE * inputFile;
 	char tempLine [128];
-	//struct stat buffer;
 
 	/* Declare resultlist head here */
 	loglist_t * resultlist = malloc(sizeof(loglist_t));
@@ -57,17 +56,13 @@ int main( int argc, char *argv[] ) {
 	/* Read through names of files in opened directory */
 	while((d=readdir(dp)) != NULL){
 
-		loglist_t * inlist = malloc(sizeof(loglist_t));
-		if (inlist == NULL){
-			fprintf(stderr, "Failed to allocated memory for head of inlist.\n");
-			exit(-1);
+		loglist_t * inlist = NULL;
+		inlist = malloc(sizeof(loglist_t));
+		if (inlist == NULL) {
+				fprintf(stderr, "Failed to allocated memory for head of inlist.\n");
+				exit(-1);
 		}
 
-		loglist_t * mergeList = malloc(sizeof(loglist_t));
-		if (mergeList == NULL){
-			fprintf(stderr, "Failed to allocated memory for head of inlist.\n");
-			exit(-1);
-		}
 
 		/* The file names are d->d_name */
 		if(strstr(d->d_name, ".log")){
@@ -77,26 +72,23 @@ int main( int argc, char *argv[] ) {
 			/* Open the file for reading */
 			if((inputFile = fopen(d->d_name, "r")) != NULL){
 
-
-				/* Check if file starts with #
-				char buf[4];
-				fseek(inputFile, 0, SEEK_SET);
-				fread(buf, sizeof(buf), 1, inputFile);
-				printf("\tThe first char of the file: %c\n", buf[0]);
-				rewind(inputFile);
-				*/
-				/* Check if file begins with hashtag
-				if(buf[0] != '#'){
-					fprintf(stderr, "File does not begin with a hashtag.\n");
-					continue;
+				loglist_t * inlist = NULL;
+				inlist = malloc(sizeof(loglist_t));
+				if (inlist == NULL) {
+						fprintf(stderr, "Failed to allocated memory for head of inlist.\n");
+						exit(-1);
 				}
-				*/
+				inlist->next = NULL;
+
+				/* Check if file starts with # */
+
 				/* Read line by line */
 				while(fgets(tempLine, sizeof tempLine, inputFile)!= NULL){
+
 					/* Look at lines only without hashtags */
 					if (strstr(tempLine, "#") != NULL){
 						continue;
-                    }
+					}
 					// Check if tempLine contains at least two commas
 					else if ((containsTwoPlusCommas(tempLine)) == 0){
 						fprintf(stderr, "Log entry does not contains at least two commas.\n");
@@ -111,27 +103,20 @@ int main( int argc, char *argv[] ) {
 					*/
 					else{
 
-						/* Declare templogline struct here */
-						logline_t * templogline = malloc(sizeof(logline_t));
-						if (templogline == NULL){
-							fprintf(stderr, "Failed to allocated memory for head of templogline.\n");
-							exit(-1);
-						}
-
 						/* Parse tempLine into templogline struct here */
-						templogline = parseLine(tempLine);
+						logline_t * templogline = parseLine(tempLine);
 
 						/* Print for piece of mind */
 						fputs(tempLine, stdout);
 
 						/* Add templogline to on end of inlist*/
-						addLast(inlist, * templogline);
+						inlist = addLast(inlist, * templogline);
 
 					}
 				}
 				/* inlist is ready */
 				//sort
-				inlist = sortList(inlist);
+				//inlist = sortList(inlist);
 
 				/* Print lines of inlist again for peace of mind */
 				puts("\n");
@@ -141,6 +126,7 @@ int main( int argc, char *argv[] ) {
 				//fprintf(stdout, "\n\nThe third line message in inlist: %s", inlist->next->next->line.message);
 
 				// merge here
+				//puts("Merge attempted.");
 
 
 				/* inlist is deleted */

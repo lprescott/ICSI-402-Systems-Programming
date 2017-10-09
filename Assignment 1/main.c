@@ -138,7 +138,7 @@ int main( int argc, char *argv[] ) {
 				printLines(inlist);
 
 				/* Print for peace of mind */
-				fprintf(stdout, "\n\nThe third line message in inlist: %s", inlist->next->next->line.message);
+				//fprintf(stdout, "\n\nThe third line message in inlist: %s", inlist->next->next->line.message);
 
 				// merge here
 

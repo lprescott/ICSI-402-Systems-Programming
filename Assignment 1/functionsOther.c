@@ -108,3 +108,10 @@ void printToFile( loglist_t * head, FILE * outputFile){
       temp=temp->next;
     }
 }
+
+//Swaps loglist nodes A and B
+void swap(loglist_t * a, loglist_t * b) {
+	logline_t data = a->line; //This is the line that gets swapped
+	a->line = b->line;
+	b->line = data;
+}

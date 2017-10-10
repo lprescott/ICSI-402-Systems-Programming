@@ -57,16 +57,17 @@ loglist_t * mergeLists(loglist_t * resultlist, loglist_t * inlist){
 	and return a pointer to the head of the sorted list.
 */
 
+//Sorts the list using a bubble sort technique.
 loglist_t * sortList(loglist_t * inlist) {
 	
-	
+	//if inlist is empty, returns NULL
 	if (inlist == NULL){
 		printf("Empty List\n");
 		return NULL;
 	}
 
 	//initalizes all the temp variables
-	loglist_t * temp = malloc(sizeof(loglist_t));
+	loglist_t * temp = malloc(sizeof(loglist_t)); //a temporary variable to hold a loglist node in the loop.
 	if (temp == NULL){
 		fprintf(stderr, "Unable to allocate memory for new temp structure.\n");
 		exit(-1);
@@ -76,16 +77,15 @@ loglist_t * sortList(loglist_t * inlist) {
 
 	temp = inlist -> next;
 
-	
-
-	int tru = 0;
+	int tru = 0;	//A makeshift boolean variable. Used to determine when to loop.
 
 	do{
+		//initializes tru to 0;
 		tru = 0;
 		temp = inlist;
 		while (temp->next != NULL)
 		{
-			
+			//if temp's data is greater than temp->nexts, tru = 1 and we call swap to swap the two nodes data.
 			if(strcmp(temp->line.timestamp, temp->next->line.timestamp) > 0)
 			{
 				swap(temp, temp->next);

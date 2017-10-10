@@ -6,7 +6,7 @@
 //Desc:    	This program takes directory full of log files then concatonates them into
 //         	a single log file, where the order is based on the time of each log.
 //Input:   	The program can take a command line argument specifying the path where the program will execute
-//	   	Otherwise, it will execute in the current directory
+//	   		Otherwise, it will execute in the current directory
 //Output:  	A .log file and standard output of the printed merge list
 //Assumption:	The possible command line argument is assumed to be a unix path to a directory in unix.
 
@@ -23,25 +23,26 @@
 #include "headersOther.h"
 
 /*
-To do:
-*Comments must be completed, one person will each function
-*Testing with other files nor supplied
-*refactor any code
-*error checking: if file includes #, format of a log file level, date, timestamp, message
-*double check and reread assignment requirements.
+		This is the main function of the mylogger program. It's control structures determines the 
+	directory for opening, looks through said directory for log files, reads lines of any log file, using
+	parseLine, it finds and then proceeds to add them to a linked list called inlist. Before moving onto another
+	log file, if it exist, the main function call mergeLists to add the inlist to a resultlist, 
+	subsequently sorting the resulting list as to keep order. After every inlist is created and used, 
+	deleteList is called as to free the memory used for inlist. After the control structures have completed, printLines
+	is called to print the result list to standard output, and printLinesToFile is called to print the resulting
+	list to the file combinedlogs.log.
 */
-
 int main( int argc, char *argv[] ) {
 
 	/* Local variables */
-	DIR * dp;
-	struct dirent * d;
-	FILE * inputFile;
-  	FILE * outputFile;
-	char tempLine [128];
-	char * outputName = "combinedlogs.log"; 
-	char currentDirectory[128];
-	char outputPath[128];
+	DIR * dp; //The DIR * dp is a type representing a directory stream supplied in command line args
+	struct dirent * d; //The struct dirent * d is a format of directory items used to determine names of files
+	FILE * inputFile; //A file structure created to hold the input file
+  	FILE * outputFile; //A file structure created to hold the output file
+	char tempLine [128]; //A temperary char array that holds each line of a log file
+	char * outputName = "combinedlogs.log"; //The name of the outputted file
+	char currentDirectory[128]; //A char array that holds the current directory
+	char outputPath[128]; //A char array that holds the required outputPath
 
 
 	/* Declare resultlist head here */
@@ -56,27 +57,32 @@ int main( int argc, char *argv[] ) {
     	if((dp = opendir(argv[1])) == NULL){
       		perror("Error");
       		exit(-1);
-    	}
+		}
+		// The directory was supplied
 		printf("The directory opened is: \"%s\"\n", argv[1]);
 		strcpy(currentDirectory, argv[1]);
 		strcat(currentDirectory, "/");
 	}
 	  
   	else if( argc > 2 ) {
+		//There were too many arguments
     	fprintf(stderr, "Too many arguments!.\n");
 		exit(-1);
   	}
   
 	else {
+		//Open the current directory
 		if((dp = opendir(".")) == NULL){
 			perror("Error");
 			exit(-1);
 		}
+		//The directory opened was the current working one
 		printf("\nThe directory to open is: \".\"\n");
 		strcpy(currentDirectory, "./");
     
-  	}
-
+  	} /* Directory has been determined */
+	
+	// Determine the path of the output file
 	strcpy(outputPath, currentDirectory);
 	strcat(outputPath, outputName);
 	outputFile = fopen(outputPath, "w");
@@ -84,34 +90,39 @@ int main( int argc, char *argv[] ) {
 	/* Read through names of files in opened directory */
 	while((d=readdir(dp)) != NULL){
 
+		//Allocate memory for the inlist
 		loglist_t * inlist = NULL;
 		inlist = malloc(sizeof(loglist_t));
 		if (inlist == NULL) {
 				fprintf(stderr, "Failed to allocated memory for head of inlist.\n");
 				exit(-1);
 		}
-		/* The file names are d->d_name */
-		if(strstr(d->d_name, ".log")){
-			char filePath[128];
-			filePath[0] = '\0';
-			strcpy(filePath, currentDirectory);
+		
+		//Does the file name contain .log
+		if(strstr(d->d_name, ".log")){ 
+
+			char filePath[128]; //Create a char array to hold the filepath of the inputfile
+			filePath[0] = '\0'; //Reset filepath
+
+			//Determine filePath
+			strcpy(filePath, currentDirectory); 
 			strcat(filePath, d->d_name);
 
-			printf("\nFile to be read: \"%s\"\n", d->d_name);
-			puts("Lines to be parsed:");
+			//printf("\nFile to be read: \"%s\"\n", d->d_name);
+			//puts("Lines to be parsed:");
 			errno =  0;
 			/* Open the file for reading */
 			if((inputFile = fopen(filePath, "r")) != NULL){
 
+				/*
 				loglist_t * inlist = NULL;
 				inlist = malloc(sizeof(loglist_t));
 				if (inlist == NULL) {
 						fprintf(stderr, "Failed to allocated memory for head of inlist.\n");
 						exit(-1);
 				}
+				*/
 				inlist->next = NULL;
-
-				/* Check if file starts with # */
 
 				/* Read line by line */
 				while(fgets(tempLine, sizeof tempLine, inputFile)!= NULL){
@@ -133,7 +144,6 @@ int main( int argc, char *argv[] ) {
 					}
 					*/
 					else{
-
 						/* Parse tempLine into templogline struct here */
 						logline_t * templogline = parseLine(tempLine);
 
@@ -146,27 +156,17 @@ int main( int argc, char *argv[] ) {
 					}
 				}
 				/* inlist is ready */
-				//sort
-				//inlist = sortList(inlist);
+				//puts("\n");
+				//printLines(inlist);
 
-				/* Print lines of inlist again for peace of mind */
-				puts("\n");
-				printLines(inlist);
-
-				/* Print for peace of mind */
-				//fprintf(stdout, "\n\nThe third line message in inlist: %s", inlist->next->next->line.message);
-
-				// merge here
+				//merge here
 				//puts("Merge attempted.");
 				resultlist = mergeLists(resultlist, inlist);
 				printf("\nMERGEDLISTS\n\n");
 				
-				printLines(resultlist);
-
-				printf("\n\nMERGED SORTED LIST\n\n");
+				//printf("\n\nMERGED SORTED LIST\n\n");
 				sortList(resultlist);
 				printLines(resultlist);
-        
 
 				/* inlist is deleted */
 				deleteList(inlist);
@@ -184,13 +184,16 @@ int main( int argc, char *argv[] ) {
 		fprintf(stderr, "Error closing directory.\n");
 	}
  
- printToFile( resultlist, outputFile);
-
+	/* Print the sorted result list to the output file */
+ 	printToFile(resultlist, outputFile);
 
 	/* Print for piece of mind */
 	fputs("\nDone.", stdout);
 	//perror("ERROR");
 	fclose(inputFile);
+
+	/* Delete resultlist */
+	deleteList(resultlist);
  	return 1;
 
 }

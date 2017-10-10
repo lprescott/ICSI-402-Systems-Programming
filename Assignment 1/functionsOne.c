@@ -31,6 +31,10 @@ logline_t * parseLine(char line []){
 	char * timestampP = strtok(NULL, ",");
 	char * messageP = strtok(NULL, ",");
 	
+	if (strstr(messageP, "\n") != NULL) {
+		strcat(messageP, "\n");
+	}
+	
 	//checks to make sure that line is free to be used
 	logline_t * parsed = NULL;
 	if((parsed = malloc(sizeof(logline_t))) == NULL){

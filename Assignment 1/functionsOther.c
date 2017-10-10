@@ -97,3 +97,9 @@ void printToFile( loglist_t * head, FILE * outputFile){
       temp=temp->next;
     }
 }
+
+void swap(loglist_t * a, loglist_t * b) {
+	logline_t data = a->line;
+	a->line = b->line;
+	b->line = data;
+}

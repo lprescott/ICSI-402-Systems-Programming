@@ -10,10 +10,12 @@
 //Output:  	A .log file and standard output of the printed merge list
 //Assumption:	The possible command line argument is assumed to be a unix path to a directory in unix.
 
+// headers of standard c library
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
 
+//include external header files.
 #include "structs.h"
 #include "headersOther.h"
 
@@ -28,68 +30,70 @@ int looksCorrect(char * line){
 }
 */
 
-//Checks if there are two plus commas in a string
+//checks to see if a log entry contains two commas
 int containsTwoPlusCommas(char * line){
-    int count = 0; //Count of commas
-    int x = 0; //the specified character in the array
-
-	//While line[x] != end of the file, checks if the character is a comma. Iterates through the entire list.
+    int count = 0;// the initial count is set to zero
+    int x = 0;
+	//while line hasnt ended
     while(line[x] != EOF){
+	  //if it contains a comma
       if (line[x] == ','){
+		  //increment
         count ++;
       }
       x++;
     }
-	
-	//returns true if cout > 0, else returns false
+
+	//return true if there are two or more commas
     if (count >= 2){
       return 1;
     }
-	
+
     else return 0;
 }
 
-//ADD'S TO THE END OF THE LOGLIST THE LOGLINE
 loglist_t * addLast(loglist_t * list, logline_t templogline){
-    /* Declare newNode  here */
-    loglist_t * newNode = (loglist_t*)malloc(sizeof(loglist_t)); //The node to be added to the end of the list
+    /* Declare temp struct  here */
+    loglist_t * tempStruct = (loglist_t*)malloc(sizeof(loglist_t));
 
-	//If there is no space then exit the program
-    if (newNode == NULL){
+	//Allocate mem for tempStruct
+    if (tempStruct == NULL){
       fprintf(stderr, "Failed to allocated memory newNode.\n");
       exit(-1);
     }
 
-    newNode->line = templogline;
-    newNode->next = NULL;
+	//Declaring tempStruct
+	tempStruct->line = templogline;
+	tempStruct->next = NULL;
 
     //check for first insertion
     if(list == NULL){
-      list = newNode;
+      list = tempStruct;
       return list;
     }
     else{
       //initalizes all the temp variables
-      loglist_t * temp = list; // A temp loglist variable to use later on.
-	
-	    //loops to the end of the list
+      loglist_t * temp = list;
+
+	  //While there are more structs in the list
       while (temp -> next != NULL){
         temp = temp->next;
       }
-	
-	    //adds the new node to the end of the list
-      temp->next = newNode;
+
+	  //Found end, add to it
+      temp->next = tempStruct;
       return list;
     }
 }
 
+// prints the the data from resultlist into the output file named combinedlogs.log
 void printToFile( loglist_t * head, FILE * outputFile){
 
-	if (head == NULL){
+	if (head == NULL){// if the head is equal to NULL, return nothing
 		printf("Empty List\n");
 		return;
 	}
-	//initalizes all the temp variables
+	//initalizes all the temp variables, memory allocation.
 	loglist_t * temp = malloc(sizeof(loglist_t));
 	if (temp == NULL){
 		fprintf(stderr, "Unable to allocate memory for new temp structure.\n");
@@ -97,19 +101,10 @@ void printToFile( loglist_t * head, FILE * outputFile){
 	}
 	temp = head -> next;
 	//prints the data elements of the head, which include the level, message, and the timestamp
-	//printf("%s,%s,%s", temp->line.level, temp->line.timestamp, temp->line.message);
 	// repeats the same process, but for the rest of the linked list.
 	while(temp!=NULL)
     {
     	fprintf(outputFile, "%s,%s,%s", temp->line.level, temp->line.timestamp, temp->line.message);
       temp=temp->next;
     }
-}
-
-
-//swaps the data in loglist nodes a and b
-void swap(loglist_t * a, loglist_t * b) {
-	logline_t data = a->line;
-	a->line = b->line;
-	b->line = data;
 }

@@ -33,6 +33,7 @@ loglist_t * mergeLists(loglist_t * resultlist, loglist_t * inlist){
 		}
 	}
 
+	
 	/* Loop through inlist item by item, adding lines to resultList */
 
 	return resultlist;
@@ -42,7 +43,16 @@ loglist_t * mergeLists(loglist_t * resultlist, loglist_t * inlist){
 	Function loglist* sortList(loglist* inlist) to sort the provided linked list inlist
 	and return a pointer to the head of the sorted list.
 */
+
+void swap(loglist_t * a, loglist_t * b) {
+	logline_t data = a->line;
+	a->line = b->line;
+	b->line = data;
+}
+
 loglist_t * sortList(loglist_t * inlist) {
+	
+	
 	if (inlist == NULL){
 		printf("Empty List\n");
 		return NULL;
@@ -54,17 +64,28 @@ loglist_t * sortList(loglist_t * inlist) {
 		fprintf(stderr, "Unable to allocate memory for new temp structure.\n");
 		exit(-1);
 	}
+
+	
+
 	temp = inlist -> next;
 
+	
+
+	int tru = 0;
+
 	do{
-		int boolean = 0;
-		while(temp!=NULL)
+		tru = 0;
+		temp = inlist;
+		while (temp->next != NULL)
 		{
-			if(strcmp(temp->line.timestamp, temp->next->line.timestamp) > 0){
+			
+			if(strcmp(temp->line.timestamp, temp->next->line.timestamp) > 0)
+			{
 				swap(temp, temp->next);
+				tru = 1;
 			}
 			temp = temp->next;
 		}
-	}
+	} while (tru == 1);
 
 }

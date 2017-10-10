@@ -1,3 +1,0 @@
-THIS TEXT SHOULD NOT BE READ.
-
-Q: Professor, why would I receive a file or directory not found error in one location on my computer, rather than another?

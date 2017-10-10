@@ -22,7 +22,11 @@ logline_t * parseLine(char line []){
 		fprintf(stderr, "Unable to allocate memory for new parsed structure.\n");
 		exit(-1);
 	}
-
+  
+  if (strstr(messageP, "\n") == NULL) {
+    strcat(messageP, "\n");
+  }
+  
 	strcpy(parsed->level , levelP);
 	strcpy(parsed->timestamp , timestampP);
 	strcpy(parsed->message , messageP);
@@ -71,7 +75,6 @@ void printLines( loglist_t * head){
 	while(temp!=NULL)
     {
     	printf("%s,%s,%s", temp->line.level, temp->line.timestamp, temp->line.message);
-    	temp=temp->next;
+      temp=temp->next;
     }
-		puts("\n");
 }

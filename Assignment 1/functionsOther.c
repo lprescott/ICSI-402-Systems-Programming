@@ -63,21 +63,25 @@ loglist_t * addLast(loglist_t * list, logline_t templogline){
     }
 }
 
-void swap(loglist_t * first, loglist_t * second){
-  logline_t * temp = malloc(sizeof(logline_t));
-  if (temp == NULL){
-    fprintf(stderr, "Unable to allocate memory for new temp line.\n");
-    exit(-1);
-  }
+void printToFile( loglist_t * head, FILE * outputFile){
 
-  * temp = first->line;
-
-  strcpy(first->line.level , second->line.level);
-  strcpy(first->line.timestamp , second->line.timestamp);
-  strcpy(first->line.message , second->line.message);
-
-  strcpy(second->line.level , temp->level);
-  strcpy(second->line.timestamp , temp->timestamp);
-  strcpy(second->line.message , temp->message);
-
+	if (head == NULL){
+		printf("Empty List\n");
+		return;
+	}
+	//initalizes all the temp variables
+	loglist_t * temp = malloc(sizeof(loglist_t));
+	if (temp == NULL){
+		fprintf(stderr, "Unable to allocate memory for new temp structure.\n");
+		exit(-1);
+	}
+	temp = head -> next;
+	//prints the data elements of the head, which include the level, message, and the timestamp
+	//printf("%s,%s,%s", temp->line.level, temp->line.timestamp, temp->line.message);
+	// repeats the same process, but for the rest of the linked list.
+	while(temp!=NULL)
+    {
+    	fprintf(outputFile, "%s,%s,%s", temp->line.level, temp->line.timestamp, temp->line.message);
+      temp=temp->next;
+    }
 }

@@ -12,13 +12,12 @@
 
 /*
 To do:
-The out of the program should be combinedlogs.log
-addFirst must re redone to add on the end of the list
-garbage values are being printed in printLines
-merge will have to be implemented
-sort will have to be tested
-Comments must be completed
-Testing with other files no supplied
+*ask professor difference between gmake and make.
+*Comments must be completed, one person will each function
+*Testing with other files nor supplied
+*refactor any code
+*error checking: if file includes #, format of a log file level, date, timestamp, message
+*double check and reread assignment requirements.
 */
 int main( int argc, char *argv[] ) {
 
@@ -26,7 +25,9 @@ int main( int argc, char *argv[] ) {
 	DIR * dp;
 	struct dirent * d;
 	FILE * inputFile;
+  FILE * outputFile;
 	char tempLine [128];
+  char * outputName = "combinedlogs.log";
 
 	/* Declare resultlist head here */
 	loglist_t * resultlist = malloc(sizeof(loglist_t));
@@ -52,8 +53,10 @@ int main( int argc, char *argv[] ) {
 			exit(-1);
 		}
 		printf("\nThe directory to open is: \".\"\n");
+    
   }
 
+  outputFile = fopen(outputName, "w");
 	/* Read through names of files in opened directory */
 	while((d=readdir(dp)) != NULL){
 
@@ -127,8 +130,16 @@ int main( int argc, char *argv[] ) {
 				//fprintf(stdout, "\n\nThe third line message in inlist: %s", inlist->next->next->line.message);
 
 				// merge here
-				puts("Merge attempted.");
+				//puts("Merge attempted.");
 				resultlist = mergeLists(resultlist, inlist);
+				printf("\nMERGEDLISTS\n\n");
+				
+				printLines(resultlist);
+
+				printf("\n\nMERGED SORTED LIST\n\n");
+				sortList(resultlist);
+				printLines(resultlist);
+        
 
 				/* inlist is deleted */
 				deleteList(inlist);
@@ -140,18 +151,13 @@ int main( int argc, char *argv[] ) {
 		}
 	}
 
-	printLines(resultlist);
-
-	puts("\nSort attempted.\n");
-	sortList(resultlist);
-
-	puts("\n");
-	printLines(resultlist);
 
 	/* Close directory */
 	if(closedir(dp) != 0){
 		fprintf(stderr, "Error closing directory.\n");
 	}
+ 
+ printToFile( resultlist, outputFile);
 
 
 	/* Print for piece of mind */

@@ -28,27 +28,33 @@ int looksCorrect(char * line){
 }
 */
 
+//Checks if there are two plus commas in a string
 int containsTwoPlusCommas(char * line){
-    int count = 0;
-    int x = 0;
+    int count = 0; //Count of commas
+    int x = 0; //the specified character in the array
+
+	//While line[x] != end of the file, checks if the character is a comma. Iterates through the entire list.
     while(line[x] != EOF){
       if (line[x] == ','){
         count ++;
       }
       x++;
     }
-
+	
+	//returns true if cout > 0, else returns false
     if (count >= 2){
       return 1;
     }
-
+	
     else return 0;
 }
 
+//ADD'S TO THE END OF THE LOGLIST THE LOGLINE
 loglist_t * addLast(loglist_t * list, logline_t templogline){
     /* Declare newNode  here */
-    loglist_t * newNode = (loglist_t*)malloc(sizeof(loglist_t));
+    loglist_t * newNode = (loglist_t*)malloc(sizeof(loglist_t)); //The node to be added to the end of the list
 
+	//If there is no space then exit the program
     if (newNode == NULL){
       fprintf(stderr, "Failed to allocated memory newNode.\n");
       exit(-1);
@@ -64,12 +70,14 @@ loglist_t * addLast(loglist_t * list, logline_t templogline){
     }
     else{
       //initalizes all the temp variables
-      loglist_t * temp = list;
-
+      loglist_t * temp = list; // A temp loglist variable to use later on.
+	
+	    //loops to the end of the list
       while (temp -> next != NULL){
         temp = temp->next;
       }
-
+	
+	    //adds the new node to the end of the list
       temp->next = newNode;
       return list;
     }

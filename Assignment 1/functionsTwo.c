@@ -77,11 +77,11 @@ loglist_t * sortList(loglist_t * inlist) {
 
 	temp = inlist -> next;
 
-	int tru = 0;	//A makeshift boolean variable. Used to determine when to loop.
+	int flag = 0;	//A makeshift boolean variable. Used to determine when to loop.
 
 	do{
-		//initializes tru to 0;
-		tru = 0;
+		//initializes flag to 0;
+		flag = 0;
 		temp = inlist;
 		while (temp->next != NULL)
 		{
@@ -89,10 +89,10 @@ loglist_t * sortList(loglist_t * inlist) {
 			if(strcmp(temp->line.timestamp, temp->next->line.timestamp) > 0)
 			{
 				swap(temp, temp->next);
-				tru = 1;
+				flag = 1;
 			}
 			temp = temp->next;
 		}
-	} while (tru == 1);
+	} while (flag == 1);
 
 }

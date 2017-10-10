@@ -47,7 +47,7 @@ int main( int argc, char *argv[] ) {
     	}
 		printf("The directory opened is: \"%s\"\n", argv[1]);
 		strcpy(currentDirectory, argv[1]);
-		strcat(currentDirectory, "\\");
+		strcat(currentDirectory, "/");
 	}
 	  
   	else if( argc > 2 ) {
@@ -61,7 +61,7 @@ int main( int argc, char *argv[] ) {
 			exit(-1);
 		}
 		printf("\nThe directory to open is: \".\"\n");
-		strcpy(currentDirectory, ".\\");
+		strcpy(currentDirectory, "./");
     
   	}
 

@@ -24,15 +24,16 @@
 	combined list.
 */
 loglist_t * mergeLists(loglist_t * resultlist, loglist_t * inlist){
-
-	loglist_t * temp;
+	
+	loglist_t * temp;		//A temp loglist used to hold inlist;
 	temp = inlist->next;
 
 	/* Find the end of resultList */
-	if (temp == NULL){
-		return resultlist;
+	//If temp is null, then the list doesn't merge.
+	if (temp == NULL){		
+		return resultlist; 
 	}
-	else{
+	else{ //else, it loops through and adds each member of inlist too resultlist
 		while(temp != NULL){
 			logline_t * templine = malloc(sizeof(logline_t));
 			if (templine == NULL){
@@ -55,12 +56,6 @@ loglist_t * mergeLists(loglist_t * resultlist, loglist_t * inlist){
 	Function loglist* sortList(loglist* inlist) to sort the provided linked list inlist
 	and return a pointer to the head of the sorted list.
 */
-
-void swap(loglist_t * a, loglist_t * b) {
-	logline_t data = a->line;
-	a->line = b->line;
-	b->line = data;
-}
 
 loglist_t * sortList(loglist_t * inlist) {
 	

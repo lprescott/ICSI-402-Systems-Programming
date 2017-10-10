@@ -12,22 +12,25 @@
 
 /*
 To do:
-*ask professor difference between gmake and make.
 *Comments must be completed, one person will each function
 *Testing with other files nor supplied
 *refactor any code
 *error checking: if file includes #, format of a log file level, date, timestamp, message
 *double check and reread assignment requirements.
 */
+
 int main( int argc, char *argv[] ) {
 
 	/* Local variables */
 	DIR * dp;
 	struct dirent * d;
 	FILE * inputFile;
-  FILE * outputFile;
+  	FILE * outputFile;
 	char tempLine [128];
-  char * outputName = "combinedlogs.log";
+	char * outputName = "combinedlogs.log"; 
+	char currentDirectory[128];
+	char outputPath[128];
+
 
 	/* Declare resultlist head here */
 	loglist_t * resultlist = malloc(sizeof(loglist_t));
@@ -37,26 +40,35 @@ int main( int argc, char *argv[] ) {
 	}
 
 	/* Determine directory */
-  if( argc == 2 ) {
-    if((dp = opendir(argv[1])) == NULL){
-      perror("Error");
-      exit(-1);
-    }
+  	if( argc == 2 ) {
+    	if((dp = opendir(argv[1])) == NULL){
+      		perror("Error");
+      		exit(-1);
+    	}
 		printf("The directory opened is: \"%s\"\n", argv[1]);
-  }
-  else if( argc > 2 ) {
-    perror("Error");
-  }
-  else {
+		strcpy(currentDirectory, argv[1]);
+		strcat(currentDirectory, "\\");
+	}
+	  
+  	else if( argc > 2 ) {
+    	fprintf(stderr, "Too many arguments!.\n");
+		exit(-1);
+  	}
+  
+	else {
 		if((dp = opendir(".")) == NULL){
 			perror("Error");
 			exit(-1);
 		}
 		printf("\nThe directory to open is: \".\"\n");
+		strcpy(currentDirectory, ".\\");
     
-  }
+  	}
 
-  outputFile = fopen(outputName, "w");
+	strcpy(outputPath, currentDirectory);
+	strcat(outputPath, outputName);
+	outputFile = fopen(outputPath, "w");
+	  
 	/* Read through names of files in opened directory */
 	while((d=readdir(dp)) != NULL){
 
@@ -66,15 +78,18 @@ int main( int argc, char *argv[] ) {
 				fprintf(stderr, "Failed to allocated memory for head of inlist.\n");
 				exit(-1);
 		}
-
-
 		/* The file names are d->d_name */
 		if(strstr(d->d_name, ".log")){
+			char filePath[128];
+			filePath[0] = '\0';
+			strcpy(filePath, currentDirectory);
+			strcat(filePath, d->d_name);
+
 			printf("\nFile to be read: \"%s\"\n", d->d_name);
 			puts("Lines to be parsed:");
 			errno =  0;
 			/* Open the file for reading */
-			if((inputFile = fopen(d->d_name, "r")) != NULL){
+			if((inputFile = fopen(filePath, "r")) != NULL){
 
 				loglist_t * inlist = NULL;
 				inlist = malloc(sizeof(loglist_t));

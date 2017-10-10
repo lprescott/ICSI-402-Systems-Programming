@@ -1,10 +1,14 @@
-//Project: Prog1
-//Names:   Luke Prescott, Rob Rose, Tommy Li
-//Roles:   Leader, Monitor, Recorder Respectively
-//Date:    10/3/2017
-//Course:  ICSI 402
-//Desc:    This program takes directory full of log files then concatonates them into
-//         a single log file, where the order is based on the time of each log.
+//Project: 	Prog1
+//Names:   	Luke Prescott, Rob Rose, Tommy Li (lprescott@albany.edu, rwrose@albany.edu, tli3@albany.edu)
+//Roles:   	Leader, Monitor, Recorder Respectively
+//Date:    	10/3/2017
+//Course:  	ICSI 402
+//Desc:    	This program takes directory full of log files then concatonates them into
+//         	a single log file, where the order is based on the time of each log.
+//Input:   	The program can take a command line argument specifying the path where the program will execute
+//	   	Otherwise, it will execute in the current directory
+//Output:  	A .log file and standard output of the printed merge list
+//Assumption:	The possible command line argument is assumed to be a unix path to a directory in unix.
 
 #include <string.h>
 #include <stdlib.h>

@@ -10,16 +10,18 @@
 //Output:  	A .log file and standard output of the printed merge list
 //Assumption:	The possible command line argument is assumed to be a unix path to a directory in unix.
 
+//headers for standard c library
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 
+//included external header files
 #include "structs.h"
 #include "headersOne.h"
 
 /*
-	Function logline* parseLine(string line) to construct a logline with 3 elds
-	based on the input string. Note that this function allocates memory.
+	Function parseLine construct a logline with 3 fields
+	based on the input string. Note that this function allocates memory. Contains a character array named line.
 */
 logline_t * parseLine(char line []){
 	//Creates a duplicate string before tokenizing
@@ -52,7 +54,7 @@ logline_t * parseLine(char line []){
 }
 
 /*
-	Function void deleteList(loglist* l) to free all memory allocated for the list.
+	Function void deleteList, frees all memory allocated for the list.
 */
 void deleteList(loglist_t * head){
 	//if head is equal to null, then return
@@ -74,7 +76,7 @@ void deleteList(loglist_t * head){
 }
 
 /*
-	Function void printLines(LineList* l) to print all the lines contained in the list.
+	Function void printLines,  prints all the lines contained in the list. contains a pointer named head in parameters.
 */
 void printLines( loglist_t * head){
 	
@@ -83,16 +85,16 @@ void printLines( loglist_t * head){
 		printf("Empty List\n");
 		return;
 	}
-	//initalizes all the temp variables
+	//initalizes all the temp variables, memory allocation
 	loglist_t * temp = malloc(sizeof(loglist_t));
-	if (temp == NULL){
+	if (temp == NULL){// if temp variable is equal to null, program is unable to terminate successfully
 		fprintf(stderr, "Unable to allocate memory for new temp structure.\n");
 		exit(-1);
 	}
 	temp = head -> next;
 	//prints the data elements of the head, which include the level, message, and the timestamp
-	//printf("%s,%s,%s", temp->line.level, temp->line.timestamp, temp->line.message);
-	// repeats the same process, but for the rest of the linked list.
+	
+// repeats the same process, but for the rest of the linked list.
 	while(temp!=NULL)
     {
     	printf("%s,%s,%s", temp->line.level, temp->line.timestamp, temp->line.message);

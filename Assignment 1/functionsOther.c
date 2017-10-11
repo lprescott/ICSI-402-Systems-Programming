@@ -1,3 +1,15 @@
+//Project: 	Prog1
+//Names:   	Luke Prescott, Rob Rose, Tommy Li (lprescott@albany.edu, rwrose@albany.edu, tli3@albany.edu)
+//Roles:   	Leader, Monitor, Recorder Respectively
+//Date:    	10/3/2017
+//Course:  	ICSI 402
+//Desc:    	This program takes directory full of log files then concatonates them into
+//         	a single log file, where the order is based on the time of each log.
+//Input:   	The program can take a command line argument specifying the path where the program will execute
+//	   	Otherwise, it will execute in the current directory
+//Output:  	A .log file and standard output of the printed merge list
+//Assumption:	The possible command line argument is assumed to be a unix path to a directory in unix.
+
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -16,27 +28,33 @@ int looksCorrect(char * line){
 }
 */
 
+//Checks if there are two plus commas in a string
 int containsTwoPlusCommas(char * line){
-    int count = 0;
-    int x = 0;
+    int count = 0; //Count of commas
+    int x = 0; //the specified character in the array
+
+	//While line[x] != end of the file, checks if the character is a comma. Iterates through the entire list.
     while(line[x] != EOF){
       if (line[x] == ','){
         count ++;
       }
       x++;
     }
-
+	
+	//returns true if cout > 0, else returns false
     if (count >= 2){
       return 1;
     }
-
+	
     else return 0;
 }
 
+//ADD'S TO THE END OF THE LOGLIST THE LOGLINE
 loglist_t * addLast(loglist_t * list, logline_t templogline){
     /* Declare newNode  here */
-    loglist_t * newNode = (loglist_t*)malloc(sizeof(loglist_t));
+    loglist_t * newNode = (loglist_t*)malloc(sizeof(loglist_t)); //The node to be added to the end of the list
 
+	//If there is no space then exit the program
     if (newNode == NULL){
       fprintf(stderr, "Failed to allocated memory newNode.\n");
       exit(-1);
@@ -52,12 +70,14 @@ loglist_t * addLast(loglist_t * list, logline_t templogline){
     }
     else{
       //initalizes all the temp variables
-      loglist_t * temp = list;
-
+      loglist_t * temp = list; // A temp loglist variable to use later on.
+	
+	    //loops to the end of the list
       while (temp -> next != NULL){
         temp = temp->next;
       }
-
+	
+	    //adds the new node to the end of the list
       temp->next = newNode;
       return list;
     }
@@ -84,4 +104,12 @@ void printToFile( loglist_t * head, FILE * outputFile){
     	fprintf(outputFile, "%s,%s,%s", temp->line.level, temp->line.timestamp, temp->line.message);
       temp=temp->next;
     }
+}
+
+
+//swaps the data in loglist nodes a and b
+void swap(loglist_t * a, loglist_t * b) {
+	logline_t data = a->line;
+	a->line = b->line;
+	b->line = data;
 }

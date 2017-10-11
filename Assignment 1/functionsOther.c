@@ -28,7 +28,10 @@ int looksCorrect(char * line){
 }
 */
 
-//Checks if there are two plus commas in a string
+/*
+This function takes a char array as a argument and returns and integer 1 if it contains at least,
+two commas.
+*/
 int containsTwoPlusCommas(char * line){
     int count = 0; //Count of commas
     int x = 0; //the specified character in the array
@@ -49,23 +52,26 @@ int containsTwoPlusCommas(char * line){
     else return 0;
 }
 
-//ADD'S TO THE END OF THE LOGLIST THE LOGLINE
+/*
+  This function takes a pointer to a head node of a list and a logline struct to add to said list as parameters.
+  It returns a pointer to the head of the list which has been added to.
+*/
 loglist_t * addLast(loglist_t * list, logline_t templogline){
-    /* Declare newNode  here */
-    loglist_t * newNode = (loglist_t*)malloc(sizeof(loglist_t)); //The node to be added to the end of the list
+    /* Declare newStruct  here */
+    loglist_t * newStruct = (loglist_t*)malloc(sizeof(loglist_t)); //The node to be added to the end of the list
 
 	//If there is no space then exit the program
-    if (newNode == NULL){
-      fprintf(stderr, "Failed to allocated memory newNode.\n");
+    if (newStruct == NULL){
+      fprintf(stderr, "Failed to allocated memory newStruct.\n");
       exit(-1);
     }
 
-    newNode->line = templogline;
-    newNode->next = NULL;
+    newStruct->line = templogline;
+    newStruct->next = NULL;
 
     //check for first insertion
     if(list == NULL){
-      list = newNode;
+      list = newStruct;
       return list;
     }
     else{
@@ -78,11 +84,15 @@ loglist_t * addLast(loglist_t * list, logline_t templogline){
       }
 	
 	    //adds the new node to the end of the list
-      temp->next = newNode;
+      temp->next = newStruct;
       return list;
     }
 }
 
+/*
+  This function returns nothing, but takes a head of a loglist linked list and File as parameters.
+  It loops through and prints all lines to the specified file.
+*/
 void printToFile( loglist_t * head, FILE * outputFile){
 
 	if (head == NULL){

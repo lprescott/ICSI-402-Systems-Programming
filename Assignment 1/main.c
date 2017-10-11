@@ -114,18 +114,21 @@ int main( int argc, char *argv[] ) {
 			/* Open the file for reading */
 			if((inputFile = fopen(filePath, "r")) != NULL){
 
-				/*
-				loglist_t * inlist = NULL;
-				inlist = malloc(sizeof(loglist_t));
-				if (inlist == NULL) {
-						fprintf(stderr, "Failed to allocated memory for head of inlist.\n");
-						exit(-1);
-				}
-				*/
+				/* Check if the file starts with a # here */
+				int countChar = 0;
+
 				inlist->next = NULL;
 
 				/* Read line by line */
 				while(fgets(tempLine, sizeof tempLine, inputFile)!= NULL){
+
+					if (countChar == 0){
+						if(tempLine[0] != '#'){
+							fprintf(stderr, "Does not start with #!.\n");
+							exit(-1);
+						}
+						countChar++;
+					}
 
 					/* Look at lines only without hashtags */
 					if (strstr(tempLine, "#") != NULL){
@@ -191,8 +194,8 @@ int main( int argc, char *argv[] ) {
 	//perror("ERROR");
 	fclose(inputFile);
 
-  puts("The resulting list: \n");
-  printLines(resultlist);
+  	puts("The resulting list: \n");
+  	printLines(resultlist);
   
 	/* Delete resultlist */
 	deleteList(resultlist);

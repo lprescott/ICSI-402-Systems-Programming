@@ -21,7 +21,10 @@
 /*
 	Function loglist* mergeLists(loglist* resultlist, loglist* inlist) to merge
 	sorted linked list inlist into resultlist and return a pointer to the head of the
-	combined list.
+	combined list. 
+	
+	Resultlist:	A linked list to be merged. This one is returned later.
+	inlist:		A linked list to be merged 
 */
 loglist_t * mergeLists(loglist_t * resultlist, loglist_t * inlist){
 	
@@ -55,9 +58,11 @@ loglist_t * mergeLists(loglist_t * resultlist, loglist_t * inlist){
 /*
 	Function loglist* sortList(loglist* inlist) to sort the provided linked list inlist
 	and return a pointer to the head of the sorted list.
+	
+	loglist_t inlist: The loglist to be sorted via bubblesort.
 */
 
-//Sorts the list using a bubble sort technique.
+//Sorts the list using a bubble sort
 loglist_t * sortList(loglist_t * inlist) {
 	
 	//if inlist is empty, returns NULL

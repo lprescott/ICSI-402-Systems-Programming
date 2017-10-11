@@ -109,7 +109,7 @@ void printToFile( loglist_t * head, FILE * outputFile){
 
 //swaps the data in loglist nodes a and b
 void swap(loglist_t * a, loglist_t * b) {
-	logline_t data = a->line;
+	logline_t data = a->line; //data holds the logline that needs to be swapped
 	a->line = b->line;
 	b->line = data;
 }

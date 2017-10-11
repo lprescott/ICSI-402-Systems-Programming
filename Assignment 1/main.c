@@ -137,7 +137,7 @@ int main( int argc, char *argv[] ) {
 					// Check if tempLine contains at least two commas
 					else if ((containsTwoPlusCommas(tempLine)) == 0){
 						fprintf(stderr, "Log entry does not contains at least two commas.\n");
-						exit(-1);
+						continue;
 					}
 					/*
 					// Check if tempLine looks like <level>,<timestamp,<message>

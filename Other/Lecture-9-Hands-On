@@ -1,5 +1,0 @@
-void myls(FILE * inputFile){
-  fd = fopen(inputFile, r);
-  fseek(fd, 0, SEEK_END);
-  puts(ftell(fd));
-}

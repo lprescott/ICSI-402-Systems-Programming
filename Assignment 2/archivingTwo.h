@@ -1,2 +1,2 @@
-printArchiveDetails(char* archiveName);
-verifyArchive(char ** fileNames, int numFiles, char* archiveName);
+void printArchiveDetails(char* archiveName);
+void verifyArchive(char ** fileNames, int numFiles, char* archiveName);

@@ -15,11 +15,11 @@
 #include "constants.h"
 
 // function to handle -l flag
-printArchiveDetails(char* archiveName) {
+void printArchiveDetails(char* archiveName) {
  
 }
 
 ///function to handle -v flag
-verifyArchive(char ** fileNames, int numFiles, char * archiveName) {
+void verifyArchive(char ** fileNames, int numFiles, char * archiveName) {
 
 }

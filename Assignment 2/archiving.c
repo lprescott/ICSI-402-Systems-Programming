@@ -16,6 +16,7 @@
 #include <stdio.h>
 
 #include "archiving.h"
+#include "constants.h"
 #include "other.h"
 
 void archive(char** filenames, int numFiles, char* archivename) {

@@ -29,6 +29,11 @@
 #include "archivingTwo.h"
 #include "other.h"
 
+/*
+    TODO:
+    Delete dynamically allocated list for names of files.
+*/
+
 
 int main( int argc, char *argv[] )  {
     //Variables here:
@@ -38,7 +43,7 @@ int main( int argc, char *argv[] )  {
     char * archiveName; 
 
     // Print for peace of mind.
-    printf("The number of args is: %d\n", numOfArgs);
+    printf("\nThe number of args is: %d\n", numOfArgs);
 
     //Check for at least two arguments.
     if (numOfArgs < 2){
@@ -47,26 +52,65 @@ int main( int argc, char *argv[] )  {
     }
     else if (strcmp(argv[1], "-a") == 0){
         //Create an archive.
-        strcpy(archiveName, argv[2]);
-        int numOfFiles = numOfArgs - 2;
-        printf("You supplied %d file names.", numOfFiles);
+        archiveName = strdup(argv[2]);
+        printf("You supplied the archive name of: %s\n", archiveName);
+        int numOfFiles; //The number of files.
+        numOfFiles = numOfArgs - 2; //Calc. that
+        printf("You supplied %d file names.\n", numOfFiles);
 
+        //Dynamically allocate for the array of char pointers, one for each string
+        char ** fileNames = malloc(numOfFiles * sizeof(char *));
+
+        //Allocate space for each string
+        int i; //Counting int
+        for (i = 0; i < numOfFiles; ++i) {
+            fileNames[i] = (char *)malloc(strlen(argv[i+3])+1);
+            strcpy(fileNames[i], argv[i+3]);
+        }
+
+        //Print out the fileNames
+        int x; //Counting int
+        for (x = 0; x < numOfFiles; ++x) {
+            printf("%d: The file name: %s\n", x + 1, fileNames[x]);
+        }
+        
+        //archive(**fileNames, numOfFiles, archiveName);
     }
     else if (strcmp(argv[1], "-u") == 0){
         //Unpack an archive.
-        strcpy(archiveName, argv[2]);
+        archiveName = strdup(argv[2]);
 
+        
     }
     else if (strcmp(argv[1], "-l") == 0){
         //Prints an archive size.
-        strcpy(archiveName, argv[2]);
-
+        archiveName = strdup(argv[2]);
+        
     }
     else if (strcmp(argv[1], "-v") == 0){
         //Checks an archive.
-        strcpy(archiveName, argv[2]);
-        int numOfFiles = numOfArgs - 2;
-        printf("You supplied %d file names.", numOfFiles);
+        archiveName = strdup(argv[2]);
+        printf("You supplied the archive name of: %s\n", archiveName);
+        int numOfFiles; //The number of files.
+        numOfFiles = numOfArgs - 2; //Calc. that
+        printf("You supplied %d file names.\n", numOfFiles);
+
+        //Dynamically allocate for the array of char pointers, one for each string
+        char ** fileNames = malloc(numOfFiles * sizeof(char *));
+
+        //Allocate space for each string
+        int i; //Counting int
+        for (i = 0; i < numOfFiles; ++i) {
+            fileNames[i] = (char *)malloc(strlen(argv[i+3])+1);
+            strcpy(fileNames[i], argv[i+3]);
+        }
+
+        //Print out the fileNames
+        int x; //Counting int
+        for (x = 0; x < numOfFiles; ++x) {
+            printf("%d: The file name: %s\n", x + 1, fileNames[x]);
+        }
+        
     }
     else{
         fprintf(stderr, "Unknown first argument supplied. ");

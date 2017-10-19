@@ -13,6 +13,11 @@
 //archive function
 //void archive(char** filenames, int numFiles, char* archivename)
 
+#include <stdio.h>
+
+#include "archiving.h"
+#include "other.h"
+
 void archive(char** filenames, int numFiles, char* archivename) {
        
 }

@@ -30,7 +30,8 @@
 #include "other.h"
 
 /*
-
+    Main function takes the first argument (either -a, -u, -l, and -v) and then verifyies if the rest of the arguments 
+    match the given command.
 */
 
 int main( int argc, char *argv[] )  {

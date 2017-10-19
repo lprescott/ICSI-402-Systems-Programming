@@ -7,3 +7,7 @@
 //Input:   	
 //Output:  	
 //Assumption:	
+
+#include <stdio.h>
+#include "other.h"
+#include "constants.h"

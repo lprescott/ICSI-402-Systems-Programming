@@ -9,7 +9,11 @@
 //Assumption:	
 
 // function to handle -l flag
+#include <stdio.h>
 
+#include "archivingTwo.h"
+#include "other.h"
+#include "constants.h"
 
 
 

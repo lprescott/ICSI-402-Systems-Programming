@@ -16,6 +16,19 @@
 
 //Included libraries:
 #include <stdio.h>
+#include <string.h>
+#include <dirent.h>
+#include <stdlib.h>
+#include <sys/stat.h>
+#include <errno.h>
+
+//Included files:
+#include "constants.h"
+#include "archiving.h"
+#include "archivingSize.h"
+#include "archivingTwo.h"
+#include "other.h"
+
 
 int main( int argc, char *argv[] )  {
 

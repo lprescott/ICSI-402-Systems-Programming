@@ -74,17 +74,20 @@ int main( int argc, char *argv[] )  {
             printf("%d: The file name: %s\n", x + 1, fileNames[x]);
         }
         
-        //archive(**fileNames, numOfFiles, archiveName);
+        //archive(**fileNames, numOfFiles, * archiveName);
     }
     else if (strcmp(argv[1], "-u") == 0){
         //Unpack an archive.
         archiveName = strdup(argv[2]);
 
+        //unarchive(* archiveName);
         
     }
     else if (strcmp(argv[1], "-l") == 0){
         //Prints an archive size.
         archiveName = strdup(argv[2]);
+
+        //printArchiveDetails(* archiveName);
         
     }
     else if (strcmp(argv[1], "-v") == 0){
@@ -110,6 +113,8 @@ int main( int argc, char *argv[] )  {
         for (x = 0; x < numOfFiles; ++x) {
             printf("%d: The file name: %s\n", x + 1, fileNames[x]);
         }
+
+        //verifyArchive(**fileNames, numOfFiles, * archiveName);
         
     }
     else{

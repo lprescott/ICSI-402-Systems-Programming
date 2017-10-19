@@ -19,7 +19,7 @@ printArchiveDetails(char* archiveName) {
  
 }
 
-//function to handle -v flag
+///function to handle -v flag
 verifyArchive(char ** fileNames, int numFiles, char * archiveName) {
 
 }

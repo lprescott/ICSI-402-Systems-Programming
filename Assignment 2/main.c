@@ -30,10 +30,8 @@
 #include "other.h"
 
 /*
-    TODO:
-    Delete dynamically allocated list for names of files.
-*/
 
+*/
 
 int main( int argc, char *argv[] )  {
     //Variables here:
@@ -75,6 +73,13 @@ int main( int argc, char *argv[] )  {
         }
         
         //archive(**fileNames, numOfFiles, * archiveName);
+
+        //Free the memory of the dynamically allocated list here.
+        int y;
+        for (y = 0; y < numOfFiles; ++y){
+            free(fileNames[y]);
+        }
+        free(fileNames);
     }
     else if (strcmp(argv[1], "-u") == 0){
         //Unpack an archive.
@@ -115,6 +120,13 @@ int main( int argc, char *argv[] )  {
         }
 
         //verifyArchive(**fileNames, numOfFiles, * archiveName);
+
+        //Free the memory of the dynamically allocated list here.
+        int y;
+        for (y = 0; y < numOfFiles; ++y){
+            free(fileNames[y]);
+        }
+        free(fileNames);
         
     }
     else{
@@ -123,4 +135,4 @@ int main( int argc, char *argv[] )  {
     }
 
    return 1;
-}
+} //End main

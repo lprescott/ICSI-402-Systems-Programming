@@ -3,7 +3,7 @@
 //Roles:   	Leader, Monitor, Recorder Respectively
 //Date:    	10/19/2017
 //Course:  	ICSI 402
-//Desc: contains the two functions, archive which createsan archive file from a set of individual files
+//Desc: contains the two functions, archive which creates an archive file from a set of individual files
 //         unarchive function unpacks an archive file and create
         
 //Input:   	
@@ -13,9 +13,13 @@
 //archive function
 //void archive(char** filenames, int numFiles, char* archivename)
 
-void archive(char**, int, char*)
+void archive(char** filenames, int numFiles, char* archivename) {
+       
+}
 
 //unarchive function
 //unarchive(char* archivefile)
 
-void unarchive(char*)
+void unarchive(char* archivefile) {
+        
+}

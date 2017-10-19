@@ -8,17 +8,18 @@
 //Output:  	
 //Assumption:	
 
-// function to handle -l flag
 #include <stdio.h>
 
 #include "archivingTwo.h"
 #include "other.h"
 #include "constants.h"
 
-
-
-
-
+// function to handle -l flag
+printArchiveDetails(char* archiveName) {
+ 
+}
 
 //function to handle -v flag
+verifyArchive(char ** fileNames, int numFiles, char * archiveName) {
 
+}

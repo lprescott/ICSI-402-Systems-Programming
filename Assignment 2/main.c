@@ -22,7 +22,7 @@
 #include <sys/stat.h>
 #include <errno.h>
 
-//Included files:
+//Included header files:
 #include "constants.h"
 #include "archiving.h"
 #include "archivingSize.h"
@@ -30,8 +30,13 @@
 #include "other.h"
 
 /*
-    Main function takes the first argument (either -a, -u, -l, and -v) and then verifyies if the rest of the arguments 
-    match the given command.
+    Main function takes the first argument (either -a, -u, -l, and -v) and then verifyies if the rest of the arguments are correct
+    and match the given command, calling the corresponding function per the first argument's flag. The funcions called and their 
+    corresponding flags are as follows:  
+        -a archivename file1 file2 ... fileN: (archive)
+        -u archivename:                       (unarchive) 
+        -l archivename:                       (printArchiveDetails) Outputs details of archive to stdout.
+        -v archivename file1 file2 ... fileN: (verifyArhive) Outputs integrity of archive to stdout.
 */
 
 int main( int argc, char *argv[] )  {

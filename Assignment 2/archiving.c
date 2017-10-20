@@ -68,7 +68,6 @@ void archive(char** fileNames, int numFiles, char* archiveName) {
 	for(int i = 0; i < numFiles; i++){
 		char * tempFileName;
 		tempFileName = strdup(fileNames[i]);
-		printf("\nHITTING A LOOP\n");
 		//open file
 		printf("The file name is: \"%s\"", tempFileName);
 		if ((tempFile = fopen(tempFileName, "r")) == NULL){
@@ -106,7 +105,68 @@ void archive(char** fileNames, int numFiles, char* archiveName) {
 
 //unarchive function
 void unarchive(char* archiveFile) {
-        
+	
+	//Variables here
+	char * tempArchiveName;
+	int numOfFiles, fileNameLength;
+	long contentSize;
+	char * tempString;
+	tempArchiveName = strdup(archiveFile);
+	FILE * inputFile;
+	FILE * tempFile;
+
+	// concatenate ".bin" to a temp archiveName string.
+	if (strstr(tempArchiveName, ".bin") == NULL){
+		strcat(tempArchiveName, ".bin");
+	}
+
+	//opens a new bin file with new string for reading
+	if ((inputFile = fopen(tempArchiveName, "r")) == NULL){
+		fprintf(stderr, "Could not allocate space for the input archive.");
+		exit(-1); 
+	}
+	
+	fread(&numOfFiles, sizeNumFiles, 1, inputFile);
+	fseek(inputFile, sizeNumFiles, SEEK_CUR);
+
+	printf("\nNumber of Files: %d\n", numOfFiles);
+
+	int i = 0;
+	for (i = 0; i < numOfFiles; i++) {
+
+		
+		fread(&fileNameLength, sizeLengthFile, 1, inputFile);
+		printf("Size of FileName: %d\n", fileNameLength);
+
+		char * tempString = malloc(fileNameLength * sizeof(char));
+
+		fread(&tempString, fileNameLength, 1, inputFile);
+		printf("FileName: %s\n", tempString);
+
+		tempFile = fopen(tempString, "w");
+		if (tempFile == NULL) {
+			fprintf(stderr, "Could not allocate space for the tempFile");
+			exit(-1); 
+		}
+		
+		fread(&contentSize, sizeFileSize, 1, inputFile);
+		printf("Size of File: %d", contentSize);
+
+		int y, c;
+		for (y = 0; y < contentSize; y++) {
+			c = fgetc(inputFile);
+			fputc((char)c, tempFile);
+		}
+
+		fclose(tempFile);
+
+		//free memory
+		free(tempString);
+
+	}
+
+	fclose(inputFile);
+
 //declare temp string including archiveName
 //concatenate .bin into an archiveName
 //open archive, open for reading only

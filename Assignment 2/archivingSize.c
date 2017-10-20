@@ -9,10 +9,27 @@
 //Assumption:	
 
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "constants.h"
 #include "archivingSize.h"
 
-int fileSize(FILE * file){
-    return 1;
+/*
+
+*/
+long fileSize(FILE * file){
+    long position;
+
+    if (file == NULL){
+        fprintf(stderr, "Error opening file.\n");
+        return(-1);
+    }
+
+    fseek(file, 0, SEEK_END);
+
+    position = ftell(file);
+
+    fclose(file);
+
+    return position;
 }

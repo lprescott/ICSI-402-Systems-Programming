@@ -1,1 +1,1 @@
-int fileSize(FILE * file);
+long fileSize(FILE * file);

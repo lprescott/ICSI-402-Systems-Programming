@@ -51,7 +51,9 @@ void archive(char** fileNames, int numFiles, char* archiveName) {
 	int tempNumOfFiles = numFiles;
 
 	// concatenate ".bin" to a temp archiveName string.
-	strcat(tempArchiveName, ".bin");
+	if (strstr(tempArchiveName, ".bin") == NULL){
+		strcat(tempArchiveName, ".bin");
+	}
 
 	//opens a new bin file with new string for writing
 	if ((outputFile = fopen(tempArchiveName, "w")) == NULL){

@@ -81,6 +81,11 @@ int main( int argc, char *argv[] )  {
         int i; //Counting int
         for (i = 0; i < numOfFiles; ++i) {
             fileNames[i] = (char *)malloc(strlen(argv[i+3])+1);
+            //Check if fileName is too long.
+            if (strlen(argv[i+3]) >= sizeFileName){
+                fprintf(stderr, "The file name would cause an overflow. ");
+                exit(-1);              
+            }
             strcpy(fileNames[i], argv[i+3]);
         }
 
@@ -90,7 +95,7 @@ int main( int argc, char *argv[] )  {
             printf("%d: The file name: %s\n", x + 1, fileNames[x]);
         }
         
-        //archive(**fileNames, numOfFiles, * archiveName);
+        archive(fileNames, numOfFiles, archiveName);
 
         //Free the memory of the dynamically allocated list here.
         int y;
@@ -166,6 +171,11 @@ int main( int argc, char *argv[] )  {
         int i; //Counting int
         for (i = 0; i < numOfFiles; ++i) {
             fileNames[i] = (char *)malloc(strlen(argv[i+3])+1);
+            //Check if fileName is too long.
+            if (strlen(argv[i+3]) >= sizeFileName){
+                fprintf(stderr, "The file name would cause an overflow. ");
+                exit(-1);              
+            }
             strcpy(fileNames[i], argv[i+3]);
         }
 

@@ -13,34 +13,96 @@
 
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #include "archiving.h"
 #include "constants.h"
 #include "other.h"
+#include "archivingSize.h"
 
-//archive function
+/* Constants to use:
+define sizeNumFiles 4 //1
+define sizeFileSize 4 //2
+define sizeLengthFile 1 //3
+define sizeFileName 256 //4
+*/
 
-void archive(char** filenames, int numFiles, char* archivename) {
+/*
+
+*/
+
+/* loop for numFiles through string array
+	a)open file
+	b) get, store, print size of fileName
+	c) get, store, print the fileName
+	d) get, store, print size of contents( use fileSize() function here)
+	e) get, store , print the contents
+	f) close file
+*/
+//close bin file
+
+void archive(char** fileNames, int numFiles, char* archiveName) {
+	//Variables here
+	char * tempArchiveName;
+	tempArchiveName = strdup(archiveName);
+	FILE * outputFile;
+	FILE * tempFile;
+	int tempNumOfFiles = numFiles;
 
 	// concatenate ".bin" to a temp archiveName string.
+	strcat(tempArchiveName, ".bin");
+
 	//opens a new bin file with new string for writing
+	if ((outputFile = fopen(tempArchiveName, "w")) == NULL){
+		fprintf(stderr, "Could not allocate space for the output archive.");
+		exit(-1); 
+	}
+	
 	//print #of files to bin
-	/* loop for numFiles through string array
-		a)open file
-	    b) get, store, print size of fileName
-		c) get, store, print the fileName
-		d) get, store, print size of contents( use fileSize() function here)
-		e) get, store , print the contents
-		f) close file
-    */
-	//close bin file
+	fwrite(&tempNumOfFiles, sizeNumFiles, 1, outputFile);
 
+	//loop for numFiles through string array
+	for(int i = 0; i < numFiles; i++){
+		char * tempFileName;
+		tempFileName = strdup(fileNames[i]);
+		printf("\nHITTING A LOOP\n");
+		//open file
+		printf("The file name is: \"%s\"", tempFileName);
+		if ((tempFile = fopen(tempFileName, "r")) == NULL){
+			fprintf(stderr, "Could not allocate space for a temp intput file. ");
+			exit(-1); 
+		}
 
+		//get, store, print size of fileName
+		int lengthOfFileName = strlen(tempFileName);
+		fwrite(&lengthOfFileName, sizeLengthFile, 1, outputFile);
 
-       
+		//get, store, print the fileName
+		fwrite(&tempFileName, lengthOfFileName, 1, outputFile);
+
+		//get, store, print size of contents( use fileSize() function here)
+		long sizeOfContents = fileSize(tempFile);
+		fwrite(&sizeOfContents, sizeFileSize, 1, outputFile);
+
+		//get, store , print the contents
+		rewind(tempFile);
+		int c = fgetc(tempFile);
+		while (c != EOF){
+			//puts("ADDING ");
+			fwrite(&c, sizeof(c), 1, outputFile);
+			c = fgetc(tempFile);
+		}
+
+		//close tempFile
+		fclose(tempFile);
+	}
+	//close outputFile
+	fclose(outputFile);
+
 }
 
 //unarchive function
-void unarchive(char* archivefile) {
+void unarchive(char* archiveFile) {
         
 }

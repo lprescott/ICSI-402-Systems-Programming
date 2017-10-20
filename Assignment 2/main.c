@@ -58,6 +58,12 @@ int main( int argc, char *argv[] )  {
 
         //Create an archive.
         archiveName = strdup(argv[2]);
+
+        //Check if there are multiple flags
+        if (checkIfFlag(archiveName) == -1){
+            exit(-1);  
+        }
+
         printf("You supplied the archive name of: %s\n", archiveName);
         int numOfFiles; //The number of files.
         numOfFiles = numOfArgs - 2; //Calc. that
@@ -97,6 +103,12 @@ int main( int argc, char *argv[] )  {
 
         //Unpack an archive.
         archiveName = strdup(argv[2]);
+
+        //Check if there are multiple flags
+        if (checkIfFlag(archiveName) == -1){
+            exit(-1);  
+        }
+        
         printf("You supplied the archive name of: %s\n", archiveName);
 
         //unarchive(* archiveName);
@@ -111,6 +123,12 @@ int main( int argc, char *argv[] )  {
 
         //Prints an archive size.
         archiveName = strdup(argv[2]);
+
+        //Check if there are multiple flags
+        if (checkIfFlag(archiveName) == -1){
+            exit(-1);  
+        }
+
         printf("You supplied the archive name of: %s\n", archiveName);
 
         //printArchiveDetails(* archiveName);
@@ -122,9 +140,15 @@ int main( int argc, char *argv[] )  {
             fprintf(stderr, "There were an incorrect number of args. ");
             exit(-1);  
         }
-        
+
         //Checks an archive.
         archiveName = strdup(argv[2]);
+
+        //Check if there are multiple flags
+        if (checkIfFlag(archiveName) == -1){
+            exit(-1);  
+        }
+
         printf("You supplied the archive name of: %s\n", archiveName);
         int numOfFiles; //The number of files.
         numOfFiles = numOfArgs - 2; //Calc. that

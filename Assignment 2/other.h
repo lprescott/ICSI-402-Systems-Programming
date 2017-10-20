@@ -1,0 +1,1 @@
+int checkIfFlag(char * string);

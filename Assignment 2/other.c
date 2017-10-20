@@ -9,6 +9,26 @@
 //Assumption:	
 
 #include <stdio.h>
+#include <string.h>
 
 #include "other.h"
 #include "constants.h"
+
+int checkIfFlag(char * string){
+    if(strcmp(string, "-a") == 0){
+        fprintf(stderr, "Multiple flags detected. ");
+        return -1;
+    }
+    else if(strcmp(string, "-u") == 0){
+        fprintf(stderr, "Multiple flags detected. ");
+        return -1;
+    }
+    else if(strcmp(string, "-v") == 0){
+        fprintf(stderr, "Multiple flags detected. ");
+        return -1;
+    }
+    else if(strcmp(string, "-l") == 0){
+        fprintf(stderr, "Multiple flags detected. ");
+        return -1;
+    }
+}

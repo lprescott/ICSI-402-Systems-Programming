@@ -121,7 +121,7 @@ int main( int argc, char *argv[] )  {
         
         printf("You supplied the archive name of: %s\n", archiveName);
 
-        //unarchive(* archiveName);
+        //unarchive(archiveName);
         
     }
     else if (strcmp(argv[1], "-l") == 0){

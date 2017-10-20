@@ -46,10 +46,16 @@ int main( int argc, char *argv[] )  {
 
     //Check for at least two arguments.
     if (numOfArgs < 2){
-        fprintf(stderr, "There were not enought arguments. ");
+        fprintf(stderr, "There were not enough arguments. ");
         exit(-1);
     }
     else if (strcmp(argv[1], "-a") == 0){
+        //Check for atlest three args (not including exe)
+        if (numOfArgs < 3){
+            fprintf(stderr, "There were an incorrect number of args. ");
+            exit(-1);  
+        }
+
         //Create an archive.
         archiveName = strdup(argv[2]);
         printf("You supplied the archive name of: %s\n", archiveName);
@@ -83,20 +89,40 @@ int main( int argc, char *argv[] )  {
         free(fileNames);
     }
     else if (strcmp(argv[1], "-u") == 0){
+        //Check if there are more than three args
+        if (numOfArgs != 2){
+            fprintf(stderr, "There were an incorrect number of args. ");
+            exit(-1);
+        }
+
         //Unpack an archive.
         archiveName = strdup(argv[2]);
+        printf("You supplied the archive name of: %s\n", archiveName);
 
         //unarchive(* archiveName);
         
     }
     else if (strcmp(argv[1], "-l") == 0){
+        //Check if there are more than three args
+        if (numOfArgs != 2){
+            fprintf(stderr, "There were an incorrect number of args. ");
+            exit(-1);
+        }
+
         //Prints an archive size.
         archiveName = strdup(argv[2]);
+        printf("You supplied the archive name of: %s\n", archiveName);
 
         //printArchiveDetails(* archiveName);
         
     }
     else if (strcmp(argv[1], "-v") == 0){
+        //Check for atlest three args (not including exe)
+        if (numOfArgs < 3){
+            fprintf(stderr, "There were an incorrect number of args. ");
+            exit(-1);  
+        }
+        
         //Checks an archive.
         archiveName = strdup(argv[2]);
         printf("You supplied the archive name of: %s\n", archiveName);

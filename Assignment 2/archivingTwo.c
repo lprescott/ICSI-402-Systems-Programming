@@ -26,7 +26,10 @@ void printArchiveDetails(char* archiveName) {
 
 ///function to handle -v flag
 /*
-
+  Takes the archiveName, and checks to see if all the fileNames are contained within the archive.
+  If the archive correctly contains all the files, then "Archive verified" is printed to the console.
+  If the archive is missing data, then the program will print "Archive is missing X bytes" to the console.
+  If the archive's data is incorrect, then the program will print "Archive is corrupted."
 */
 void verifyArchive(char ** fileNames, int numFiles, char * archiveName) {
 

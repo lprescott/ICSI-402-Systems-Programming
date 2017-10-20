@@ -31,7 +31,7 @@ long fileSize(FILE * file){
 
     position = ftell(file);
 
-    fclose(file);
+    rewind(file);
 
     return position;
 }

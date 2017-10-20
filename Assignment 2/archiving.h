@@ -1,2 +1,2 @@
-void archive(char** filenames, int numFiles, char* archivename);
-void unarchive(char* archivefile);
+void archive(char** fileNames, int numFiles, char* archiveName);
+void unarchive(char* archiveFile);

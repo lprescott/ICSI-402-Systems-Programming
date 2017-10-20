@@ -12,3 +12,7 @@
 
 #include "constants.h"
 #include "archivingSize.h"
+
+int fileSize(FILE * file){
+    return 1;
+}

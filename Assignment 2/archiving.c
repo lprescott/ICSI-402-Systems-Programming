@@ -107,4 +107,18 @@ void archive(char** fileNames, int numFiles, char* archiveName) {
 //unarchive function
 void unarchive(char* archiveFile) {
         
+//declare temp string including archiveName
+//concatenate .bin into an archiveName
+//open archive, open for reading only
+//read first 4 bytes(#of files)
+/*
+a.for loop for # of files
+b.read next 1 bytes(determines length of filename to be created)
+c. for loop for length of name
+d.open newfile of temp string
+e.read next 4 bytes for content size
+f.adding it to the file, in the loop of the content size
+g. close tempfile
+*/
+//close bin file
 }

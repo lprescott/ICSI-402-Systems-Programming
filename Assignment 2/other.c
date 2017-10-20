@@ -4,9 +4,9 @@
 //Date:    	10/19/2017
 //Course:  	ICSI 402
 //Desc:    	// this contains additional functions needed for the functionality of the main.c file
-//Input:   	
-//Output:  	
-//Assumption:	
+//Input:
+//Output:
+//Assumption:
 
 #include <stdio.h>
 #include <string.h>
@@ -14,6 +14,10 @@
 #include "other.h"
 #include "constants.h"
 
+/*
+  This function checks to see if the given character array string is a flag. if it is, the program
+  returns -1, else the function will return 1 and exit.
+*/
 int checkIfFlag(char * string){
     if(strcmp(string, "-a") == 0){
         fprintf(stderr, "Multiple flags detected. ");
@@ -31,4 +35,6 @@ int checkIfFlag(char * string){
         fprintf(stderr, "Multiple flags detected. ");
         return -1;
     }
+
+    return 1;
 }

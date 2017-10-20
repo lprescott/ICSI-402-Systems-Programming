@@ -10,8 +10,7 @@
 //Output:  	
 //Assumption:	
 
-//archive function
-//void archive(char** filenames, int numFiles, char* archivename)
+
 
 #include <stdio.h>
 
@@ -19,13 +18,29 @@
 #include "constants.h"
 #include "other.h"
 
+//archive function
+
 void archive(char** filenames, int numFiles, char* archivename) {
+
+	// concatenate ".bin" to a temp archiveName string.
+	//opens a new bin file with new string for writing
+	//print #of files to bin
+	/* loop for numFiles through string array
+		a)open file
+	    b) get, store, print size of fileName
+		c) get, store, print the fileName
+		d) get, store, print size of contents( use fileSize() function here)
+		e) get, store , print the contents
+		f) close file
+    */
+	//close bin file
+
+
+
        
 }
 
 //unarchive function
-//unarchive(char* archivefile)
-
 void unarchive(char* archivefile) {
         
 }

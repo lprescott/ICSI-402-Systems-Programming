@@ -254,8 +254,4 @@ g. close tempfile
 //close bin file
 <<<<<<< HEAD
 */
-}
 
-=======
-}
->>>>>>> origin/master

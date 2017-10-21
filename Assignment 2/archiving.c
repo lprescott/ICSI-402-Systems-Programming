@@ -103,15 +103,21 @@ void archive(char** fileNames, int numFiles, char* archiveName) {
 		printf("%d", count);
 		
 	}
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
 	fclose(outputFile);
 	
 }
 
+<<<<<<< HEAD
 
 
+=======
+//unarchive function
+>>>>>>> origin/master
 void unarchive(char* archiveFile) {
-
 	
 	//Variables here
 	char * tempArchiveName;
@@ -159,6 +165,7 @@ void unarchive(char* archiveFile) {
 		fread(&contentSize, sizeof(long), 1, inputFile);
 		printf("%d\n", contentSize);
 		
+<<<<<<< HEAD
 		int y = 0;
 		int c;
 		for (y; y < contentSize; y++) {
@@ -170,3 +177,7 @@ void unarchive(char* archiveFile) {
 	
 }
 
+=======
+	}
+}
+>>>>>>> origin/master

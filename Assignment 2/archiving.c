@@ -15,6 +15,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 #include "archiving.h"
 #include "constants.h"
@@ -60,12 +61,44 @@ void archive(char** fileNames, int numFiles, char* archiveName) {
 		fprintf(stderr, "Could not allocate space for the output archive.");
 		exit(-1);
 	}
-
+	
+	printf("%d\n", tempNumOfFiles);
+	fwrite(&tempNumOfFiles, sizeNumFiles, 1, outputFile);
+	
+	int i = 0;
+	for (i = 0; i < numFiles; i++) {
+		
+		char * tempFileName;
+		tempFileName = strdup(fileNames[i]);
+		
+		printf("File Name: %s\n", tempFileName);
+		
+		if ((tempFile = fopen(tempFileName, "r")) == NULL) {
+			printf(stderr, "could not allocate space");
+			exit(-1);
+		}
+		
+		long lengthOfFileName = strlen(tempFileName) + 1;
+		
+		printf("%d\n", lengthOfFileName);
+		fwrite(&lengthOfFileName, sizeof(int), 1, outputFile);
+		
+		fwrite(tempFileName, sizeof(char), lengthOfFileName, outputFile);
+		
+		long tempSize = (fileSize(tempFile));
+		printf("%d\n", tempSize);
+		
+		fwrite(&tempSize, sizeof(long), 1, outputFile);
+		
+		
+	}
+	/*
 	//print #of files to bin
 	fwrite(&tempNumOfFiles, sizeNumFiles, 1, outputFile);
 
 	//loop for numFiles through string array
-	for(int i = 0; i < numFiles; i++){
+	int i = 0;
+  for(i = 0; i < numFiles; i++){
 		char * tempFileName;
 		tempFileName = strdup(fileNames[i]);
 		//open file
@@ -76,7 +109,7 @@ void archive(char** fileNames, int numFiles, char* archiveName) {
 		}
 
 		//get, store, print size of fileName
-		int lengthOfFileName = strlen(tempFileName);
+		int lengthOfFileName = strlen(tempFileName) + 1;
 		fwrite(&lengthOfFileName, sizeLengthFile, 1, outputFile);
 
 		//get, store, print the fileName
@@ -98,19 +131,23 @@ void archive(char** fileNames, int numFiles, char* archiveName) {
 		//close tempFile
 		fclose(tempFile);
 	}
+	
+	*/
 	//close outputFile
 	fclose(outputFile);
-
+	
 }
 
 //unarchive function
+
+
 void unarchive(char* archiveFile) {
 
+	
 	//Variables here
 	char * tempArchiveName;
 	int numOfFiles, fileNameLength;
 	long contentSize;
-	char * tempString;
 	tempArchiveName = strdup(archiveFile);
 	FILE * inputFile;
 	FILE * tempFile;
@@ -129,7 +166,32 @@ void unarchive(char* archiveFile) {
 	fread(&numOfFiles, sizeNumFiles, 1, inputFile);
 
 	printf("\nNumber of Files: %d\n", numOfFiles);
-
+	
+	int i = 0;
+	for (i = 0; i < numOfFiles; i++) {
+		fread(&fileNameLength, sizeof(int), 1, inputFile);
+		printf("%d\n", fileNameLength);
+		
+		char * tempString = malloc(fileNameLength * sizeof(char));
+		
+		if (tempString == NULL) {
+			exit(-1);
+		}
+		
+		fread(tempString, sizeof(char), fileNameLength, inputFile);
+		
+		printf("File Name: %s\n", tempString);
+		
+		tempFile = fopen(tempString, "w");
+		if (tempFile == NULL) {
+			exit(-1);
+		}
+		
+		fread(&contentSize, sizeof(long), 1, inputFile);
+		printf("%d\n", contentSize);
+		
+	}
+	/*
 
 	int i = 0;
 	for (i = 0; i < numOfFiles; i++) {
@@ -139,8 +201,6 @@ void unarchive(char* archiveFile) {
 		printf("Size of FileName: %d\n", fileNameLength);
 
 		char * tempString = malloc(fileNameLength * sizeof(char));
-
-
 
 		fread(&tempString, fileNameLength, 1, inputFile);
 		printf("FileName: %s\n", tempString);
@@ -183,6 +243,8 @@ d.open newfile of temp string
 e.read next 4 bytes for content size
 f.adding it to the file, in the loop of the content size
 g. close tempfile
-*/
+
 //close bin file
+*/
 }
+

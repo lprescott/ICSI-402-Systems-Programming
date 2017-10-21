@@ -56,7 +56,7 @@ void archive(char** fileNames, int numFiles, char* archiveName) {
 	}
 
 	//opens a new bin file with new string for writing
-	if ((outputFile = fopen(tempArchiveName, "w")) == NULL){
+	if ((outputFile = fopen(tempArchiveName, "wb")) == NULL){
 		fprintf(stderr, "Could not allocate space for the output archive.");
 		exit(-1);
 	}
@@ -121,7 +121,7 @@ void unarchive(char* archiveFile) {
 	}
 
 	//opens a new bin file with new string for reading
-	if ((inputFile = fopen(tempArchiveName, "r")) == NULL){
+	if ((inputFile = fopen(tempArchiveName, "rb")) == NULL){
 		fprintf(stderr, "Could not allocate space for the input archive.");
 		exit(-1);
 	}
@@ -138,12 +138,14 @@ void unarchive(char* archiveFile) {
 		fread(&fileNameLength, 1, 1, inputFile);
 		printf("Size of FileName: %d\n", fileNameLength);
 
-    return;
-
 		char * tempString = malloc(fileNameLength * sizeof(char));
+
+
 
 		fread(&tempString, fileNameLength, 1, inputFile);
 		printf("FileName: %s\n", tempString);
+
+    return;
 
 		tempFile = fopen(tempString, "w");
 		if (tempFile == NULL) {

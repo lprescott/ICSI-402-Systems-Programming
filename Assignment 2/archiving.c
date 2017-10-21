@@ -5,10 +5,10 @@
 //Course:  	ICSI 402
 //Desc: contains the two functions, archive which creates an archive file from a set of individual files
 //         unarchive function unpacks an archive file and create
-        
-//Input:   	
-//Output:  	
-//Assumption:	
+
+//Input:
+//Output:
+//Assumption:
 
 
 
@@ -58,9 +58,9 @@ void archive(char** fileNames, int numFiles, char* archiveName) {
 	//opens a new bin file with new string for writing
 	if ((outputFile = fopen(tempArchiveName, "w")) == NULL){
 		fprintf(stderr, "Could not allocate space for the output archive.");
-		exit(-1); 
+		exit(-1);
 	}
-	
+
 	//print #of files to bin
 	fwrite(&tempNumOfFiles, sizeNumFiles, 1, outputFile);
 
@@ -72,7 +72,7 @@ void archive(char** fileNames, int numFiles, char* archiveName) {
 		printf("The file name is: \"%s\"", tempFileName);
 		if ((tempFile = fopen(tempFileName, "r")) == NULL){
 			fprintf(stderr, "Could not allocate space for a temp intput file. ");
-			exit(-1); 
+			exit(-1);
 		}
 
 		//get, store, print size of fileName
@@ -105,7 +105,7 @@ void archive(char** fileNames, int numFiles, char* archiveName) {
 
 //unarchive function
 void unarchive(char* archiveFile) {
-	
+
 	//Variables here
 	char * tempArchiveName;
 	int numOfFiles, fileNameLength;
@@ -123,20 +123,22 @@ void unarchive(char* archiveFile) {
 	//opens a new bin file with new string for reading
 	if ((inputFile = fopen(tempArchiveName, "r")) == NULL){
 		fprintf(stderr, "Could not allocate space for the input archive.");
-		exit(-1); 
+		exit(-1);
 	}
-	
+
 	fread(&numOfFiles, sizeNumFiles, 1, inputFile);
-	fseek(inputFile, sizeNumFiles, SEEK_CUR);
 
 	printf("\nNumber of Files: %d\n", numOfFiles);
+
 
 	int i = 0;
 	for (i = 0; i < numOfFiles; i++) {
 
-		
-		fread(&fileNameLength, sizeLengthFile, 1, inputFile);
+
+		fread(&fileNameLength, 1, 1, inputFile);
 		printf("Size of FileName: %d\n", fileNameLength);
+
+    return;
 
 		char * tempString = malloc(fileNameLength * sizeof(char));
 
@@ -146,9 +148,9 @@ void unarchive(char* archiveFile) {
 		tempFile = fopen(tempString, "w");
 		if (tempFile == NULL) {
 			fprintf(stderr, "Could not allocate space for the tempFile");
-			exit(-1); 
+			exit(-1);
 		}
-		
+
 		fread(&contentSize, sizeFileSize, 1, inputFile);
 		printf("Size of File: %d", contentSize);
 

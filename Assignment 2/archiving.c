@@ -76,11 +76,11 @@ void archive(char** fileNames, int numFiles, char* archiveName) {
 		}
 
 		//get, store, print size of fileName
-		int lengthOfFileName = strlen(tempFileName);
+		int lengthOfFileName = strlen(tempFileName) + 1;
 		fwrite(&lengthOfFileName, sizeLengthFile, 1, outputFile);
 
 		//get, store, print the fileName
-		fwrite(&tempFileName, lengthOfFileName, 1, outputFile);
+		fwrite(tempFileName, sizeof(char), lengthOfFileName, outputFile);
 
 		//get, store, print size of contents( use fileSize() function here)
 		long sizeOfContents = fileSize(tempFile);
@@ -142,10 +142,10 @@ void unarchive(char* archiveFile) {
 
 
 
-		fread(&tempString, fileNameLength, 1, inputFile);
-		printf("FileName: %s\n", tempString);
+		fread(tempString, sizeof(char), fileNameLength, inputFile);
+		printf("FileName: \"%s\"\n", tempString);
 
-    return;
+    		return;
 
 		tempFile = fopen(tempString, "w");
 		if (tempFile == NULL) {
@@ -154,7 +154,7 @@ void unarchive(char* archiveFile) {
 		}
 
 		fread(&contentSize, sizeFileSize, 1, inputFile);
-		printf("Size of File: %d", contentSize);
+		printf("Size of File: %ld", contentSize);
 
 		int y, c;
 		for (y = 0; y < contentSize; y++) {

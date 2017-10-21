@@ -62,7 +62,7 @@ void archive(char** fileNames, int numFiles, char* archiveName) {
 		exit(-1);
 	}
 	
-	printf("%d\n", tempNumOfFiles);
+	printf("NUMBER OF FILES: %d\n", tempNumOfFiles);
 	fwrite(&tempNumOfFiles, sizeNumFiles, 1, outputFile);
 	
 	int i = 0;
@@ -74,7 +74,7 @@ void archive(char** fileNames, int numFiles, char* archiveName) {
 		printf("File Name: %s\n", tempFileName);
 		
 		if ((tempFile = fopen(tempFileName, "r")) == NULL) {
-			printf(stderr, "could not allocate space");
+			fprintf(stderr, "could not allocate space");
 			exit(-1);
 		}
 		
@@ -89,56 +89,25 @@ void archive(char** fileNames, int numFiles, char* archiveName) {
 		printf("%d\n", tempSize);
 		
 		fwrite(&tempSize, sizeof(long), 1, outputFile);
+			
+		int c;
+		int count = 0;
 		
+		while((c = fgetc(tempFile)) != EOF) {
+			count++;
+			char h = (char)c;
+			printf("%c", h);
+			fprintf(outputFile, "%c", h);
+		}
+		
+		printf("%d", count);
 		
 	}
-	/*
-	//print #of files to bin
-	fwrite(&tempNumOfFiles, sizeNumFiles, 1, outputFile);
 
-	//loop for numFiles through string array
-	int i = 0;
-  for(i = 0; i < numFiles; i++){
-		char * tempFileName;
-		tempFileName = strdup(fileNames[i]);
-		//open file
-		printf("The file name is: \"%s\"", tempFileName);
-		if ((tempFile = fopen(tempFileName, "r")) == NULL){
-			fprintf(stderr, "Could not allocate space for a temp intput file. ");
-			exit(-1);
-		}
-
-		//get, store, print size of fileName
-		int lengthOfFileName = strlen(tempFileName) + 1;
-		fwrite(&lengthOfFileName, sizeLengthFile, 1, outputFile);
-
-		//get, store, print the fileName
-		fwrite(tempFileName, sizeof(char), lengthOfFileName, outputFile);
-
-		//get, store, print size of contents( use fileSize() function here)
-		long sizeOfContents = fileSize(tempFile);
-		fwrite(&sizeOfContents, sizeFileSize, 1, outputFile);
-
-		//get, store , print the contents
-		rewind(tempFile);
-		int c = fgetc(tempFile);
-		while (c != EOF){
-			//puts("ADDING ");
-			fwrite(&c, sizeof(c), 1, outputFile);
-			c = fgetc(tempFile);
-		}
-
-		//close tempFile
-		fclose(tempFile);
-	}
-	
-	*/
-	//close outputFile
 	fclose(outputFile);
 	
 }
 
-//unarchive function
 
 
 void unarchive(char* archiveFile) {
@@ -190,68 +159,14 @@ void unarchive(char* archiveFile) {
 		fread(&contentSize, sizeof(long), 1, inputFile);
 		printf("%d\n", contentSize);
 		
-	}
-	/*
-
-	int i = 0;
-	for (i = 0; i < numOfFiles; i++) {
-
-
-		fread(&fileNameLength, 1, 1, inputFile);
-		printf("Size of FileName: %d\n", fileNameLength);
-
-		char * tempString = malloc(fileNameLength * sizeof(char));
-
-<<<<<<< HEAD
-		fread(&tempString, fileNameLength, 1, inputFile);
-		printf("FileName: %s\n", tempString);
-=======
-
-
-		fread(tempString, sizeof(char), fileNameLength, inputFile);
-		printf("FileName: \"%s\"\n", tempString);
->>>>>>> origin/master
-
-    		return;
-
-		tempFile = fopen(tempString, "w");
-		if (tempFile == NULL) {
-			fprintf(stderr, "Could not allocate space for the tempFile");
-			exit(-1);
+		int y = 0;
+		int c;
+		for (y; y < contentSize; y++) {
+			fread(&c, sizeof(char), 1, inputFile);
+			fwrite(&c, sizeof(char), 1, tempFile);
 		}
-
-		fread(&contentSize, sizeFileSize, 1, inputFile);
-		printf("Size of File: %ld", contentSize);
-
-		int y, c;
-		for (y = 0; y < contentSize; y++) {
-			c = fgetc(inputFile);
-			fputc((char)c, tempFile);
-		}
-
-		fclose(tempFile);
-
-		//free memory
-		free(tempString);
-
+		
 	}
-
-	fclose(inputFile);
-
-//declare temp string including archiveName
-//concatenate .bin into an archiveName
-//open archive, open for reading only
-//read first 4 bytes(#of files)
-/*
-a.for loop for # of files
-b.read next 1 bytes(determines length of filename to be created)
-c. for loop for length of name
-d.open newfile of temp string
-e.read next 4 bytes for content size
-f.adding it to the file, in the loop of the content size
-g. close tempfile
-
-//close bin file
-<<<<<<< HEAD
-*/
+	
+}
 

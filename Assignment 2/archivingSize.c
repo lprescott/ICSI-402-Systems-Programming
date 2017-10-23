@@ -4,13 +4,12 @@
 //Date:    	10/19/2017
 //Course:  	ICSI 402
 //Desc:    	this function computes the size of the a file
-//Input:
-//Output:
-//Assumption:
 
+//standard c libraries
 #include <stdio.h>
 #include <stdlib.h>
 
+// included external header files
 #include "constants.h"
 #include "archivingSize.h"
 
@@ -22,16 +21,17 @@ long fileSize(FILE * file){
     //Position: the variable to be returned, and the position of the end character.S
     long position;
 
+	// if it is null, and error is printed and terminates
     if (file == NULL){
         fprintf(stderr, "Error opening file.\n");
         return(-1);
     }
 
-    fseek(file, 0, SEEK_END);
+    fseek(file, 0, SEEK_END);// sets the file position of the stream to the given offset
 
-    position = ftell(file);
+    position = ftell(file);// ftell returns the current file postion of the given stream, and that is the value of position.
 
-    rewind(file);
+    rewind(file);// returns to the beginning of the file
 
-    return position;
+    return position;// returns the position of the file offset
 }

@@ -9,6 +9,8 @@
 //Assumption:
 
 #include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 
 #include "archivingTwo.h"
 #include "other.h"
@@ -21,7 +23,55 @@
   and their respectie sizes.
 */
 void printArchiveDetails(char* archiveName) {
+	
+		//Variables here
+	char * tempArchiveName;
+	int numOfFiles, fileNameLength;
+	long contentSize, totalSize;
+	tempArchiveName = strdup(archiveName);
+	FILE * inputFile;
+	
+	// concatenate ".bin" to a temp archiveName string.
+	if (strstr(tempArchiveName, ".bin") == NULL){
+		strcat(tempArchiveName, ".bin");
+	}
 
+	//opens a new bin file with new string for reading
+	if ((inputFile = fopen(tempArchiveName, "rb")) == NULL){
+		fprintf(stderr, "Could not allocate space for the input archive.");
+		exit(-1);
+	}
+	
+	totalSize = fileSize(inputFile);
+ 
+	printf("\nTotal Size of %s: %d kb\n", tempArchiveName, totalSize);
+ 
+	fread(&numOfFiles, sizeNumFiles, 1, inputFile);
+
+	printf("\nNumber of Files: %d\n", numOfFiles);
+	
+	int i = 0;
+	for (i = 0; i < numOfFiles; i++) {
+		fread(&fileNameLength, sizeof(int), 1, inputFile);
+		//printf("%d\n", fileNameLength);
+		
+		char * tempString = malloc(fileNameLength * sizeof(char));
+		
+		if (tempString == NULL) {
+			exit(-1);
+		}
+		
+		fread(tempString, sizeof(char), fileNameLength, inputFile);
+		fread(&contentSize, sizeof(long), 1, inputFile);
+		
+		printf("File Name: %s %d kb\n", tempString, contentSize);
+		
+		fseek(inputFile, contentSize, SEEK_CUR);
+		
+	}
+	
+	printf("\n");
+	
 }
 
 ///function to handle -v flag
@@ -32,5 +82,5 @@ void printArchiveDetails(char* archiveName) {
   If the archive's data is incorrect, then the program will print "Archive is corrupted."
 */
 void verifyArchive(char ** fileNames, int numFiles, char * archiveName) {
-
+	
 }

@@ -44,9 +44,9 @@ int main( int argc, char *argv[] )  {
     int numOfArgs = 0; //This is number of arguments.
     numOfArgs = argc - 1; //Calc. that
 
-    char * archiveName; 
+    char * archiveName; //char pointer specifies
 
-    // Print for peace of mind.
+    // prints out the number of arguments supplied
     printf("\nThe number of args is: %d\n", numOfArgs);
 
     //Check for at least two arguments.
@@ -55,7 +55,7 @@ int main( int argc, char *argv[] )  {
         exit(-1);
     }
     else if (strcmp(argv[1], "-a") == 0){
-        //Check for atlest three args (not including exe)
+        //Check for at least three args (not including exe)
         if (numOfArgs < 3){
             fprintf(stderr, "There were an incorrect number of args. ");
             exit(-1);  
@@ -95,6 +95,7 @@ int main( int argc, char *argv[] )  {
             printf("%d: The file name: %s\n", x + 1, fileNames[x]);
         }
         
+		// archive function, takes in parameters of the names of the files, the number of files, and the name of the archive file
         archive(fileNames, numOfFiles, archiveName);
 
         //Free the memory of the dynamically allocated list here.
@@ -118,12 +119,15 @@ int main( int argc, char *argv[] )  {
         if (checkIfFlag(archiveName) == -1){
             exit(-1);  
         }
-        
+        //prints the name of the archive name that was supplied
         printf("You supplied the archive name of: %s\n", archiveName);
 
+		//unarchive function
         unarchive(archiveName);
         
-    }
+    }/* if an -l flag is supplied, it prints the total size of the archive, the number of files in the archive, and the file names with the
+	 corresponding sizes for each file
+	*/
     else if (strcmp(argv[1], "-l") == 0){
         //Check if there are more than three args
         if (numOfArgs != 2){
@@ -141,7 +145,7 @@ int main( int argc, char *argv[] )  {
 
         printf("You supplied the archive name of: %s\n", archiveName);
 
-        //printArchiveDetails(* archiveName);
+        printArchiveDetails(archiveName);
         
     }
     else if (strcmp(argv[1], "-v") == 0){

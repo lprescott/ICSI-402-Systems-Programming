@@ -184,7 +184,7 @@ void verifyArchive(char ** fileNames, int numFiles, char * archiveName) {
 		free(tempString);
 	}
 	
-	fclose(inputFile);s
+	fclose(inputFile);
 	
 	if (missingBytes != 0) {
 		printf("\nArchive is missing %d bytes.\n", missingBytes);

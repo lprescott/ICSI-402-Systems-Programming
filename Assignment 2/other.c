@@ -56,7 +56,7 @@ int checkIfContains(char ** fileNames, int numFiles, char * name) {
     //returning the location (index) of the correct file name.
 	for (i = 0; i < numFiles; i++) {
 		if (strcmp(fileNames[i], name) == 0) {
-			printf("\n index Given : %d", i);
+			//printf("\n index Given : %d", i);
 			return i;
 		}
 	}

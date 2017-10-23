@@ -172,7 +172,7 @@ int main( int argc, char *argv[] )  {
         //printf("You supplied the archive name of: %s\n", archiveName);
         int numOfFiles; //The number of files.
         numOfFiles = numOfArgs - 2; //Calc. that
-        printf("You supplied %d file names.\n", numOfFiles);
+        //printf("You supplied %d file names.\n", numOfFiles);
 
         //Dynamically allocate for the array of char pointers, one for each string
         char ** fileNames = malloc(numOfFiles * sizeof(char *));
@@ -189,11 +189,13 @@ int main( int argc, char *argv[] )  {
             strcpy(fileNames[i], argv[i+3]);
         }
 
+        /*
         //Print out the fileNames
         int x; //Counting int
         for (x = 0; x < numOfFiles; ++x) {
             printf("%d: The file name: %s\n", x + 1, fileNames[x]);
         }
+        */
 
         verifyArchive(fileNames, numOfFiles, archiveName);
 

@@ -31,6 +31,7 @@ void printArchiveDetails(char* archiveName) {
 	long contentSize, totalSize;
 	tempArchiveName = strdup(archiveName);
 	FILE * inputFile;
+	int fileDetectedCount = 0;
 	
 	// concatenate ".bin" to a temp archiveName string.
 	if (strstr(tempArchiveName, ".bin") == NULL){
@@ -83,13 +84,15 @@ void printArchiveDetails(char* archiveName) {
   If the archive's data is incorrect, then the program will print "Archive is corrupted."
 */
 void verifyArchive(char ** fileNames, int numFiles, char * archiveName) {
-	
-	//Variables
+		
+//Variables
 	char * tempArchiveName = strdup(archiveName);
 	FILE * inputFile, * tempFile;
 	long contentSizeArchive, contentSizeFile;
-	int inputFileNameS, archiveFileNameS;
-	int contains = 0, index, archiveNumOfFiles, missingBytes;
+	int inputFileNameS, archiveFileNameS; //Size of the input file name and the archive file name respectively
+	int index, archiveNumOfFiles;
+	long missingBytes = 0;
+	int fileDetectedCount = 0;
 	
 	// concatenate ".bin" to a temp archiveName string.
 	if (strstr(tempArchiveName, ".bin") == NULL){
@@ -117,7 +120,7 @@ void verifyArchive(char ** fileNames, int numFiles, char * archiveName) {
 		//getLength of FileName #i
 		fread(&archiveFileNameS, sizeof(int), 1, inputFile);
 		
-		printf("\narchiveFileNameS: %d\n", archiveFileNameS);
+		//printf("\narchiveFileNameS: %d\n", archiveFileNameS);
 		
 		char * tempString = malloc(archiveFileNameS * sizeof(char));
 		if (tempString == NULL) {
@@ -126,32 +129,65 @@ void verifyArchive(char ** fileNames, int numFiles, char * archiveName) {
 		
 		fread(tempString, sizeof(char), archiveFileNameS, inputFile);
 		//prints out fileNameArchive
-		printf("\n%s\n", tempString);
+		//printf("\n%s\n", tempString);
 		
-    //Compare the fileSize byte
-    fread(&contentSize, sizeof(long), 1, inputFile);  
+		//Compare the fileSize byte
+		fread(&contentSizeArchive, sizeof(long), 1, inputFile);  
    
 		if ((index = checkIfContains(fileNames, numFiles, tempString)) == -1) {
-			fseek(inputFile, contentSize, SEEK_CUR);
-      continue;
- 
+			fseek(inputFile, contentSizeArchive, SEEK_CUR);
+			continue;
 		}
-    else{
-      //Compare the file contents
-      int count = 0;
-  		while(count < contentSize) {
-        //Compare each char
-        
-	      //char h = (char)c;
-			  //printf("%c", h);
-			  //fprintf(outputFile, "%c", h);
-        count++;
-		  }
-    }
-
+		fileDetectedCount++;
+		//Compare the file contents
+		
+		//printf("File Name: %s\n", fileNames[index]);
+		
+		if ((tempFile = fopen(fileNames[index], "r")) == NULL) {
+			fprintf(stderr, "could not allocate space");
+			exit(-1);
+		}
+		
+		long count = 0;
+		int cArchive;
+		int cFile;
+		
+		while(count < contentSizeArchive) {
+			//Compare each char
+			
+			cArchive = fgetc(inputFile);
+			cFile = fgetc(tempFile);
+			count++;
+			
+			if (cArchive != cFile) {
+				printf("\nArchive is Corrupted\n");
+				return;
+			}
+			
+		}
+		
+		contentSizeFile = fileSize(tempFile);
+		
+		printf("\n%d %d\n", contentSizeFile, count);
+		
+		if (contentSizeFile != count) {
+			missingBytes += (contentSizeFile - count);
+		}
+		
 		//necessary freeing and closing
+		fclose(tempFile);
 		free(tempString);
 	}
 	
+	if (missingBytes != 0) {
+		printf("\nArchive is missing %d bytes.\n", missingBytes);
+		return;
+	}
 	
-}//End verify
+	if (fileDetectedCount < numFiles) {
+		printf("\nArchive is missing an unknown amount of bytes.\n");
+	}
+	
+	printf("\nArchive Verified\n");
+	
+}

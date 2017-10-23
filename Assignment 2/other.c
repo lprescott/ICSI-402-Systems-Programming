@@ -5,10 +5,11 @@
 //Course:  	ICSI 402
 //Desc:    	// this contains additional functions needed for the functionality of the main.c file
 
-
+//including libraries
 #include <stdio.h>
 #include <string.h>
 
+//including headers
 #include "other.h"
 #include "constants.h"
 

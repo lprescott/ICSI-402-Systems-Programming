@@ -123,7 +123,6 @@ void archive(char** fileNames, int numFiles, char* archiveName) {
 	archive to be unarchived. This fucntions creates the files contained in the archive with the correct name, size and 
 	contents without compression.
 */
-
 void unarchive(char* archiveFile) {
 	
 	//Variables here

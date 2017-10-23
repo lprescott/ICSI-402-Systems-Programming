@@ -45,7 +45,7 @@ void printArchiveDetails(char* archiveName) {
 	
 	totalSize = fileSize(inputFile);
  
-	printf("\nTotal Size of %s: %d kb\n", tempArchiveName, totalSize);
+	printf("\nTotal Size of %s (in bytes): %d\n", tempArchiveName, totalSize);
  
 	fread(&numOfFiles, sizeNumFiles, 1, inputFile);
 
@@ -65,7 +65,7 @@ void printArchiveDetails(char* archiveName) {
 		fread(tempString, sizeof(char), fileNameLength, inputFile);
 		fread(&contentSize, sizeof(long), 1, inputFile);
 		
-		printf("File Name: %s %d kb\n", tempString, contentSize);
+		printf("File Name: %s; Size (in bytes): %d\n", tempString, contentSize);
 		
 		fseek(inputFile, contentSize, SEEK_CUR);
 		

@@ -53,7 +53,8 @@ int main( int argc, char *argv[] )  {
     if (numOfArgs < 2){
         fprintf(stderr, "There were not enough arguments. ");
         exit(-1);
-    }
+    }	
+    //Archive command
     else if (strcmp(argv[1], "-a") == 0){
         //Check for at least three args (not including exe)
         if (numOfArgs < 3){
@@ -105,6 +106,7 @@ int main( int argc, char *argv[] )  {
         }
         free(fileNames);
     }
+    //Unarchive command
     else if (strcmp(argv[1], "-u") == 0){
         //Check if there are more than three args
         if (numOfArgs != 2){
@@ -128,6 +130,7 @@ int main( int argc, char *argv[] )  {
     }/* if an -l flag is supplied, it prints the total size of the archive, the number of files in the archive, and the file names with the
 	 corresponding sizes for each file
 	*/
+    //PrintDetails command
     else if (strcmp(argv[1], "-l") == 0){
         //Check if there are more than three args
         if (numOfArgs != 2){
@@ -148,6 +151,7 @@ int main( int argc, char *argv[] )  {
         printArchiveDetails(archiveName);
         
     }
+    //Verify command
     else if (strcmp(argv[1], "-v") == 0){
         //Check for atlest three args (not including exe)
         if (numOfArgs < 3){
@@ -199,6 +203,7 @@ int main( int argc, char *argv[] )  {
         free(fileNames);
         
     }
+    //An unknown command
     else{
         fprintf(stderr, "Unknown first argument supplied. ");
         exit(-1);

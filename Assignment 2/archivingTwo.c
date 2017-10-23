@@ -15,6 +15,7 @@
 #include "archivingTwo.h"
 #include "other.h"
 #include "constants.h"
+#include "archivingSize.h"
 
 // function to handle -l flag
 /*

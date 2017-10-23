@@ -15,7 +15,8 @@
 
 /*
   This function finds file size by seeking all the way to the end on the file, then telling the long
-  position the position of the end character. This position is the size of the file in bytes.
+  position the position of the end character. This position is the size of the file in bytes. It only takes,
+  one argument, which is the FILE type needed to point to.
 */
 long fileSize(FILE * file){
     //Position: the variable to be returned, and the position of the end character.S

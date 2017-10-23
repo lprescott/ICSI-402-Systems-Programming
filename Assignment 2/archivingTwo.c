@@ -73,7 +73,7 @@ void printArchiveDetails(char* archiveName) {
 	
 	printf("\n");
 	
-}
+} //End details
 
 ///function to handle -v flag
 /*
@@ -104,6 +104,7 @@ void verifyArchive(char ** fileNames, int numFiles, char * archiveName) {
 	
 	//peice of mind printing
 	printf("\nNum Files to check %d: ", numFiles);
+ 
 	//Reads in archive num of files, and passes the archive pointer
 	fread(&archiveNumOfFiles, sizeof(int), 1, inputFile);
 	printf("\nNumber of files given by .bin %d\n", archiveNumOfFiles);
@@ -116,10 +117,9 @@ void verifyArchive(char ** fileNames, int numFiles, char * archiveName) {
 		//getLength of FileName #i
 		fread(&archiveFileNameS, sizeof(int), 1, inputFile);
 		
-		printf("\narchiveFileNameS: %d", archiveFileNameS);
+		printf("\narchiveFileNameS: %d\n", archiveFileNameS);
 		
 		char * tempString = malloc(archiveFileNameS * sizeof(char));
-		
 		if (tempString == NULL) {
 			exit(-1);
 		}
@@ -128,124 +128,30 @@ void verifyArchive(char ** fileNames, int numFiles, char * archiveName) {
 		//prints out fileNameArchive
 		printf("\n%s\n", tempString);
 		
+    //Compare the fileSize byte
+    fread(&contentSize, sizeof(long), 1, inputFile);  
+   
 		if ((index = checkIfContains(fileNames, numFiles, tempString)) == -1) {
-			printf("One of the files not in archive");
+			fseek(inputFile, contentSize, SEEK_CUR);
+      continue;
+ 
 		}
-		
-	
-		return;
+    else{
+      //Compare the file contents
+      int count = 0;
+  		while(count < contentSize) {
+        //Compare each char
+        
+	      //char h = (char)c;
+			  //printf("%c", h);
+			  //fprintf(outputFile, "%c", h);
+        count++;
+		  }
+    }
+
 		//necessary freeing and closing
 		free(tempString);
 	}
 	
 	
-}
-	
-	/*
-	//Variables here
-	char * tempArchiveName;
-	tempArchiveName = strdup(archiveName);
-	FILE * inputFile;
-	FILE * tempFile;
-	int tempNumOfFiles = numFiles, numOfFiles;
-	long contentSize;
-	int contains = 0;
-	
-	//State 0: Everything AOK. State 2: Missing x bytes; State 3: Archive is corrupted.
-	int flagint = 0;
-	long missingBytes = 0;
-
-	// concatenate ".bin" to a temp archiveName string.
-	if (strstr(tempArchiveName, ".bin") == NULL){
-		strcat(tempArchiveName, ".bin");
-	}
-
-	//opens a new bin file with new string for writing
-	if ((inputFile = fopen(tempArchiveName, "rb")) == NULL){
-		fprintf(stderr, "Could not allocate space for the output archive.");
-		exit(-1);
-	}
-	
-	printf("NUMBER OF FILES: %d\n", tempNumOfFiles);
-	fread(&numOfFiles, sizeNumFiles, 1, inputFile);
-	
-	int i = 0;
-	for (i = 0; i < numFiles; i++) {
-		
-		char * tempFileName;
-		tempFileName = strdup(fileNames[i]);
-		
-		printf("File Name: %s\n", tempFileName);
-		
-		if ((tempFile = fopen(tempFileName, "r")) == NULL) {
-			fprintf(stderr, "could not allocate space");
-			exit(-1);
-		}
-		
-		int lengthOfFileName = strlen(tempFileName) + 1;
-		int fileNameLength;
-		fread(&fileNameLength, sizeof(int), 1, inputFile);
-		//printf("%d\n", fileNameLength);
-		
-		char * tempString = malloc(fileNameLength * sizeof(char));
-		
-		if (tempString == NULL) {
-			exit(-1);
-		}
-		
-		fread(tempString, sizeof(char), fileNameLength, inputFile);
-		
-		fread(&contentSize, sizeof(long), 1, inputFile);
-		
-		long tempSize = fileSize(tempFile);
-		printf("%d\n", tempSize);
-		
-		//If content size does not match
-		if(lengthOfFileName != fileNameLength) {
-			//fileNameLength is from bin file :)
-			missingBytes += (lengthOfFileName - fileNameLength);
-			flagint = 1;
-		}
-		
-		if (tempSize != contentSize) {
-			missingBytes += (tempSize - fileSize);
-			flagint = 1;
-		}
-		
-		//If names do not match, skips to next file and if the content size is off.
-		if ((strcmp(tempFileName, tempString) != 0) || (flagint == 1)) {
-			fseek(inputFile, contentSize, SEEK_CUR);
-			continue;
-		}
-		
-		int c;
-		int count = 0;
-		int ci;
-		
-		while(((c = fgetc(tempFile)) != EOF) && (ci = fgetc(tempFile)) != EOF) {
-			
-			if (c != ci) {
-				printf("\nArchive Corrupted\n");
-				return;
-			}
-			
-			count++;
-			
-		}
-		
-		if (flagint == 2) {
-			break;
-		}
-		
-		printf("%d", count);
-		
-	}
-
-	if (flagint == 0) {
-		printf("\nArchive Verified\n");
-	} else if (flagint == 1) {
-		printf("\nArchive is missing %d Bytes\n", missingBytes);
-	}
-	
-	fclose(outputFile);
-	*/
+}//End verify

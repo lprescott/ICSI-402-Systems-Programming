@@ -47,7 +47,7 @@ int main( int argc, char *argv[] )  {
     char * archiveName; //char pointer specifies
 
     // prints out the number of arguments supplied
-    printf("\nThe number of args is: %d\n", numOfArgs);
+    //printf("\nThe number of args is: %d\n", numOfArgs);
 
     //Check for at least two arguments.
     if (numOfArgs < 2){
@@ -70,10 +70,10 @@ int main( int argc, char *argv[] )  {
             exit(-1);  
         }
 
-        printf("You supplied the archive name of: %s\n", archiveName);
+        //printf("You supplied the archive name of: %s\n", archiveName);
         int numOfFiles; //The number of files.
         numOfFiles = numOfArgs - 2; //Calc. that
-        printf("You supplied %d file names.\n", numOfFiles);
+        //printf("You supplied %d file names.\n", numOfFiles);
 
         //Dynamically allocate for the array of char pointers, one for each string
         char ** fileNames = malloc(numOfFiles * sizeof(char *));
@@ -90,11 +90,13 @@ int main( int argc, char *argv[] )  {
             strcpy(fileNames[i], argv[i+3]);
         }
 
+        /*
         //Print out the fileNames
         int x; //Counting int
         for (x = 0; x < numOfFiles; ++x) {
             printf("%d: The file name: %s\n", x + 1, fileNames[x]);
         }
+        */
         
 		// archive function, takes in parameters of the names of the files, the number of files, and the name of the archive file
         archive(fileNames, numOfFiles, archiveName);
@@ -122,7 +124,7 @@ int main( int argc, char *argv[] )  {
             exit(-1);  
         }
         //prints the name of the archive name that was supplied
-        printf("You supplied the archive name of: %s\n", archiveName);
+        //printf("You supplied the archive name of: %s\n", archiveName);
 
 		//unarchive function
         unarchive(archiveName);
@@ -146,7 +148,7 @@ int main( int argc, char *argv[] )  {
             exit(-1);  
         }
 
-        printf("You supplied the archive name of: %s\n", archiveName);
+        //printf("You supplied the archive name of: %s\n", archiveName);
 
         printArchiveDetails(archiveName);
         
@@ -167,7 +169,7 @@ int main( int argc, char *argv[] )  {
             exit(-1);  
         }
 
-        printf("You supplied the archive name of: %s\n", archiveName);
+        //printf("You supplied the archive name of: %s\n", archiveName);
         int numOfFiles; //The number of files.
         numOfFiles = numOfArgs - 2; //Calc. that
         printf("You supplied %d file names.\n", numOfFiles);

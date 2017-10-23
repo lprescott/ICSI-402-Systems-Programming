@@ -178,7 +178,7 @@ void unarchive(char* archiveFile) {
 		
 		//Read the size of the file into the temp int
 		fread(&contentSize, sizeof(long), 1, inputFile);
-		printf("%d\n", contentSize);
+		//printf("%d\n", contentSize);
 		
 		//For loop for the contents of each file
 		int y = 0;

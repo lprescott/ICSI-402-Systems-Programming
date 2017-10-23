@@ -113,9 +113,11 @@ void archive(char** fileNames, int numFiles, char* archiveName) {
 		}
 		
 		//printf("%d", count);
+		//close the tempFile
+		fclose(tempFile);
 		
 	}
-
+	//Close the outputFile
 	fclose(outputFile);
 	
 }//End archive

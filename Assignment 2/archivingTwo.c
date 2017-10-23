@@ -21,11 +21,11 @@
 /*
   This function takes the archiveName, and opens the archive. If the archive exists, this will
   print the total size of the archive file, the names of all the individual files in the archive,
-  and their respectie sizes.
+  and their respective sizes. it takes parameters archiveName.
 */
 void printArchiveDetails(char* archiveName) {
 	
-		//Variables here
+	//Variables here
 	char * tempArchiveName;
 	int numOfFiles, fileNameLength;
 	long contentSize, totalSize;
@@ -43,31 +43,32 @@ void printArchiveDetails(char* archiveName) {
 		fprintf(stderr, "Could not allocate space for the input archive.");
 		exit(-1);
 	}
-	
+	//makes totalSize equal to fileSize that takes a parameter named inputFile
 	totalSize = fileSize(inputFile);
- 
+        //prints the total size of the entire archive
 	printf("\nTotal Size of %s (in bytes): %d\n", tempArchiveName, totalSize);
- 
+        //reads number of files from the .bin file
 	fread(&numOfFiles, sizeNumFiles, 1, inputFile);
 
 	printf("\nNumber of Files: %d\n", numOfFiles);
-	
+	//for loop, that loops through the file.
 	int i = 0;
 	for (i = 0; i < numOfFiles; i++) {
 		fread(&fileNameLength, sizeof(int), 1, inputFile);
 		//printf("%d\n", fileNameLength);
-		
+		//dynamic memory allocation for the name of the file
 		char * tempString = malloc(fileNameLength * sizeof(char));
-		
+		//checks if you can't allocate, then terminates
 		if (tempString == NULL) {
 			exit(-1);
 		}
-		
+		//reads the file name into tempString
 		fread(tempString, sizeof(char), fileNameLength, inputFile);
+		//reads the content size from the .bin file.
 		fread(&contentSize, sizeof(long), 1, inputFile);
-		
+		// prints the filename and the size
 		printf("File Name: %s; Size (in bytes): %d\n", tempString, contentSize);
-		
+		//seeks to the next file
 		fseek(inputFile, contentSize, SEEK_CUR);
 		
 	}
@@ -86,13 +87,13 @@ void printArchiveDetails(char* archiveName) {
 void verifyArchive(char ** fileNames, int numFiles, char * archiveName) {
 		
 //Variables
-	char * tempArchiveName = strdup(archiveName);
-	FILE * inputFile, * tempFile;
-	long contentSizeArchive, contentSizeFile;
+	char * tempArchiveName = strdup(archiveName);// char pointer to the name of the archive
+	FILE * inputFile, * tempFile;// file pointers to inputfile and tempfile
+	long contentSizeArchive, contentSizeFile;// size of the content and size of the file
 	int inputFileNameS, archiveFileNameS; //Size of the input file name and the archive file name respectively
-	int index, archiveNumOfFiles;
-	long missingBytes = 0;
-	int fileDetectedCount = 0;
+	int index, archiveNumOfFiles;// index of the filename and number of file in archive
+	long missingBytes = 0;// number of missing bytes
+	int fileDetectedCount = 0;// counts of the appropriate number of files was detected.
 	
 	// concatenate ".bin" to a temp archiveName string.
 	if (strstr(tempArchiveName, ".bin") == NULL){
@@ -105,12 +106,12 @@ void verifyArchive(char ** fileNames, int numFiles, char * archiveName) {
 		exit(-1);
 	}
 	
-	//peice of mind printing
-	printf("\nNum Files to check %d: ", numFiles);
+	
+	//printf("\nNum Files to check %d: ", numFiles);
  
-	//Reads in archive num of files, and passes the archive pointer
+	//Reads in the archive num of files, and passes the archive pointer
 	fread(&archiveNumOfFiles, sizeof(int), 1, inputFile);
-	printf("\nNumber of files given by .bin %d\n", archiveNumOfFiles);
+	//printf("\nNumber of files given by .bin %d\n", archiveNumOfFiles);
 	
 	//For loop for the number of files of the archive
 	int i;
@@ -121,28 +122,30 @@ void verifyArchive(char ** fileNames, int numFiles, char * archiveName) {
 		fread(&archiveFileNameS, sizeof(int), 1, inputFile);
 		
 		//printf("\narchiveFileNameS: %d\n", archiveFileNameS);
-		
+		// dynamic memory allocation for the tempString
 		char * tempString = malloc(archiveFileNameS * sizeof(char));
 		if (tempString == NULL) {
 			exit(-1);
 		}
-		
+		//reads into tempString
 		fread(tempString, sizeof(char), archiveFileNameS, inputFile);
 		//prints out fileNameArchive
 		//printf("\n%s\n", tempString);
 		
-		//Compare the fileSize byte
+		//reads in the content size
 		fread(&contentSizeArchive, sizeof(long), 1, inputFile);  
-   
+   		
+		//If tempString is contained in fileNames, go on, if not, move the file pointer and continue.
 		if ((index = checkIfContains(fileNames, numFiles, tempString)) == -1) {
 			fseek(inputFile, contentSizeArchive, SEEK_CUR);
 			continue;
 		}
+		//comment files detected.
 		fileDetectedCount++;
 		//Compare the file contents
 		
 		//printf("File Name: %s\n", fileNames[index]);
-		
+		//Open tempFile
 		if ((tempFile = fopen(fileNames[index], "r")) == NULL) {
 			fprintf(stderr, "could not allocate space");
 			exit(-1);
@@ -153,7 +156,7 @@ void verifyArchive(char ** fileNames, int numFiles, char * archiveName) {
 		int cFile;
 		
 		while(count < contentSizeArchive) {
-			//Compare each char
+			//Compare each char, if char is diffrent print corrupted and then return
 			
 			cArchive = fgetc(inputFile);
 			cFile = fgetc(tempFile);
@@ -166,10 +169,12 @@ void verifyArchive(char ** fileNames, int numFiles, char * archiveName) {
 			
 		}
 		
+		//get the fileSize of tempFile
 		contentSizeFile = fileSize(tempFile);
 		
-		printf("\n%d %d\n", contentSizeFile, count);
+		//printf("\n%d %d\n", contentSizeFile, count);
 		
+		//if contentSizeFile != count, add to missing bytes. If it isn't, move on.
 		if (contentSizeFile != count) {
 			missingBytes += (contentSizeFile - count);
 		}
@@ -178,6 +183,8 @@ void verifyArchive(char ** fileNames, int numFiles, char * archiveName) {
 		fclose(tempFile);
 		free(tempString);
 	}
+	
+	fclose(inputFile);s
 	
 	if (missingBytes != 0) {
 		printf("\nArchive is missing %d bytes.\n", missingBytes);

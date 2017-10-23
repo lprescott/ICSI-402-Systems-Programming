@@ -30,7 +30,12 @@ define sizeFileName 256 //4
 */
 
 /*
-
+	The archive function returns nothing. It accepts, however, three variables: a string array containing all file names
+	that are included in the archiving process, an integer for the number of files included, and a string that is to be the 
+	name of the archive created. The archive functions programatically writes details and contents of supplied files to 
+	the supplied archivename in the following format: 
+		4 bytes containing the number of file; then for each file: 1 byte for the length of the name; the name in string format;
+		the size of the contents (in 4 bytes); the actual contents.
 */
 
 /* loop for numFiles through string array
@@ -41,15 +46,14 @@ define sizeFileName 256 //4
 	e) get, store , print the contents
 	f) close file
 */
-//close bin file
 
 void archive(char** fileNames, int numFiles, char* archiveName) {
 	//Variables here
-	char * tempArchiveName;
-	tempArchiveName = strdup(archiveName);
-	FILE * outputFile;
-	FILE * tempFile;
-	int tempNumOfFiles = numFiles;
+	char * tempArchiveName; //the temporary character array containing the archive name
+	tempArchiveName = strdup(archiveName); //duplicate data to above array
+	FILE * outputFile; //The output file
+	FILE * tempFile; //The temp file (input file)
+	int tempNumOfFiles = numFiles; //Assigning a temporary int the number of files
 
 	// concatenate ".bin" to a temp archiveName string.
 	if (strstr(tempArchiveName, ".bin") == NULL){
@@ -62,51 +66,59 @@ void archive(char** fileNames, int numFiles, char* archiveName) {
 		exit(-1);
 	}
 	
-	printf("NUMBER OF FILES: %d\n", tempNumOfFiles);
+	//Add number of files to bin
+	//printf("NUMBER OF FILES: %d\n", tempNumOfFiles);
 	fwrite(&tempNumOfFiles, sizeNumFiles, 1, outputFile);
 	
+	//loop for the number of files
 	int i = 0;
 	for (i = 0; i < numFiles; i++) {
 		
-		char * tempFileName;
-		tempFileName = strdup(fileNames[i]);
+		char * tempFileName; //a character array for the inputfile's name
+		tempFileName = strdup(fileNames[i]); //assign the inputfile's name
 		
-		printf("File Name: %s\n", tempFileName);
+		//printf("File Name: %s\n", tempFileName);
 		
+		//Attempt to dynamically allocate space
 		if ((tempFile = fopen(tempFileName, "r")) == NULL) {
 			fprintf(stderr, "could not allocate space");
 			exit(-1);
 		}
 		
-		long lengthOfFileName = strlen(tempFileName) + 1;
+		long lengthOfFileName = strlen(tempFileName) + 1; //A new long variable containing the length of the file name + 1
 		
-		printf("%d\n", lengthOfFileName);
+		//Add length of file name to bin
+		//printf("%d\n", lengthOfFileName);
 		fwrite(&lengthOfFileName, sizeof(int), 1, outputFile);
 		
+		//Add filename to bin
 		fwrite(tempFileName, sizeof(char), lengthOfFileName, outputFile);
 		
+		//Create and assign a long variable that contains the fileSize of the current file
 		long tempSize = (fileSize(tempFile));
-		printf("%d\n", tempSize);
+		//printf("%d\n", tempSize);
 		
+		//Add the fileSize to the bin
 		fwrite(&tempSize, sizeof(long), 1, outputFile);
 			
-		int c;
-		int count = 0;
+		int c; //A int variable containing characters to add
+		int count = 0; //A count variable to keep track in the loop
 		
+		//Add character by character to the bin file (while not meeting the end of inputFile)
 		while((c = fgetc(tempFile)) != EOF) {
 			count++;
 			char h = (char)c;
-			printf("%c", h);
+			//printf("%c", h);
 			fprintf(outputFile, "%c", h);
 		}
 		
-		printf("%d", count);
+		//printf("%d", count);
 		
 	}
 
 	fclose(outputFile);
 	
-}
+}//End archive
 
 
 

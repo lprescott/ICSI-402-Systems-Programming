@@ -193,7 +193,7 @@ int main( int argc, char *argv[] )  {
             printf("%d: The file name: %s\n", x + 1, fileNames[x]);
         }
 
-        verifyArchive(**fileNames, numOfFiles, * archiveName);
+        verifyArchive(fileNames, numOfFiles, archiveName);
 
         //Free the memory of the dynamically allocated list here.
         int y;

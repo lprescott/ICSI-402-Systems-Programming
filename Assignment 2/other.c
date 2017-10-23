@@ -38,3 +38,19 @@ int checkIfFlag(char * string){
 
     return 1;
 }
+
+//loops through entire array, and if name is == fileNames the function returns the index, else it returns -1;
+int checkIfContains(char ** fileNames, int numFiles, char * name) {
+	
+	//i for loop
+	int i;
+	
+	for (i = 0; i < numFiles; i++) {
+		if (strcmp(fileNames[i], name) == 0) {
+			printf("\n index Given : %d", i);
+			return i;
+		}
+	}
+	
+	return -1;
+}

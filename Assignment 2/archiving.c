@@ -6,12 +6,12 @@
 //Desc: contains the two functions, archive which creates an archive file from a set of individual files
 //         unarchive function unpacks an archive file and create te respective files
 
-
+//standard c libraries
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-
+// included external header files
 #include "archiving.h"
 #include "constants.h"
 #include "other.h"

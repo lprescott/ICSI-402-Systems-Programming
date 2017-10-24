@@ -74,8 +74,8 @@ int main( int argc, char *argv[] )  {
 		long datacap = 0;	//The datacap that, if given a positive value, will be the datacap for each bin file.
 		
 		//If isnumber returns a positive valid number, run archiver with the datacap. Else, run without.
-		if ((datacap = isnumber(argv[numOfArgs])) != -1) {
-			printf("This argument is a number! %d\n", datacap);
+		if ((datacap = isnumber(argv[3])) != -1) {
+			//printf("This argument is a number! %d\n", datacap);
 			
 			//printf("You supplied the archive name of: %s\n", archiveName);
 			
@@ -88,13 +88,13 @@ int main( int argc, char *argv[] )  {
 			//Allocate space for each string
 			int i; //Counting int
 			for (i = 0; i < numOfFiles; ++i) {
-				fileNames[i] = (char *)malloc(strlen(argv[i+3])+1);
+				fileNames[i] = (char *)malloc(strlen(argv[i+4])+1);
 				//Check if fileName is too long.
-				if (strlen(argv[i+3]) >= sizeFileName){
+				if (strlen(argv[i+4]) >= sizeFileName){
 					fprintf(stderr, "The file name would cause an overflow. ");
 					exit(-1);              
 				}
-				strcpy(fileNames[i], argv[i+3]);
+				strcpy(fileNames[i], argv[i+4]);
 			}
 
 			/*
@@ -106,12 +106,12 @@ int main( int argc, char *argv[] )  {
 			*/
 			
 			// archive function, takes in parameters of the names of the files, the number of files, and the name of the archive file
-			archiveSize(fileNames, numOfFiles, archiveName, datacap);
+			archiveBase(fileNames, numOfFiles, archiveName, datacap);
 			
 			
 		}
 		else {
-			//printf("You supplied the archive name of: %s\n", archiveName);
+			printf("You supplied the archive name of: %s\n", archiveName);
 			
 			numOfFiles = numOfArgs - 2; //Calc. the number of files
 			//printf("You supplied %d file names.\n", numOfFiles);

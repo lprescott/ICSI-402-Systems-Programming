@@ -14,7 +14,6 @@
 //including headers
 #include "other.h"
 #include "constants.h"
-#include "archiving.h"
 
 /*
   This function checks to see if the given character array string is a flag. if it is, the program
@@ -80,12 +79,17 @@ long isnumber(char * string) {
 	int i = 0;
 	for (i = 0; i < strlen(string); i++) {
 		if (!isdigit(string[i])) {
-			return -number;
+			return number;
 		}
 	}
 	
 	//Converts string and puts the value into number
+	printf("%d, is the number", number);
 	sscanf(string, "%d", &number);
 	
 	return number;
+}
+
+void archiveBase(char** fileNames, int numFiles, char* archiveName, long contentSize) {
+	
 }

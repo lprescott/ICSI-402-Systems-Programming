@@ -50,7 +50,7 @@ void archive(char** fileNames, int numFiles, char* archiveName) {
 	FILE * outputFile; //The output file
 	FILE * tempFile; //The temp file (input file)
 	int tempNumOfFiles = numFiles; //Assigning a temporary int the number of files
-
+	
 	// concatenate ".bin" to a temp archiveName string.
 	if (strstr(tempArchiveName, ".bin") == NULL){
 		strcat(tempArchiveName, ".bin");

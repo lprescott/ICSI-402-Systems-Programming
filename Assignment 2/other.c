@@ -8,6 +8,8 @@
 //including libraries
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
+#include <ctype.h>
 
 //including headers
 #include "other.h"
@@ -63,4 +65,26 @@ int checkIfContains(char ** fileNames, int numFiles, char * name) {
     
     //If nothing else it returns -1
 	return -1;
+}
+
+/*
+	isnumber returns the value of string in int form if it is a number, or -1 if it is not.
+	This function takes char * string and returns a long number.
+*/
+
+long isnumber(char * string) {
+	long number = -1;	//Number to be returned, defaulted to -1;
+	
+	//For loops, checks if each character is a digit using isdigit function, if it isn't returns -1;
+	int i = 0;
+	for (i = 0; i < strlen(string); i++) {
+		if (!isdigit(string[i])) {
+			return -number;
+		}
+	}
+	
+	//Converts string and puts the value into number
+	sscanf(string, "%d", &number);
+	
+	return number;
 }

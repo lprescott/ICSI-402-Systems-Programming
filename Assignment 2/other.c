@@ -136,7 +136,8 @@ void archiveSize(char** fileNames, int numFiles, char* archiveName, long fileSiz
 		printf("\nLOOP %d\n", (i + 1));
 		
 		char * tempFileName; //a character array for the inputfile's name
-		tempFileName = strdup(fileNames[i]); //assign the inputfile's name
+        tempFileName = strdup(fileNames[i]); //assign the inputfile's name
+        int sizeOfFileName = strlen(fileNames[i] + 1);
 		
 		//printf("File Name: %s\n", tempFileName);
 		
@@ -147,7 +148,11 @@ void archiveSize(char** fileNames, int numFiles, char* archiveName, long fileSiz
 		}
 		
 		//Initializes sizePerFile
-		sizePerFile = fileSize(tempFile); printf("\nsize for file %d: %d\n", (i+1), sizePerFile);
+        sizePerFile = fileSize(tempFile); printf("\nsize for file (actual tho) %d: %d\n", (i+1), sizePerFile); 
+        sizePerFile += 4; //The four bytes for the number of files in the bin
+        sizePerFile += 1; //Another one byte for the length of the file name
+        sizePerFile += sizeOfFileName; //Another set of bytes for the filename
+        printf("\nsize for file (in bin) %d: %d\n", (i+1), sizePerFile);
 		
 		//Adds sizePerFile to sumOfFileSize
 		sumOfFileSize += sizePerFile;
@@ -155,14 +160,9 @@ void archiveSize(char** fileNames, int numFiles, char* archiveName, long fileSiz
 		if (sumOfFileSize > fileSizeLimit) {
 			printf("\nTHE LIMIT IS OVER RE INITIALIZE outputFile as outputfile + archiveFileCapper\n");
 			sumOfFileSize = 0;
-			if (sizePerFile > fileSizeLimit) {
-				
-				//figure out how to mathematically figure out how many files need to be made
-				int filesSplitBetween = 1 + ((sizePerFile - 1) / fileSizeLimit);
-				printf("\nthe single file size is greater than the fileSizeLimit, split into %d files\n", filesSplitBetween);
-				
-			}
-			//reinitialize
+			
+            //reinitialize
+            
 		}
 		
 		//close and freeing;

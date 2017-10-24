@@ -70,6 +70,9 @@ void printArchiveDetails(char* archiveName) {
 		printf("File Name: %s; Size (in bytes): %d\n", tempString, contentSize);
 		//seeks to the next file
 		fseek(inputFile, contentSize, SEEK_CUR);
+
+		//free
+		free(tempString);
 		
 	}
 	

@@ -43,8 +43,9 @@ int main( int argc, char *argv[] )  {
     //Variables here:
     int numOfArgs = 0; //This is number of arguments.
     numOfArgs = argc - 1; //Calc. that
-
+	int numOfFiles; //The number of files.
     char * archiveName; //char pointer specifies
+	char ** fileNames; //char * array that contains all the files
 
     // prints out the number of arguments supplied
     //printf("\nThe number of args is: %d\n", numOfArgs);
@@ -61,7 +62,7 @@ int main( int argc, char *argv[] )  {
             fprintf(stderr, "There were an incorrect number of args. ");
             exit(-1);  
         }
-
+		
         //Create an archive.
         archiveName = strdup(argv[2]);
 
@@ -70,37 +71,77 @@ int main( int argc, char *argv[] )  {
             exit(-1);  
         }
 
-        //printf("You supplied the archive name of: %s\n", archiveName);
-        int numOfFiles; //The number of files.
-        numOfFiles = numOfArgs - 2; //Calc. that
-        //printf("You supplied %d file names.\n", numOfFiles);
+		long datacap = 0;	//The datacap that, if given a positive value, will be the datacap for each bin file.
+		
+		//If isnumber returns a positive valid number, run archiver with the datacap. Else, run without.
+		if ((datacap = isnumber(argv[numOfArgs])) != -1) {
+			printf("This argument is a number! %d\n", datacap);
+			
+			//printf("You supplied the archive name of: %s\n", archiveName);
+			
+			numOfFiles = numOfArgs - 3; //Calc. the number of files
+			//printf("You supplied %d file names.\n", numOfFiles);
+			
+			//Dynamically allocate for the array of char pointers, one for each string
+			fileNames = malloc(numOfFiles * sizeof(char *));
 
-        //Dynamically allocate for the array of char pointers, one for each string
-        char ** fileNames = malloc(numOfFiles * sizeof(char *));
+			//Allocate space for each string
+			int i; //Counting int
+			for (i = 0; i < numOfFiles; ++i) {
+				fileNames[i] = (char *)malloc(strlen(argv[i+3])+1);
+				//Check if fileName is too long.
+				if (strlen(argv[i+3]) >= sizeFileName){
+					fprintf(stderr, "The file name would cause an overflow. ");
+					exit(-1);              
+				}
+				strcpy(fileNames[i], argv[i+3]);
+			}
 
-        //Allocate space for each string
-        int i; //Counting int
-        for (i = 0; i < numOfFiles; ++i) {
-            fileNames[i] = (char *)malloc(strlen(argv[i+3])+1);
-            //Check if fileName is too long.
-            if (strlen(argv[i+3]) >= sizeFileName){
-                fprintf(stderr, "The file name would cause an overflow. ");
-                exit(-1);              
-            }
-            strcpy(fileNames[i], argv[i+3]);
-        }
+			/*
+			//Print out the fileNames
+			int x; //Counting int
+			for (x = 0; x < numOfFiles; ++x) {
+				printf("%d: The file name: %s\n", x + 1, fileNames[x]);
+			}
+			*/
+			
+			// archive function, takes in parameters of the names of the files, the number of files, and the name of the archive file
+			archive(fileNames, numOfFiles, archiveName, datacap);
+			
+			
+		}
+		else {
+			//printf("You supplied the archive name of: %s\n", archiveName);
+			
+			numOfFiles = numOfArgs - 2; //Calc. the number of files
+			//printf("You supplied %d file names.\n", numOfFiles);
+			
+			//Dynamically allocate for the array of char pointers, one for each string
+			fileNames = malloc(numOfFiles * sizeof(char *));
 
-        /*
-        //Print out the fileNames
-        int x; //Counting int
-        for (x = 0; x < numOfFiles; ++x) {
-            printf("%d: The file name: %s\n", x + 1, fileNames[x]);
-        }
-        */
-        
-		// archive function, takes in parameters of the names of the files, the number of files, and the name of the archive file
-        archive(fileNames, numOfFiles, archiveName);
+			//Allocate space for each string
+			int i; //Counting int
+			for (i = 0; i < numOfFiles; ++i) {
+				fileNames[i] = (char *)malloc(strlen(argv[i+3])+1);
+				//Check if fileName is too long.
+				if (strlen(argv[i+3]) >= sizeFileName){
+					fprintf(stderr, "The file name would cause an overflow. ");
+					exit(-1);              
+				}
+				strcpy(fileNames[i], argv[i+3]);
+			}
 
+			/*
+			//Print out the fileNames
+			int x; //Counting int
+			for (x = 0; x < numOfFiles; ++x) {
+				printf("%d: The file name: %s\n", x + 1, fileNames[x]);
+			}
+			*/
+			
+			// archive function, takes in parameters of the names of the files, the number of files, and the name of the archive file
+			archive(fileNames, numOfFiles, archiveName);
+		}
         //Free the memory of the dynamically allocated list here.
         int y;
         for (y = 0; y < numOfFiles; ++y){

@@ -106,7 +106,7 @@ int main( int argc, char *argv[] )  {
 			*/
 			
 			// archive function, takes in parameters of the names of the files, the number of files, and the name of the archive file
-			archive(fileNames, numOfFiles, archiveName, datacap);
+			archiveSize(fileNames, numOfFiles, archiveName, datacap);
 			
 			
 		}

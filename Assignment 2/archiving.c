@@ -10,7 +10,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
+
 
 // included external header files
 #include "archiving.h"
@@ -118,6 +118,88 @@ void archive(char** fileNames, int numFiles, char* archiveName) {
 	
 }//End archive
 
+/*
+	The archive function returns nothing. It accepts, however, three variables: a string array containing all file names
+	that are included in the archiving process, an integer for the number of files included, and a string that is to be the 
+	name of the archive created. The archive functions programatically writes details and contents of supplied files to 
+	the supplied archivename in the following format: 
+		4 bytes containing the number of file; then for each file: 1 byte for the length of the name; the name in string format;
+		the size of the contents (in 4 bytes); the actual contents.
+*/
+
+/* loop for numFiles through string array
+	a)open file
+	b) get, store, print size of fileName
+	c) get, store, print the fileName
+	d) get, store, print size of contents( use fileSize() function here)
+	e) get, store , print the contents
+	f) close file
+*/
+
+void archiveSize(char** fileNames, int numFiles, char* archiveName, long fileSizeLimit) {
+	
+	//variables
+	char * tempArchiveName = strdup(archiveName); //Name for archive;
+	FILE * outputFile, * tempFile; //outputFile and the temp file for input, respectively
+	int archiveFileCapper = 0, filesPerArchive = 0; //number to go on the end of the archive file name, then a temp
+	//int to detail how many files there are per archive
+	long sizePerFile = 0; //the size of each file in bytes
+	long sumOfFileSize = 0;
+	
+	// concatenate ".bin" to a temp archiveName string.
+	if (strstr(tempArchiveName, ".bin") == NULL){
+		strcat(tempArchiveName, ".bin");
+	}
+
+	//opens a new bin file with new string for writing
+	if ((outputFile = fopen(tempArchiveName, "wb")) == NULL){
+		fprintf(stderr, "Could not allocate space for the output archive.");
+		exit(-1);
+	}
+	
+	//for loop (for testing RN)
+	int i;
+	for (i = 0; i < numFiles; i++) {
+		
+		printf("\nLOOP %d\n", (i + 1));
+		
+		char * tempFileName; //a character array for the inputfile's name
+		tempFileName = strdup(fileNames[i]); //assign the inputfile's name
+		
+		//printf("File Name: %s\n", tempFileName);
+		
+		//Attempt to dynamically allocate space
+		if ((tempFile = fopen(tempFileName, "r")) == NULL) {
+			fprintf(stderr, "could not allocate space");
+			exit(-1);
+		}
+		
+		//Initializes sizePerFile
+		sizePerFile = fileSize(tempFile); printf("\nsize for file %d: %d\n", (i+1), sizePerFile);
+		
+		//Adds sizePerFile to sumOfFileSize
+		sumOfFileSize += sizePerFile;
+		
+		if (sumOfFileSize > fileSizeLimit) {
+			printf("\nTHE LIMIT IS OVER RE INITIALIZE outputFile as outputfile + archiveFileCapper\n");
+			sumOfFileSize = 0;
+			if (sizePerFile > fileSizeLimit) {
+				
+				//figure out how to mathematically figure out how many files need to be made
+				int filesSplitBetween = 1 + ((sizePerFile - 1) / fileSizeLimit);
+				printf("\nthe single file size is greater than the fileSizeLimit, split into %d files\n", filesSplitBetween);
+				
+			}
+			//reinitialize
+		}
+		
+		//close and freeing;
+		fclose(tempFile);
+		free(tempFileName);
+		
+	}
+	
+}//End archive
 
 /*
 	The unarchive function returns nothing. It accepts, however, one variable: a string that is the name of the 

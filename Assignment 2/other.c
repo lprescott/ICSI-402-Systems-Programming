@@ -84,12 +84,102 @@ long isnumber(char * string) {
 	}
 	
 	//Converts string and puts the value into number
-	printf("%d, is the number", number);
+	//printf("%d, is the number", number);
 	sscanf(string, "%d", &number);
 	
 	return number;
 }
 
-void archiveBase(char** fileNames, int numFiles, char* archiveName, long contentSize) {
+char ** appendString(char ** names, int length, char* string) {
+	
+	char ** tempCharArray = malloc((length + 2) * sizeof(char*));
+	
+	printf("GOT HERE");
+	
+	int i; //Counting int
+	for (i = 0; i <= length; i++) {
+		tempCharArray[i] = (char *)malloc(strlen(names[i])+1);
+		//Check if fileName is too long.
+		if (strlen(names[i]) >= sizeFileName){
+			fprintf(stderr, "The file name would cause an overflow. ");
+			exit(-1);              
+		}
+		strcpy(tempCharArray[i], names[i]);
+	}
+	
+	
+	tempCharArray[i] = (char *)malloc(strlen(string)+1);
+	strcpy(tempCharArray[i+1], string);
+	
+	int y;
+    for (y = 0; y <= length; ++y){
+        free(names[y]);
+    }
+    free(names);
+}
+
+void archiveBase(char** fileNames, int numFiles, char* archiveName, long contentLimit) {
+/*	
+	char* tempArchiveName, * tempString, * archiveNameWithEnd;
+	char ** addedFileNames;
+	int archiveEndCap = 1;
+	long sumOfFileSize = 0, theFileSize = 0;
+	int numFilesPerArchive = 0;
+	FILE * tempFile;
+	int i;
+	/*
+	if (strstr(archiveName, ".bin")) {	
+		tempArchiveName = malloc((strlen(archiveName) - 4) * sizeof(char));
+		
+		for (i = 0; i < (strlen(archiveName) - 4); i++) {
+			tempArchiveName[i] = archiveName[i];
+		}
+	} else {
+		tempArchiveName = strdup(archiveName);
+	//}
+	
+	sprintf(archiveNameWithEnd, "%s%d", tempArchiveName, archiveEndCap);
+	
+	printf("%s\n", archiveNameWithEnd);
+	
+	sumOfFileSize += sizeNumFiles;
+	
+	for (i = 0; i < numFiles; i++) {
+		
+		tempString = strdup(fileNames[i]);
+		
+		if ((tempFile = fopen(tempString, "r")) == NULL) {
+			fprintf(stderr, "could not allocate space");
+			exit(-1);
+		}
+		
+		theFileSize = fileSize(tempFile);
+		sumOfFileSize += sizeFileSize + sizeLengthFile + theFileSize;
+		printf("Filesize %d\n", sumOfFileSize);
+		
+		printf("Hits here");
+		addedFileNames = appendString(addedFileNames, numFilesPerArchive, tempString);
+		numFilesPerArchive++;
+		
+		if (sumOfFileSize > contentLimit) {
+			printf("New file needed\n");
+			sumOfFileSize += sizeNumFiles;
+			//Split the string array by
+			
+			archive(addedFileNames, numFilesPerArchive, archiveNameWithEnd);
+			archiveEndCap++;
+			sprintf(archiveNameWithEnd, "%s%d", tempArchiveName, archiveEndCap);
+			
+		}
+		
+		//Closing all files;
+		fclose(tempFile);
+		*/
+	}
+	
+	//Call archive with remaining things
+	
+	//freeing all necessary data;
+	free(tempArchiveName);
 	
 }

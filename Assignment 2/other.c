@@ -183,14 +183,26 @@ void archiveWithCap(char** fileNames, int numFiles, char* archiveName, long cont
   }
 
   printf("\nThe files to be archived:\n");
-  x = 0;
+  x = 0; int totalBytes = 0;
   for(x; x<y; x++){
+    totalBytes += newBytesPerFile[x];
     printf("%d ; %d ; ", x + 1, newBytesPerFile[x]);
     printf("%s\n", newFileNames[x]);
+  }
+
+  numFiles = x;
+  printf("The total bytes of the supplied files: %d\n", totalBytes);
+
+  //If files can fit in one archiveName
+  if (totalBytes < contentLimit){
+    archive(newFileNames, numFiles, addNumber(archiveName, 1));
   }
 }
 
 char * addNumber(char * archiveName, int currentArchive){
+    if (strstr(archiveName, ".bin") == NULL){
+      strcat(archiveName, ".bin");
+    }
     char * newName, * tempName;
     char c;
     if (currentArchive == 1){

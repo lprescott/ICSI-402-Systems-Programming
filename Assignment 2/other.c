@@ -229,40 +229,46 @@ void archiveWithCap(char** fileNames, int numFiles, char* archiveName, long cont
 
   else if (numFiles > 2){
     //Create a new string array that has the maximum size of the number of files
-    //char ** tempFilesNames = malloc(numFiles * sizeof(char *));
+    char ** tempFilesNames = malloc(numFiles * sizeof(char *));
     //There are more than two files, that need to be split correctly
 
-    //Determine number of archives (number of splits + 1)
     x = 0; int currentMemory = 0; y = 0; int currentfiles = 0;
     //int numberOfArchives = 0;
     while(x < numFiles){
-      //tempFileNames = malloc(strlen(newFileNames[x]) + 1);
-      //strcpy(tempFilesNames[0], newFileNames[x]);
       if (currentMemory + newBytesPerFile[x] < contentLimit){
+
         currentMemory += newBytesPerFile[x];
         currentfiles ++;
+
+        tempFilesNames[currentfiles - 1] = malloc(strlen(newFileNames[x]) + 1);
+        strcpy(tempFilesNames[currentfiles - 1], newFileNames[x]);
+
         //printf("\nCurrent mem: %d ",  currentMemory);
         printf("\nCurrent x: %d ", x);
         printf("\nCurrent y: %d ", y);
-        //printf("\nCurrent x - y: %d ", x - y);
+        printf("\nCurrent pos: %d ", currentfiles - 1);
         printf("\nCurrent files: %d ", currentfiles);
         x++;
       }
       else{
+        printf("Reset.");
+
+        int p = 0;
+        for(p; p < currentfiles; p++){
+          free(tempFilesNames[p]);
+        }
+
         currentMemory = 0;
         currentfiles = 0;
         y ++;
       }
       if(currentMemory != 0){
         printf("\nAdd %d bytes to %d bin file.", currentMemory, y);
-        //archive(tempFilesNames, currentfiles, addNumber(archiveName, y+1));
+        archive(tempFilesNames, currentfiles, addNumber(archiveName, y+1));
       }
-      //free(tempFileNames[0]);
     }
 
-    //Store in a multidimensional array of strings
-
-    //Loop through number of archives calling archive and add number
+    free(tempFilesNames);
     printf("\n");
   }
 

@@ -164,9 +164,6 @@ void archiveWithCap(char** fileNames, int numFiles, char* archiveName, long cont
     fclose(tempFile);
   }
 
-  char *** listOfNames;
-  listOfNames = malloc(numFiles * sizeof(char *));
-
   int newBytesPerFile[numFiles];
   char * newFileNames[numFiles];
   x = 0; int y = 0;
@@ -193,10 +190,73 @@ void archiveWithCap(char** fileNames, int numFiles, char* archiveName, long cont
   numFiles = x;
   printf("The total bytes of the supplied files: %d\n", totalBytes);
 
+  int currentArchive = 1;
   //If files can fit in one archiveName
   if (totalBytes < contentLimit){
-    archive(newFileNames, numFiles, addNumber(archiveName, 1));
+    archive(newFileNames, numFiles, addNumber(archiveName, currentArchive));
   }
+  else{
+    int bytesDifference = totalBytes - contentLimit;
+    printf("There are %d too many bytes to insert in one bin file.\n", bytesDifference);
+  }
+
+  //If there is one file, just add it
+  if(numFiles == 1){
+    char ** tempFilesNames = malloc(sizeof(char *));
+    tempFilesNames[0] = malloc(strlen(newFileNames[0])+1);
+    strcpy(tempFilesNames[0], newFileNames[0]);
+    archive(tempFilesNames, 1, addNumber(archiveName, 1));
+    free(tempFilesNames[0]);
+  }
+
+  //If there are two files, just split them
+  else if (numFiles == 2){
+    char ** tempFilesNames = malloc(sizeof(char *));
+    tempFilesNames[0] = malloc(strlen(newFileNames[0])+1);
+    strcpy(tempFilesNames[0], newFileNames[0]);
+    archive(tempFilesNames, 1, addNumber(archiveName, 1));
+
+    free(tempFilesNames[0]);
+    tempFilesNames[0] = malloc(strlen(newFileNames[1])+1);
+    strcpy(tempFilesNames[0], newFileNames[1]);
+    archive(tempFilesNames, 1, addNumber(archiveName, 2));
+    free(tempFilesNames[0]);
+  }
+  else{
+    //do nothing
+  }
+
+
+  /*
+  //Create a new string array that has the maximum size of the number of files
+  char ** tempFilesNames = malloc(numFiles * sizeof(char *));
+  int filesArchived = 0; int currentMemory = 0; //Assign the number of files and mem to 0
+
+  y = 0;
+  //While there are more files to archive
+  while(filesArchived < numFiles){
+    currentMemory = newBytesPerFile[y];
+    tempFilesNames[y] = malloc(strlen(newFileNames[y])+1);
+    strcpy(tempFilesNames[y], newFileNames[y]);
+    if (y + 1 > numFiles){
+      return;
+    }
+    while(currentMemory + newBytesPerFile[y+1] < contentLimit){
+      currentMemory += newBytesPerFile[y+1];
+      tempFilesNames[y+1] = malloc(strlen(newFileNames[y+1])+1);
+      strcpy(tempFilesNames[y+1], newFileNames[y+1]);
+      y++;
+    }
+    archive(tempFilesNames, y + 1, addNumber(archiveName, currentArchive));
+    currentArchive ++; filesArchived += y + 1;
+
+    //free memory
+    int z = 0;
+    for(z; z < numFiles; z++){
+      free(tempFilesNames[z]);
+    }
+  }
+  */
 }
 
 char * addNumber(char * archiveName, int currentArchive){
@@ -205,26 +265,15 @@ char * addNumber(char * archiveName, int currentArchive){
     }
     char * newName, * tempName;
     char c;
-    if (currentArchive == 1){
+
         int length = strlen(archiveName) + 1;
         newName = malloc((length * sizeof(char)) + 1);
         strcpy(newName, archiveName);
 
-        char c = currentArchive + '0';
+        c = currentArchive + '0';
         newName[length-5] = c;
         newName[length-4] = '\0';
         strcat(newName, ".bin");
-    }
-    else{
-        int length = strlen(archiveName) + 1;
-        newName = malloc((length * sizeof(char)));
-        strcpy(newName, archiveName);
-
-        char c = currentArchive + '0';
-        newName[length-6] = c;
-        newName[length-5] = '\0';
-        strcat(newName, ".bin");
-    }
 
     tempName = strdup(newName);
     free(newName);

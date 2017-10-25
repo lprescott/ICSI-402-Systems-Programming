@@ -14,6 +14,9 @@
 //including headers
 #include "other.h"
 #include "constants.h"
+#include "archiving.h"
+
+char *  addNumber(char * archiveName, int currentArchive);
 
 /*
   This function checks to see if the given character array string is a flag. if it is, the program
@@ -90,6 +93,7 @@ long isnumber(char * string) {
 	return number;
 }
 
+/*
 char ** appendString(char ** names, int length, char* string) {
 	
 	char ** tempCharArray = malloc((length + 2) * sizeof(char*));
@@ -117,8 +121,118 @@ char ** appendString(char ** names, int length, char* string) {
     }
     free(names);
 }
+*/
 
-void archiveBase(char** fileNames, int numFiles, char* archiveName, long contentLimit) {
+void archiveWithCap(char** fileNames, int numFiles, char* archiveName, long contentLimit) {
+  
+  //Loop to determine the number of bytes contained in a each file, ordered in a array
+  int bytesPerFile[numFiles], x = 0;
+  char * tempArchiveName = strdup(archiveName);
+ 	// concatenate ".bin" to a temp archiveName string if needed
+	if (strstr(tempArchiveName, ".bin") == NULL){
+		strcat(tempArchiveName, ".bin");
+	}
+  char * tempString;
+  FILE * tempFile = NULL;
+  for(x; x<numFiles; x++){
+    if ((tempFile = fopen(fileNames[x], "r")) == NULL) {
+	    fprintf(stderr, "Could not allocate space for a new tempFile.");
+			exit(-1);
+		}
+    tempString = strdup(fileNames[x]);
+    int currentBytes = 0;
+    //Bytes for file name's length:
+    //Currently: 4 bytes
+    currentBytes += 4;
+    
+    //Bytes for file name
+    //Currently: 1 + fileNames[x] length
+    currentBytes += 1 + strlen(fileNames[x]);
+    
+    //Bytes for content size
+    //Currently 4 bytes
+    currentBytes += 4;
+    
+    //Bytes for contents
+    //Currently fileSize([x]);
+    currentBytes +=  fileSize(tempFile);
+    
+    //Store in bytesPerFile array
+    bytesPerFile[x] = currentBytes;
+    
+    //Close it
+    fclose(tempFile);
+  }
+  
+  char ** tempStringArray;
+  x = 0;
+  int currentArchive = 1;
+  for(x; x<numFiles; x++){
+    if (bytesPerFile[x] > contentLimit){
+      fprintf(stderr, "A file was greater in size than the data cap provided.");
+      continue;
+    }
+    else if (bytesPerFile[x] == contentLimit){
+      tempStringArray = malloc(strlen(fileNames[x]) + 1);
+      archive(tempStringArray, 1, addNumber(archiveName, currentArchive));
+      currentArchive += 1;
+    }
+    else{
+    //(bytesPerFile[x] < contentLimit)
+    
+    //Determine how much memory to allocate
+    int y = x;
+    int memory = bytesPerFile[y];
+    int totalNameLength = strlen(fileNames[i]) + 1;
+    while((memory + bytesPerFile[y+1]) < contentLimit && y+1 <= numFiles)
+    {  
+      y++;
+      memory =+ bytesPerFile[y];
+      totalNameLength += strlen(fileNames[i]) + 1;
+    }
+    int count = y - x;
+    
+    tempStringArray = malloc(totalNameLength * sizeof(char));
+    int z = 0;
+    for(z; z < count; z++){
+      strcpy(tempStringArray[z], fileNames[z+y]);
+    }
+  
+    archive(tempStringArray, 2, addNumber(archiveName, currentArchive));
+  }
+}  
+
+char * addNumber(char * archiveName, int currentArchive){
+    char * newName, * tempName;
+    char c;
+    if (currentArchive == 1){
+        int length = strlen(archiveName) + 1;    
+        newName = malloc((length * sizeof(char)) + 1);
+        strcpy(newName, archiveName);
+        
+        char c = currentArchive + '0';
+        newName[length-5] = c;
+        newName[length-4] = '\0';
+        strcat(newName, ".bin");
+    }
+    else{
+        int length = strlen(archiveName) + 1;    
+        newName = malloc((length * sizeof(char)));
+        strcpy(newName, archiveName);
+       
+        char c = currentArchive + '0';
+        newName[length-6] = c;
+        newName[length-5] = '\0';
+        strcat(newName, ".bin");
+    }
+    
+    tempName = strdup(newName
+    free(newName);
+
+    //printf("\"%s\"", tempName);
+    return tempName;
+}
+  
 /*	
 	char* tempArchiveName, * tempString, * archiveNameWithEnd;
 	char ** addedFileNames;
@@ -175,11 +289,11 @@ void archiveBase(char** fileNames, int numFiles, char* archiveName, long content
 		//Closing all files;
 		fclose(tempFile);
 		*/
-	}
+	//}
 	
 	//Call archive with remaining things
 	
 	//freeing all necessary data;
-	free(tempArchiveName);
+	//free(tempArchiveName);
 	
-}
+//}

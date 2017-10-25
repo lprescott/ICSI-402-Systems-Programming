@@ -56,7 +56,13 @@ possible for the Instructor to identify or fix the bugs in the submitted version
 [Assignment Here](https://github.com/lprescott/ICSI-402-Systems-Programming/blob/master/Assignment%201/prog1.pdf)
 
 ### Assignment 2:
-TBD
+#### TODO:
+- [ ] There are to be NO FILE types in our code, system calls only. I.E. fread vs read...
+- [ ] Verify does not have complete functionality (specifically, # of bytes missing)
+- [ ] Comments must be added to the new funcions in other.c
+- [ ] Many dynamic memory allocations must be free()d.
+- [ ] By convention, the number of bytes for the length of the name is 4 bytes, it should be 1
+- [ ] Constants as specified in constants.h should be used
 
 ### Assignment 3:
 TBD

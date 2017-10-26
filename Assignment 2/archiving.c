@@ -88,6 +88,8 @@ void archive(char** fileNames, int numFiles, char* archiveName) {
 		//Create and assign a long variable that contains the fileSize of the current file
 		long tempSize = (fileSize(tempFile));
 		//printf("%d\n", tempSize);
+
+		printf("\n %ld \n", tempSize);
 		
 		//Add the fileSize to the bin
 		fwrite(&tempSize, SizeOfTheFile, 1, outputFile);
@@ -168,7 +170,7 @@ void unarchive(char* archiveFile) {
 		
 		//Read the size of the file into the temp int
 		fread(&contentSize, SizeOfTheFile, 1, inputFile);
-		//printf("%d\n", contentSize);
+		printf("%d\n", contentSize);
 		
 		//For loop for the contents of each file
 		int y = 0;

@@ -12,19 +12,22 @@ int main( int argc, const char* argv[] )
     //(f) Print the number of inbound flights for each airport
     //(g) Print a sorted list of origin airports based on the number of outbound flights
     //(h) Print a list of origin airports that have at least 2 flights that have a departure time earlier than noon
-    
+
 	printf( "\nHello World\n\n" );
 }
 
-flight * createFlight(char * AirlineCode, int FlightNumber, char * OriginAirportCode, char * DestinationAirportCode, char * DepartureDate) {
+flight * createFlight( char * AirlineCodeAndFlightNumber, char * OriginAirportCode, char * DestinationAirportCode, char * DepartureDayOfWeek ,char * DepartureMonth, int DepartureDay, char * DepartureTime, int DepartureYear) {
 
     flight * tempFlight = malloc(sizeof(flight));
-  
-    tempFlight->AirlineCode = strdup(AirlineCode);
-    tempFlight->FlightNumber = FlightNumber; 
+
+    tempFlight->AirlineCodeAndFlightNumber = strdup(AirlineCodeAndFlightNumber);
     tempFlight->OriginAirportCode = strdup(OriginAirportCode);
     tempFlight->DestinationAirportCode = strdup(DestinationAirportCode);
-    tempFlight->DepartureDate = strdup(DepartureDate);
+    tempFlight->DepartureDayOfWeek = strdup(DepartureDayOfWeek);
+    tempFlight->DepartureMonth = strdup(DepartureMonth);
+    tempFlight->DepartureTime = strdup(DepartureTime);
+    tempFlight->DepartureDay = DepartureDay;
+    tempFlight->DepartureYear = DepartureYear;
 
     return tempFlight;
   }

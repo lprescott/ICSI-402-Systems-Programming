@@ -78,7 +78,7 @@ int main( int argc, char *argv[] )  {
 			//printf("This argument is a number! %d\n", datacap);
 
 			//printf("You supplied the archive name of: %s\n", archiveName);
-      printf("This command will create archives of %ld bytes or below with the name: \"%s.bin\".\nIf a file is greater than the datacap, then it will not be archived. \n", datacap, archiveName);
+            //printf("This command will create archives of %ld bytes or below with the name: \"%s.bin\".\nIf a file is greater than the datacap, then it will not be archived. \n", datacap, archiveName);
 
 			numOfFiles = numOfArgs - 3; //Calc. the number of files
 			//printf("You supplied %d file names.\n", numOfFiles);

@@ -8,8 +8,6 @@
 //standard c libraries
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#include <sys/stat.h>
 
 // included external header files
 #include "constants.h"
@@ -18,14 +16,23 @@
 /*
   This function finds file size by seeking all the way to the end on the file, then telling the long
   position the position of the end character. This position is the size of the file in bytes. It only takes,
-  one argument, which is the file name.
+  one argument, which is the FILE type needed to point to.
 */
-long fileSize(char * fileName)){
-  struct stat buffer
-  if (stat(file_name, &buffer) != 0)
-  {
-    fprintf(stderr, "Stat has failed in fileSize().");
-    exit(-1);
-  }
-  return buffer.st_size;
+long fileSize(FILE * file){
+    //Position: the variable to be returned, and the position of the end character.S
+    long position;
+
+	// if it is null, and error is printed and terminates
+    if (file == NULL){
+        fprintf(stderr, "Error opening file.\n");
+        return(-1);
+    }
+
+    fseek(file, 0, SEEK_END);// sets the file position of the stream to the given offset
+
+    position = ftell(file);// ftell returns the current file postion of the given stream, and that is the value of position.
+
+    rewind(file);// returns to the beginning of the file
+
+    return position;// returns the position of the file offset
 }

@@ -57,13 +57,12 @@ possible for the Instructor to identify or fix the bugs in the submitted version
 
 ### Assignment 2:
 #### TODO:
-- [ ] There are to be NO FILE types in our code, system calls only. I.E. fread vs read...
 - [ ] Verify does not have complete functionality (specifically, # of bytes missing)
 - [ ] Comments must be added to the new functions in other.c
 - [ ] Many dynamic memory allocations must be free()d.
 - [ ] By convention, the number of bytes for the length of the name is 4 bytes, it should be 1
 - [ ] Constants as specified in constants.h should be used
-- [ ] fileSize shouldn't take a FILE
+- [ ] the supplied archive name may not include a .bin extension!
 
 ### Assignment 3:
 TBD

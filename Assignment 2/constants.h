@@ -17,6 +17,6 @@
 */
 
 #define SizeOfNumOfFiles 4 //1
-#define SizeOfTheFile 4 //2
-#define SizeOfFileLength 1 //3
+#define SizeOfFileLength 1//2
+#define SizeOfTheFile 4 //3
 #define SizeOfFileName 256 //4

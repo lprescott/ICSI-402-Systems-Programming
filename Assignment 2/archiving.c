@@ -50,11 +50,6 @@ void archive(char** fileNames, int numFiles, char* archiveName) {
 	FILE * outputFile; //The output file
 	FILE * tempFile; //The temp file (input file)
 	int tempNumOfFiles = numFiles; //Assigning a temporary int the number of files
-	
-	// concatenate ".bin" to a temp archiveName string.
-	if (strstr(tempArchiveName, ".bin") == NULL){
-		strcat(tempArchiveName, ".bin");
-	}
 
 	//opens a new bin file with new string for writing
 	if ((outputFile = fopen(tempArchiveName, "wb")) == NULL){
@@ -64,7 +59,7 @@ void archive(char** fileNames, int numFiles, char* archiveName) {
 	
 	//Add number of files to bin
 	//printf("NUMBER OF FILES: %d\n", tempNumOfFiles);
-	fwrite(&tempNumOfFiles, sizeNumFiles, 1, outputFile);
+	fwrite(&tempNumOfFiles, SizeOfNumOfFiles, 1, outputFile);
 	
 	//loop for the number of files
 	int i = 0;
@@ -81,11 +76,11 @@ void archive(char** fileNames, int numFiles, char* archiveName) {
 			exit(-1);
 		}
 		
-		long lengthOfFileName = strlen(tempFileName) + 1; //A new long variable containing the length of the file name + 1
+		unsigned char lengthOfFileName = strlen(tempFileName) + 1; //A new long variable containing the length of the file name + 1
 		
 		//Add length of file name to bin
 		//printf("%d\n", lengthOfFileName);
-		fwrite(&lengthOfFileName, sizeof(int), 1, outputFile);
+		fwrite(&lengthOfFileName, SizeOfFileLength, 1, outputFile);
 		
 		//Add filename to bin
 		fwrite(tempFileName, sizeof(char), lengthOfFileName, outputFile);
@@ -95,7 +90,7 @@ void archive(char** fileNames, int numFiles, char* archiveName) {
 		//printf("%d\n", tempSize);
 		
 		//Add the fileSize to the bin
-		fwrite(&tempSize, sizeof(long), 1, outputFile);
+		fwrite(&tempSize, SizeOfTheFile, 1, outputFile);
 			
 		int c; //A int variable containing characters to add
 		int count = 0; //A count variable to keep track in the loop
@@ -127,16 +122,12 @@ void unarchive(char* archiveFile) {
 	
 	//Variables here
 	char * tempArchiveName; //The temp char array containing the archive name
-	int numOfFiles, fileNameLength; //Integers for the number of files and the length of the file names
+	int numOfFiles; //Integers for the number of files and the length of the file names
 	long contentSize; //A long for the length of each file's size
 	tempArchiveName = strdup(archiveFile); //Assign the archive name to the temp char array
 	FILE * inputFile; //The inputfile
 	FILE * tempFile; //The output files
-
-	// concatenate ".bin" to a temp archiveName string.
-	if (strstr(tempArchiveName, ".bin") == NULL){
-		strcat(tempArchiveName, ".bin");
-	}
+	unsigned char fileNameLength;
 
 	//opens a new bin file with new string for reading
 	if ((inputFile = fopen(tempArchiveName, "rb")) == NULL){
@@ -145,7 +136,7 @@ void unarchive(char* archiveFile) {
 	}
 	
 	//Read the number of files into the temp int
-	fread(&numOfFiles, sizeNumFiles, 1, inputFile);
+	fread(&numOfFiles, SizeOfNumOfFiles, 1, inputFile);
 
 	//printf("\nNumber of Files: %d\n", numOfFiles);
 	
@@ -153,7 +144,7 @@ void unarchive(char* archiveFile) {
 	int i = 0;
 	for (i = 0; i < numOfFiles; i++) {
 		//Read the length of the file name into the temp int
-		fread(&fileNameLength, sizeof(int), 1, inputFile);
+		fread(&fileNameLength, SizeOfFileLength, 1, inputFile);
 		//printf("%d\n", fileNameLength);
 		
 		//Allocate memory for the tempString (the name of the file)
@@ -176,7 +167,7 @@ void unarchive(char* archiveFile) {
 		}
 		
 		//Read the size of the file into the temp int
-		fread(&contentSize, sizeof(long), 1, inputFile);
+		fread(&contentSize, SizeOfTheFile, 1, inputFile);
 		//printf("%d\n", contentSize);
 		
 		//For loop for the contents of each file

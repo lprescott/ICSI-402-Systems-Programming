@@ -16,7 +16,7 @@
    including the null-terminating character).
 */
 
-#define sizeNumFiles 4 //1
-#define sizeFileSize 4 //2
-#define sizeLengthFile 1 //3
-#define sizeFileName 256 //4
+#define SizeOfNumOfFiles 4 //1
+#define SizeOfTheFile 4 //2
+#define SizeOfFileLength 1 //3
+#define SizeOfFileName 256 //4

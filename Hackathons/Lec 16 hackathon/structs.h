@@ -8,7 +8,7 @@ typedef struct flight{
     char DepartureDayOfWeek [3]; //Wed
     char DepartureMonth [3]; //Jan
     int DepartureDay;
-    char * DepartureTime [5]; //10:00
+    char DepartureTime [5]; //10:00
     int DepartureYear;
  } flight;
 

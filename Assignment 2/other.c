@@ -98,7 +98,6 @@ void archiveWithCap(char** fileNames, int numFiles, char* archiveName, long cont
   //Loop to determine the number of bytes contained in a each file, ordered in a array
   int bytesPerFile[numFiles], x = 0;
   char * tempArchiveName = strdup(archiveName);
-
   char * tempString;
   FILE * tempFile = NULL;
   for(x; x<numFiles; x++){
@@ -109,20 +108,20 @@ void archiveWithCap(char** fileNames, int numFiles, char* archiveName, long cont
     tempString = strdup(fileNames[x]);
     int currentBytes = 0;
     //Bytes for file name's length:
-    //Currently: SizeOfFileLength
-    currentBytes += SizeOfFileLength;
+    //Currently: 4 bytes
+    currentBytes += 4;
 
     //Bytes for file name
     //Currently: 1 + fileNames[x] length
     currentBytes += 1 + strlen(fileNames[x]);
 
     //Bytes for content size
-    //Currently SizeOfTheFile
-    currentBytes += SizeOfTheFile;
+    //Currently 4 bytes
+    currentBytes += 4;
 
     //Bytes for contents
     //Currently fileSize([x]);
-    currentBytes += fileSize(tempFile);
+    currentBytes +=  fileSize(tempFile);
 
     //Store in bytesPerFile array
     bytesPerFile[x] = currentBytes;
@@ -202,7 +201,7 @@ void archiveWithCap(char** fileNames, int numFiles, char* archiveName, long cont
     x = 0; int currentMemory = 0; y = 0; int currentfiles = 0;
     //int numberOfArchives = 0;
     while(x < numFiles){
-      if (currentMemory + newBytesPerFile[x] < contentLimit - 4){
+      if (currentMemory + newBytesPerFile[x] < contentLimit){
 
         currentMemory += newBytesPerFile[x];
         currentfiles ++;
@@ -243,13 +242,46 @@ void archiveWithCap(char** fileNames, int numFiles, char* archiveName, long cont
     fprintf(stderr, "Number of files is resulting in an error.\n");
     exit(-1);
   }
+
+
+
+  /*
+  //Create a new string array that has the maximum size of the number of files
+  char ** tempFilesNames = malloc(numFiles * sizeof(char *));
+  int filesArchived = 0; int currentMemory = 0; //Assign the number of files and mem to 0
+
+  y = 0;
+  //While there are more files to archive
+  while(filesArchived < numFiles){
+    currentMemory = newBytesPerFile[y];
+    tempFilesNames[y] = malloc(strlen(newFileNames[y])+1);
+    strcpy(tempFilesNames[y], newFileNames[y]);
+    if (y + 1 > numFiles){
+      return;
+    }
+    while(currentMemory + newBytesPerFile[y+1] < contentLimit){
+      currentMemory += newBytesPerFile[y+1];
+      tempFilesNames[y+1] = malloc(strlen(newFileNames[y+1])+1);
+      strcpy(tempFilesNames[y+1], newFileNames[y+1]);
+      y++;
+    }
+    archive(tempFilesNames, y + 1, addNumber(archiveName, currentArchive));
+    currentArchive ++; filesArchived += y + 1;
+
+    //free memory
+    int z = 0;
+    for(z; z < numFiles; z++){
+      free(tempFilesNames[z]);
+    }
+  }
+  */
 }
 
 char * addNumber(char * archiveName, int currentArchive){
   if(strstr(archiveName, ".") == NULL){
     char * newName; char c; int length;
     char * tempName;
-
+    
     //There is no extension
     if(currentArchive > 1){
       //change the number
@@ -282,21 +314,35 @@ char * addNumber(char * archiveName, int currentArchive){
         newName = malloc((length * sizeof(char)));
         strcpy(newName, archiveName);
         //Change the number
-
+        
         strlength = strlen(newName);
         length = strlen(strstr(newName, ".")) + 1;
         //printf("%d %d", strlength, length);
-
+        
         c = currentArchive + '0';
-
+        
         newName[strlength - length] = c;
-
+        
     }
     else{
       //Find the pos before the extension and add the number 1
+      length = strlen(archiveName) + 1;
+      newName = malloc((length * sizeof(char)) + 1);
+      c = currentArchive + '0';
+      
+      pos = strchr(archiveName, '.');
+      //extension = strdup(pos);
+      index = (int)(pos - archiveName);
+      strncpy(newName, archiveName, index);
+      //strcpy(newName, archiveName);
+      newName[index] = c;
+      newName[index + 1] = '\0';
+      
+      newName = strcat(newName, pos);
+      
 
     }
-
+  
     return newName;
     free(newName);
   }

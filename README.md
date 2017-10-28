@@ -60,9 +60,9 @@ possible for the Instructor to identify or fix the bugs in the submitted version
 - [ ] Verify does not have complete functionality (specifically, # of bytes missing)
 - [ ] Comments must be added to the new functions in other.c
 - [ ] Many dynamic memory allocations must be free()d.
-- [ ] By convention, the number of bytes for the length of the name is 4 bytes, it should be 1
-- [ ] Constants as specified in constants.h should be used
-- [ ] the supplied archive name may not include a .bin extension!
+- [x] By convention, the number of bytes for the length of the name is 4 bytes, it should be 1
+- [x] Constants as specified in constants.h should be used
+- [x] the supplied archive name may not include a .bin extension!
 
 ### Assignment 3:
 TBD

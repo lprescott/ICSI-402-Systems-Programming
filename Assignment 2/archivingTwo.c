@@ -168,6 +168,95 @@ void verifyArchive(char ** fileNames, int numFiles, char * archiveName) {
 	else{
 		//Less than the number of files in the archive
 		
+		char * tempString;
+		
+		int bytesPerFile[numFiles], x = 0;
+		
+		for(x; x<numFiles; x++){
+			if ((tempFile = fopen(fileNames[x], "r")) == NULL) {
+				fprintf(stderr, "Could not allocate space for a new tempFile.");
+					exit(-1);
+				}
+			tempString = strdup(fileNames[x]);
+			int currentBytes = 0;
+			//Bytes for file name's length:
+			//Currently: 4 bytes
+			currentBytes += 4;
+		
+			//Bytes for file name
+			//Currently: 1 + fileNames[x] length
+			currentBytes += 1 + strlen(fileNames[x]);
+		
+			//Bytes for content size
+			//Currently 4 bytes
+			currentBytes += 4;
+		
+			//Bytes for contents
+			//Currently fileSize([x]);
+			currentBytes +=  fileSize(tempFile);
+		
+			//Store in bytesPerFile array
+			bytesPerFile[x] = currentBytes;
+		
+			//Close it
+			fclose(tempFile);
+		}
+
+		x = 0; long totalBytes;
+		for(x; x<numFiles; x++) {
+			totalBytes += bytesPerFile[x];
+		}
+
+		int offset = ftell(inputFile);
+		long totalArchiveSize = fileSize(inputFile);
+		fseek(inputFile, offset, SEEK_CUR);
+		
+		long contentSize = 0;
+		long sumOfBytes = 4;
+		int fileNameLength;
+		int i = 0;
+		for (i = 0; i < archiveNumOfFiles; i++) {
+			
+			fread(&archiveFileNameS, sizeof(int), 1, inputFile);
+			
+			printf("%d\n", archiveFileNameS);
+			
+			sumOfBytes += 4;
+			
+			char * tempString = malloc(fileNameLength * sizeof(char));
+			//checks if you can't allocate, then terminates
+			if (tempString == NULL) {
+				fprintf(stderr, "Can't allocate memory to tempString\n");
+				exit(-1);
+			}
+			//reads the file name into tempString
+			fread(tempString, sizeof(char), fileNameLength, inputFile);
+			
+			sumOfBytes += (long)archiveFileNameS;
+			
+			fread(&contentSize, sizeof(long), 1, inputFile);
+			
+			if (checkIfContains(fileNames, numFiles, tempString) == -1) {
+				sumOfBytes += sizeof(long);
+				sumOfBytes += contentSize;
+			}
+			else {
+				sumOfBytes -= (long)archiveFileNameS;
+				sumOfBytes -= 4;
+			}
+			fseek(inputFile, contentSize, SEEK_CUR);
+			
+			continue;
+			
+		}
+		
+		if (sumOfBytes != totalBytes) {
+			printf("Missing %ld bytes\n", (sumOfBytes - totalBytes));
+			return;
+		}
+		
+		printf("All bytes are there.");
+		
 		
 	}
 	

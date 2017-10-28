@@ -27,9 +27,9 @@ define sizeFileName 256 //4
 
 /*
 	The archive function returns nothing. It accepts, however, three variables: a string array containing all file names
-	that are included in the archiving process, an integer for the number of files included, and a string that is to be the 
-	name of the archive created. The archive functions programatically writes details and contents of supplied files to 
-	the supplied archivename in the following format: 
+	that are included in the archiving process, an integer for the number of files included, and a string that is to be the
+	name of the archive created. The archive functions programatically writes details and contents of supplied files to
+	the supplied archivename in the following format:
 		4 bytes containing the number of file; then for each file: 1 byte for the length of the name; the name in string format;
 		the size of the contents (in 4 bytes); the actual contents.
 */
@@ -56,47 +56,47 @@ void archive(char** fileNames, int numFiles, char* archiveName) {
 		fprintf(stderr, "Could not allocate space for the output archive.");
 		exit(-1);
 	}
-	
+
 	//Add number of files to bin
 	//printf("NUMBER OF FILES: %d\n", tempNumOfFiles);
 	fwrite(&tempNumOfFiles, SizeOfNumOfFiles, 1, outputFile);
-	
+
 	//loop for the number of files
 	int i = 0;
 	for (i = 0; i < numFiles; i++) {
-		
+
 		char * tempFileName; //a character array for the inputfile's name
 		tempFileName = strdup(fileNames[i]); //assign the inputfile's name
-		
+
 		//printf("File Name: %s\n", tempFileName);
-		
+
 		//Attempt to dynamically allocate space
 		if ((tempFile = fopen(tempFileName, "r")) == NULL) {
 			fprintf(stderr, "could not allocate space");
 			exit(-1);
 		}
-		
+
 		unsigned char lengthOfFileName = strlen(tempFileName) + 1; //A new long variable containing the length of the file name + 1
-		
+
 		//Add length of file name to bin
 		//printf("%d\n", lengthOfFileName);
 		fwrite(&lengthOfFileName, SizeOfFileLength, 1, outputFile);
-		
+
 		//Add filename to bin
 		fwrite(tempFileName, sizeof(char), lengthOfFileName, outputFile);
-		
+
 		//Create and assign a long variable that contains the fileSize of the current file
 		long tempSize = (fileSize(tempFile));
 		//printf("%d\n", tempSize);
 
-		printf("\n %ld \n", tempSize);
-		
+		//printf("\n %ld \n", tempSize);
+
 		//Add the fileSize to the bin
 		fwrite(&tempSize, SizeOfTheFile, 1, outputFile);
-			
+
 		int c; //A int variable containing characters to add
 		int count = 0; //A count variable to keep track in the loop
-		
+
 		//Add character by character to the bin file (while not meeting the end of inputFile)
 		while((c = fgetc(tempFile)) != EOF) {
 			count++;
@@ -104,24 +104,24 @@ void archive(char** fileNames, int numFiles, char* archiveName) {
 			//printf("%c", h);
 			fprintf(outputFile, "%c", h);
 		}
-		
+
 		//printf("%d", count);
 		//close the tempFile
 		fclose(tempFile);
-		
+
 	}
 	//Close the outputFile
 	fclose(outputFile);
-	
+
 }//End archive
 
 /*
-	The unarchive function returns nothing. It accepts, however, one variable: a string that is the name of the 
-	archive to be unarchived. This fucntions creates the files contained in the archive with the correct name, size and 
+	The unarchive function returns nothing. It accepts, however, one variable: a string that is the name of the
+	archive to be unarchived. This fucntions creates the files contained in the archive with the correct name, size and
 	contents without compression.
 */
 void unarchive(char* archiveFile) {
-	
+
 	//Variables here
 	char * tempArchiveName; //The temp char array containing the archive name
 	int numOfFiles; //Integers for the number of files and the length of the file names
@@ -136,42 +136,42 @@ void unarchive(char* archiveFile) {
 		fprintf(stderr, "Could not allocate space for the input archive.");
 		exit(-1);
 	}
-	
+
 	//Read the number of files into the temp int
 	fread(&numOfFiles, SizeOfNumOfFiles, 1, inputFile);
 
 	//printf("\nNumber of Files: %d\n", numOfFiles);
-	
+
 	//For loop for the number of files in the archive
 	int i = 0;
 	for (i = 0; i < numOfFiles; i++) {
 		//Read the length of the file name into the temp int
 		fread(&fileNameLength, SizeOfFileLength, 1, inputFile);
 		//printf("%d\n", fileNameLength);
-		
+
 		//Allocate memory for the tempString (the name of the file)
 		char * tempString = malloc(fileNameLength * sizeof(char));
-		
+
 		//Check for NULL returns
 		if (tempString == NULL) {
 			exit(-1);
 		}
-		
+
 		//Read the name into tempString
 		fread(tempString, sizeof(char), fileNameLength, inputFile);
-		
+
 		//printf("File Name: %s\n", tempString);
-		
+
 		//Open the determined file for writing
 		tempFile = fopen(tempString, "w");
 		if (tempFile == NULL) {
 			exit(-1);
 		}
-		
+
 		//Read the size of the file into the temp int
 		fread(&contentSize, SizeOfTheFile, 1, inputFile);
-		printf("%d\n", contentSize);
-		
+		//printf("%d\n", contentSize);
+
 		//For loop for the contents of each file
 		int y = 0;
 		int c;
@@ -180,16 +180,15 @@ void unarchive(char* archiveFile) {
 			fread(&c, sizeof(char), 1, inputFile);
 			fwrite(&c, sizeof(char), 1, tempFile);
 		}
-		
+
 		//Close the tempfile (output)
 		fclose(tempFile);
-		
+
 		//Free the allocated name
 		free(tempString);
-		
+
 	}
 	//Close the archive
 	fclose(inputFile);
-	
-} //End unarchive
 
+} //End unarchive

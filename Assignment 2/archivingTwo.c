@@ -97,25 +97,81 @@ void verifyArchive(char ** fileNames, int numFiles, char * archiveName) {
 	int index, archiveNumOfFiles;// index of the filename and number of file in archive
 	long missingBytes = 0;// number of missing bytes
 	int fileDetectedCount = 0;// counts of the appropriate number of files was detected.
-	
-	// concatenate ".bin" to a temp archiveName string.
-	if (strstr(tempArchiveName, ".bin") == NULL){
-		strcat(tempArchiveName, ".bin");
-	}
 
 	//opens a new bin file with new string for writing
 	if ((inputFile = fopen(tempArchiveName, "rb")) == NULL){
 		fprintf(stderr, "Could not allocate space for the output archive.");
 		exit(-1);
 	}
-	
+
 	
 	//printf("\nNum Files to check %d: ", numFiles);
  
 	//Reads in the archive num of files, and passes the archive pointer
 	fread(&archiveNumOfFiles, sizeof(int), 1, inputFile);
 	//printf("\nNumber of files given by .bin %d\n", archiveNumOfFiles);
+
+	//Determine if there is a missing number of bytes
+	if(numFiles == archiveNumOfFiles){
+		//The same amount of files are supplied that are in the archive
+
+		//Calculate the bytes in the archive
+		long totalArchiveSize = fileSize(inputFile);
+		char * tempString;
+		int bytesPerFile[numFiles], x = 0;
+		//Calculate the bytes in the files
+		for(x; x<numFiles; x++){
+			if ((tempFile = fopen(fileNames[x], "r")) == NULL) {
+				fprintf(stderr, "Could not allocate space for a new tempFile.");
+					exit(-1);
+				}
+			tempString = strdup(fileNames[x]);
+			int currentBytes = 0;
+			//Bytes for file name's length:
+			//Currently: 4 bytes
+			currentBytes += 4;
+		
+			//Bytes for file name
+			//Currently: 1 + fileNames[x] length
+			currentBytes += 1 + strlen(fileNames[x]);
+		
+			//Bytes for content size
+			//Currently 4 bytes
+			currentBytes += 4;
+		
+			//Bytes for contents
+			//Currently fileSize([x]);
+			currentBytes +=  fileSize(tempFile);
+		
+			//Store in bytesPerFile array
+			bytesPerFile[x] = currentBytes;
+		
+			//Close it
+			fclose(tempFile);
+		  }
+
+		  x = 0; long totalBytes;
+		  for(x; x<numFiles; x++){
+			totalBytes += bytesPerFile[x];
+		  }
+
+		  printf("fileSize(archive) = %ld\n", totalArchiveSize);
+		  printf("loop for files = %ld\n", totalBytes + 5);
+		//Subtract the difference
+
+		int missingBytes = (totalBytes + 5) - totalArchiveSize;
+		if (missingBytes != 0){
+			printf("The archive is missing %d bytes.\n", missingBytes);
+			return;
+		}
+	}
+	else{
+		//Less than the number of files in the archive
+		
+		
+	}
 	
+	rewind(inputFile);
 	//For loop for the number of files of the archive
 	int i;
 	int y = 0;
@@ -188,15 +244,6 @@ void verifyArchive(char ** fileNames, int numFiles, char * archiveName) {
 	}
 	
 	fclose(inputFile);
-	
-	if (missingBytes != 0) {
-		printf("\nArchive is missing %d bytes.\n", missingBytes);
-		return;
-	}
-	
-	if (fileDetectedCount < numFiles) {
-		printf("\nArchive is missing an unknown amount of bytes.\n");
-	}
 	
 	printf("\nArchive Verified\n");
 	

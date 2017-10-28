@@ -78,7 +78,7 @@ int main( int argc, char *argv[] )  {
 			//printf("This argument is a number! %d\n", datacap);
 
 			//printf("You supplied the archive name of: %s\n", archiveName);
-            //printf("This command will create archives of %ld bytes or below with the name: \"%s.bin\".\nIf a file is greater than the datacap, then it will not be archived. \n", datacap, archiveName);
+      printf("This command will create archives of %ld bytes or below with the name: \"%s.bin\".\nIf a file is greater than the datacap, then it will not be archived. \n", datacap, archiveName);
 
 			numOfFiles = numOfArgs - 3; //Calc. the number of files
 			//printf("You supplied %d file names.\n", numOfFiles);
@@ -91,7 +91,7 @@ int main( int argc, char *argv[] )  {
 			for (i = 0; i < numOfFiles; ++i) {
 				fileNames[i] = (char *)malloc(strlen(argv[i+4])+1);
 				//Check if fileName is too long.
-				if (strlen(argv[i+4]) >= SizeOfFileName){
+				if (strlen(argv[i+4]) >= sizeFileName){
 					fprintf(stderr, "The file name would cause an overflow. ");
 					exit(-1);
 				}
@@ -125,7 +125,7 @@ int main( int argc, char *argv[] )  {
 			for (i = 0; i < numOfFiles; ++i) {
 				fileNames[i] = (char *)malloc(strlen(argv[i+3])+1);
 				//Check if fileName is too long.
-				if (strlen(argv[i+3]) >= SizeOfFileName){
+				if (strlen(argv[i+3]) >= sizeFileName){
 					fprintf(stderr, "The file name would cause an overflow. ");
 					exit(-1);
 				}
@@ -224,7 +224,7 @@ int main( int argc, char *argv[] )  {
         for (i = 0; i < numOfFiles; ++i) {
             fileNames[i] = (char *)malloc(strlen(argv[i+3])+1);
             //Check if fileName is too long.
-            if (strlen(argv[i+3]) >= SizeOfFileName){
+            if (strlen(argv[i+3]) >= sizeFileName){
                 fprintf(stderr, "The file name would cause an overflow. ");
                 exit(-1);
             }

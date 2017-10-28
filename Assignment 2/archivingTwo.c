@@ -27,13 +27,16 @@ void printArchiveDetails(char* archiveName) {
 	
 	//Variables here
 	char * tempArchiveName;
-	int numOfFiles;
-	unsigned char fileNameLength;
-	long contentSize = 0;
-	long totalSize;
+	int numOfFiles, fileNameLength;
+	long contentSize, totalSize;
 	tempArchiveName = strdup(archiveName);
 	FILE * inputFile;
 	int fileDetectedCount = 0;
+	
+	// concatenate ".bin" to a temp archiveName string.
+	if (strstr(tempArchiveName, ".bin") == NULL){
+		strcat(tempArchiveName, ".bin");
+	}
 
 	//opens a new bin file with new string for reading
 	if ((inputFile = fopen(tempArchiveName, "rb")) == NULL){
@@ -45,13 +48,13 @@ void printArchiveDetails(char* archiveName) {
         //prints the total size of the entire archive
 	printf("\nTotal Size of %s (in bytes): %d\n", tempArchiveName, totalSize);
         //reads number of files from the .bin file
-	fread(&numOfFiles, SizeOfNumOfFiles, 1, inputFile);
+	fread(&numOfFiles, sizeNumFiles, 1, inputFile);
 
 	printf("\nNumber of Files: %d\n", numOfFiles);
 	//for loop, that loops through the file.
 	int i = 0;
 	for (i = 0; i < numOfFiles; i++) {
-		fread(&fileNameLength, SizeOfFileLength, 1, inputFile);
+		fread(&fileNameLength, sizeof(int), 1, inputFile);
 		//printf("%d\n", fileNameLength);
 		//dynamic memory allocation for the name of the file
 		char * tempString = malloc(fileNameLength * sizeof(char));
@@ -62,7 +65,7 @@ void printArchiveDetails(char* archiveName) {
 		//reads the file name into tempString
 		fread(tempString, sizeof(char), fileNameLength, inputFile);
 		//reads the content size from the .bin file.
-		fread(&contentSize, SizeOfTheFile, 1, inputFile);
+		fread(&contentSize, sizeof(long), 1, inputFile);
 		// prints the filename and the size
 		printf("File Name: %s; Size (in bytes): %d\n", tempString, contentSize);
 		//seeks to the next file

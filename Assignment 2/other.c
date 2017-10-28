@@ -93,12 +93,45 @@ long isnumber(char * string) {
 	return number;
 }
 
+/*
+char ** appendString(char ** names, int length, char* string) {
+
+	char ** tempCharArray = malloc((length + 2) * sizeof(char*));
+
+	printf("GOT HERE");
+
+	int i; //Counting int
+	for (i = 0; i <= length; i++) {
+		tempCharArray[i] = (char *)malloc(strlen(names[i])+1);
+		//Check if fileName is too long.
+		if (strlen(names[i]) >= sizeFileName){
+			fprintf(stderr, "The file name would cause an overflow. ");
+			exit(-1);
+		}
+		strcpy(tempCharArray[i], names[i]);
+	}
+
+
+	tempCharArray[i] = (char *)malloc(strlen(string)+1);
+	strcpy(tempCharArray[i+1], string);
+
+	int y;
+    for (y = 0; y <= length; ++y){
+        free(names[y]);
+    }
+    free(names);
+}
+*/
+
 void archiveWithCap(char** fileNames, int numFiles, char* archiveName, long contentLimit) {
 
   //Loop to determine the number of bytes contained in a each file, ordered in a array
   int bytesPerFile[numFiles], x = 0;
   char * tempArchiveName = strdup(archiveName);
-
+ 	// concatenate ".bin" to a temp archiveName string if needed
+	if (strstr(tempArchiveName, ".bin") == NULL){
+		strcat(tempArchiveName, ".bin");
+	}
   char * tempString;
   FILE * tempFile = NULL;
   for(x; x<numFiles; x++){
@@ -109,20 +142,20 @@ void archiveWithCap(char** fileNames, int numFiles, char* archiveName, long cont
     tempString = strdup(fileNames[x]);
     int currentBytes = 0;
     //Bytes for file name's length:
-    //Currently: SizeOfFileLength
-    currentBytes += SizeOfFileLength;
+    //Currently: 4 bytes
+    currentBytes += 4;
 
     //Bytes for file name
     //Currently: 1 + fileNames[x] length
     currentBytes += 1 + strlen(fileNames[x]);
 
     //Bytes for content size
-    //Currently SizeOfTheFile
-    currentBytes += SizeOfTheFile;
+    //Currently 4 bytes
+    currentBytes += 4;
 
     //Bytes for contents
     //Currently fileSize([x]);
-    currentBytes += fileSize(tempFile);
+    currentBytes +=  fileSize(tempFile);
 
     //Store in bytesPerFile array
     bytesPerFile[x] = currentBytes;
@@ -202,7 +235,7 @@ void archiveWithCap(char** fileNames, int numFiles, char* archiveName, long cont
     x = 0; int currentMemory = 0; y = 0; int currentfiles = 0;
     //int numberOfArchives = 0;
     while(x < numFiles){
-      if (currentMemory + newBytesPerFile[x] < contentLimit - 4){
+      if (currentMemory + newBytesPerFile[x] < contentLimit){
 
         currentMemory += newBytesPerFile[x];
         currentfiles ++;
@@ -243,75 +276,125 @@ void archiveWithCap(char** fileNames, int numFiles, char* archiveName, long cont
     fprintf(stderr, "Number of files is resulting in an error.\n");
     exit(-1);
   }
+
+
+
+  /*
+  //Create a new string array that has the maximum size of the number of files
+  char ** tempFilesNames = malloc(numFiles * sizeof(char *));
+  int filesArchived = 0; int currentMemory = 0; //Assign the number of files and mem to 0
+
+  y = 0;
+  //While there are more files to archive
+  while(filesArchived < numFiles){
+    currentMemory = newBytesPerFile[y];
+    tempFilesNames[y] = malloc(strlen(newFileNames[y])+1);
+    strcpy(tempFilesNames[y], newFileNames[y]);
+    if (y + 1 > numFiles){
+      return;
+    }
+    while(currentMemory + newBytesPerFile[y+1] < contentLimit){
+      currentMemory += newBytesPerFile[y+1];
+      tempFilesNames[y+1] = malloc(strlen(newFileNames[y+1])+1);
+      strcpy(tempFilesNames[y+1], newFileNames[y+1]);
+      y++;
+    }
+    archive(tempFilesNames, y + 1, addNumber(archiveName, currentArchive));
+    currentArchive ++; filesArchived += y + 1;
+
+    //free memory
+    int z = 0;
+    for(z; z < numFiles; z++){
+      free(tempFilesNames[z]);
+    }
+  }
+  */
 }
 
 char * addNumber(char * archiveName, int currentArchive){
-  if(strstr(archiveName, ".") == NULL){
-    char * newName; char c; int length;
-    char * tempName;
-    
-    //There is no extension
-    if(currentArchive > 1){
-      //change the number
-      length = strlen(archiveName) + 1;
-      newName = strdup(archiveName);
-      c = currentArchive + '0';
-      newName[length-2] = c;
-      tempName = strdup(newName);
+    if (strstr(archiveName, ".bin") == NULL){
+      strcat(archiveName, ".bin");
     }
-    else{
-      //add the number one
-      length = strlen(archiveName) + 1;
-      newName = malloc((length * sizeof(char)) + 1);
-      c = currentArchive + '0';
-      strcpy(newName, archiveName);
-      newName[length-1] = c;
-      newName[length] = '\0';
+    char * newName, * tempName;
+    char c;
 
-      tempName = strdup(newName);
-      free(newName);
-    }
-    return tempName;
-  }
-  else{
-    char * pos; int index; char c; int length, strlength;
-    char * newName, tempName, extension;
-    //There is an extension
-    if(currentArchive > 1){
-        length = strlen(archiveName) + 1;
-        newName = malloc((length * sizeof(char)));
+        int length = strlen(archiveName) + 1;
+        newName = malloc((length * sizeof(char)) + 1);
         strcpy(newName, archiveName);
-        //Change the number
-        
-        strlength = strlen(newName);
-        length = strlen(strstr(newName, ".")) + 1;
-        //printf("%d %d", strlength, length);
-        
-        c = currentArchive + '0';
-        
-        newName[strlength - length] = c;
-        
-    }
-    else{
-      //Find the pos before the extension and add the number 1
-      length = strlen(archiveName) + 1;
-      newName = malloc((length * sizeof(char)) + 1);
-      c = currentArchive + '0';
-      
-      pos = strchr(archiveName, '.');
-      //extension = strdup(pos);
-      index = (int)(pos - archiveName);
-      strncpy(newName, archiveName, index);
-      //strcpy(newName, archiveName);
-      newName[index] = c;
-      newName[index + 1] = '\0';
-      
-      newName = strcat(newName, pos);
-      
 
-    }
-  
-    return newName;
+        c = currentArchive + '0';
+        newName[length-5] = c;
+        newName[length-4] = '\0';
+        strcat(newName, ".bin");
+
+    tempName = strdup(newName);
     free(newName);
-  }
+
+    //printf("\"%s\"", tempName);
+    return tempName;
 }
+
+/*
+	char* tempArchiveName, * tempString, * archiveNameWithEnd;
+	char ** addedFileNames;
+	int archiveEndCap = 1;
+	long sumOfFileSize = 0, theFileSize = 0;
+	int numFilesPerArchive = 0;
+	FILE * tempFile;
+	int i;
+	/*
+	if (strstr(archiveName, ".bin")) {
+		tempArchiveName = malloc((strlen(archiveName) - 4) * sizeof(char));
+
+		for (i = 0; i < (strlen(archiveName) - 4); i++) {
+			tempArchiveName[i] = archiveName[i];
+		}
+	} else {
+		tempArchiveName = strdup(archiveName);
+	//}
+
+	sprintf(archiveNameWithEnd, "%s%d", tempArchiveName, archiveEndCap);
+
+	printf("%s\n", archiveNameWithEnd);
+
+	sumOfFileSize += sizeNumFiles;
+
+	for (i = 0; i < numFiles; i++) {
+
+		tempString = strdup(fileNames[i]);
+
+		if ((tempFile = fopen(tempString, "r")) == NULL) {
+			fprintf(stderr, "could not allocate space");
+			exit(-1);
+		}
+
+		theFileSize = fileSize(tempFile);
+		sumOfFileSize += sizeFileSize + sizeLengthFile + theFileSize;
+		printf("Filesize %d\n", sumOfFileSize);
+
+		printf("Hits here");
+		addedFileNames = appendString(addedFileNames, numFilesPerArchive, tempString);
+		numFilesPerArchive++;
+
+		if (sumOfFileSize > contentLimit) {
+			printf("New file needed\n");
+			sumOfFileSize += sizeNumFiles;
+			//Split the string array by
+
+			archive(addedFileNames, numFilesPerArchive, archiveNameWithEnd);
+			archiveEndCap++;
+			sprintf(archiveNameWithEnd, "%s%d", tempArchiveName, archiveEndCap);
+
+		}
+
+		//Closing all files;
+		fclose(tempFile);
+		*/
+	//}
+
+	//Call archive with remaining things
+
+	//freeing all necessary data;
+	//free(tempArchiveName);
+
+//}

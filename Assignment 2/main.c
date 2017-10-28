@@ -91,7 +91,7 @@ int main( int argc, char *argv[] )  {
 			for (i = 0; i < numOfFiles; ++i) {
 				fileNames[i] = (char *)malloc(strlen(argv[i+4])+1);
 				//Check if fileName is too long.
-				if (strlen(argv[i+4]) >= sizeFileName){
+				if (strlen(argv[i+4]) >= SizeOfFileName){
 					fprintf(stderr, "The file name would cause an overflow. ");
 					exit(-1);
 				}
@@ -125,7 +125,7 @@ int main( int argc, char *argv[] )  {
 			for (i = 0; i < numOfFiles; ++i) {
 				fileNames[i] = (char *)malloc(strlen(argv[i+3])+1);
 				//Check if fileName is too long.
-				if (strlen(argv[i+3]) >= sizeFileName){
+				if (strlen(argv[i+3]) >= SizeOfFileName){
 					fprintf(stderr, "The file name would cause an overflow. ");
 					exit(-1);
 				}
@@ -224,7 +224,7 @@ int main( int argc, char *argv[] )  {
         for (i = 0; i < numOfFiles; ++i) {
             fileNames[i] = (char *)malloc(strlen(argv[i+3])+1);
             //Check if fileName is too long.
-            if (strlen(argv[i+3]) >= sizeFileName){
+            if (strlen(argv[i+3]) >= SizeOfFileName){
                 fprintf(stderr, "The file name would cause an overflow. ");
                 exit(-1);
             }

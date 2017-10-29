@@ -12,7 +12,6 @@
 #include <string.h>
 #include <stdlib.h>
 #include <errno.h>
-#include <stddef.h>
 
 #include "archivingTwo.h"
 #include "other.h"
@@ -220,12 +219,15 @@ void verifyArchive(char ** fileNames, int numFiles, char * archiveName) {
 
 			long count = 0;
 			int c;
-			char * buffer = NULL;
+			char buffer[SIZEmaxFileName];
 			FILE * notSupplied;
-			size_t len = 0;
-			while ((getline(&buffer, &len, tempFile)) != -1) {
+
+			while ((fgets(buffer, SIZEmaxFileName, tempFile)) != NULL) {
 				//printf("Retrieved file name %s\n", buffer);
-				strtok(buffer, "\n");
+				char * pos = strstr(buffer, "\n");
+				pos[0] = '\0';
+
+
 				if (checkIfContains(fileNames, numFiles, buffer) == -1) {
 					if ((notSupplied = fopen(buffer, "rb")) == NULL) {
 						fprintf(stderr, "Could not allocate memory for \"%s\"\n", buffer);

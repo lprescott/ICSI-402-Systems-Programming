@@ -87,11 +87,12 @@ void verifyArchive(char ** fileNames, int numFiles, char * archiveName) {
 	char * tempArchiveName = strdup(archiveName);// char pointer to the name of the archive
 	FILE * inputFile, * tempFile;// file pointers to inputfile and tempfile
 	long contentSizeArchive, contentSizeFile;// size of the content and size of the file
-	int inputFileNameS, archiveFileNameS; //Size of the input file name and the archive file name respectively
 	int index, archiveNumOfFiles;// index of the filename and number of file in archive
 	long missingBytes = 0;// number of missing bytes
 	int fileDetectedCount = 0;// counts of the appropriate number of files was detected.
 	long totalBytes = 0;
+
+	unsigned char fileNameSize, archiveNameSize;
 
 	//opens a new bin file with new string for writing
 	if ((inputFile = fopen(tempArchiveName, "rb")) == NULL){
@@ -103,7 +104,7 @@ void verifyArchive(char ** fileNames, int numFiles, char * archiveName) {
  
 	//Reads in the archive num of files, and passes the archive pointer
 	fread(&archiveNumOfFiles, sizeof(int), 1, inputFile);
-	//printf("\nNumber of files given by .bin %d\n", archiveNumOfFiles);
+	//printf("\nNumber of files given by the archive: %d.\n", archiveNumOfFiles);
 
 	//Determine if there is a missing number of bytes
 	if(numFiles == archiveNumOfFiles){
@@ -154,6 +155,8 @@ void verifyArchive(char ** fileNames, int numFiles, char * archiveName) {
 				printf("The archive is missing %d bytes.\n", missingBytes);
 				return;
 			}
+
+			return;
 		}
 	else{
 		//Less than the number of files in the archive
@@ -162,27 +165,40 @@ void verifyArchive(char ** fileNames, int numFiles, char * archiveName) {
 	}
 	
 	rewind(inputFile);
+	//Reads in the archive num of files, and continues the archive pointer
+	fread(&archiveNumOfFiles, SIZEnumOfFilesInArchive, 1, inputFile);
+
+	if (archiveNumOfFiles < numFiles){
+		fprintf(stderr, "Archive is corrupted.\n");
+		exit(-1);
+	}
+
 	//For loop for the number of files of the archive
 	int i;
 	int y = 0;
 	for (i = 0; i < archiveNumOfFiles; i++) {
 		
 		//getLength of FileName #i
-		fread(&archiveFileNameS, sizeof(int), 1, inputFile);
+		fread(&fileNameSize, SIZElengthOfFileName, 1, inputFile);
+
+		if (fileNameSize < 1 || fileNameSize > SIZEmaxFileName){
+			fprintf(stderr, "Archive is corrupted.\n");
+			exit(-1);
+		}
 		
 		//printf("\narchiveFileNameS: %d\n", archiveFileNameS);
 		// dynamic memory allocation for the tempString
-		char * tempString = malloc(archiveFileNameS * sizeof(char));
+		char * tempString = malloc(fileNameSize * sizeof(char));
 		if (tempString == NULL) {
 			exit(-1);
 		}
 		//reads into tempString
-		fread(tempString, sizeof(char), archiveFileNameS, inputFile);
+		fread(tempString, sizeof(char), fileNameSize, inputFile);
 		//prints out fileNameArchive
 		//printf("\n%s\n", tempString);
 		
 		//reads in the content size
-		fread(&contentSizeArchive, sizeof(long), 1, inputFile);  
+		fread(&contentSizeArchive, SIZElengthOfFile, 1, inputFile);  
    		
 		//If tempString is contained in fileNames, go on, if not, move the file pointer and continue.
 		if ((index = checkIfContains(fileNames, numFiles, tempString)) == -1) {
@@ -196,45 +212,33 @@ void verifyArchive(char ** fileNames, int numFiles, char * archiveName) {
 		//printf("File Name: %s\n", fileNames[index]);
 		//Open tempFile
 		if ((tempFile = fopen(fileNames[index], "r")) == NULL) {
-			fprintf(stderr, "could not allocate space");
+			fprintf(stderr, "Could not allocate space for: %s.\n", fileNames[index]);
 			exit(-1);
 		}
 		
-		long count = 0;
-		int cArchive;
-		int cFile;
+		int count = 0;
+		int cArchive, cFile;
 		
 		while(count < contentSizeArchive) {
-			//Compare each char, if char is diffrent print corrupted and then return
-			
+			//Compare each char, if char is different print corrupted and then return
 			cArchive = fgetc(inputFile);
 			cFile = fgetc(tempFile);
 			count++;
 			
 			if (cArchive != cFile) {
-				printf("\nArchive is Corrupted\n");
+				printf("\nArchive is corrupted.\n");
 				return;
 			}
 			
 		}
-		
-		//get the fileSize of tempFile
-		contentSizeFile = fileSize(tempFile);
-		
-		//printf("\n%d %d\n", contentSizeFile, count);
-		
-		//if contentSizeFile != count, add to missing bytes. If it isn't, move on.
-		if (contentSizeFile != count) {
-			missingBytes += (contentSizeFile - count);
-		}
-		
+
 		//necessary freeing and closing
 		fclose(tempFile);
 		free(tempString);
 	}
 	
 	fclose(inputFile);
-	
-	printf("\nArchive Verified\n");
+	printf("\nArchive verified.\n");
+	return;
 	
 }

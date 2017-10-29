@@ -216,12 +216,12 @@ void verifyArchive(char ** fileNames, int numFiles, char * archiveName) {
 				exit(-1);
 			}
 
+			long count = 0; //Count of bytes per file
+			char buffer[SIZEmaxFileName]; //The string buffer that get used to read in file names
+			FILE * notSupplied; //the file pointer to open the not supplied files
 
-			long count = 0;
-			int c;
-			char buffer[SIZEmaxFileName];
-			FILE * notSupplied;
-
+			// while fgets does not return null, check and see if buffer is contained in the arguments, then add to 
+			//count if it is.
 			while ((fgets(buffer, SIZEmaxFileName, tempFile)) != NULL) {
 				//printf("Retrieved file name %s\n", buffer);
 				char * pos = strstr(buffer, "\n");
@@ -245,10 +245,12 @@ void verifyArchive(char ** fileNames, int numFiles, char * archiveName) {
 
 			//printf("the total bytes of the unsupplied files : %ld.\n", count);
 			
+			//The diffrence and the awnser to the missing bytes problem
 			long difference = (count + SIZEnumOfFilesInArchive) - totalNOTsupplied;
 
 			fclose(tempFile);
-
+			
+			//If diffrence is not 0, then the archive is missing "diffrence" bytes.
 			if(difference != 0){
 				printf("\nThe archive is missing %ld bytes.\n", difference);
 				return;
@@ -258,7 +260,7 @@ void verifyArchive(char ** fileNames, int numFiles, char * archiveName) {
 	
 	rewind(inputFile);
 	//Reads in the archive num of files, and continues the archive pointer
-	
+	fread(&archiveNumOfFiles, SIZEnumOfFilesInArchive, 1, inputFile);
 
 	if (archiveNumOfFiles < numFiles){
 		fprintf(stderr, "Archive is corrupted.\n");

@@ -80,6 +80,9 @@ void printArchiveDetails(char* archiveName) {
   If the archive correctly contains all the files, then "Archive verified" is printed to the console.
   If the archive is missing data, then the program will print "Archive is missing X bytes" to the console.
   If the archive's data is incorrect, then the program will print "Archive is corrupted."
+  parameters: fileNames are all the files supplied by the user
+			  numFiles is the number of files supplied by the user
+			  archiveName is the name of the archive to be verified
 */
 void verifyArchive(char ** fileNames, int numFiles, char * archiveName) {
 		

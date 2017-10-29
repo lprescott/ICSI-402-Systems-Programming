@@ -155,18 +155,54 @@ void verifyArchive(char ** fileNames, int numFiles, char * archiveName) {
 				printf("The archive is missing %d bytes.\n", missingBytes);
 				return;
 			}
-
-			return;
 		}
 	else{
-		//Less than the number of files in the archive
+		//Calculate the bytes in the archive
+		long totalArchiveSize = fileSize(inputFile);
+		char * tempString;
+		int bytesPerFile[numFiles], x = 0;
+		//Calculate the bytes in the files
+		for(x; x<numFiles; x++){
+			if ((tempFile = fopen(fileNames[x], "r")) == NULL) {
+				fprintf(stderr, "Could not allocate space for a new tempFile.");
+					exit(-1);
+				}
+			tempString = strdup(fileNames[x]);
+			int currentBytes = 0;
+			//Bytes for file name's length:
+			//Currently: 1 bytes
+			currentBytes += SIZElengthOfFileName;
 		
+			//Bytes for file name
+			//Currently: 1 + fileNames[x] length
+			currentBytes += 1 + strlen(tempString);
 		
-	}
+			//Bytes for content size
+			//Currently 4 bytes
+			currentBytes += SIZElengthOfFile;
+		
+			//Bytes for contents
+			//Currently fileSize([x]);
+			currentBytes +=  fileSize(tempFile);
+		
+			//Store in bytesPerFile array
+			bytesPerFile[x] = currentBytes;
+
+			totalBytes += bytesPerFile[x];
+		
+			//Close it
+			fclose(tempFile);
+			}
+			  
+			printf("\nThe file size of the archive: %ld.\n", totalArchiveSize);
+			printf("The size of the supplied files: %ld + %d (for SIZEnumOfFilesInArchive).\n", totalBytes, SIZEnumOfFilesInArchive);
+			
+			return;
+		}
 	
-	rewind(inputFile);
-	//Reads in the archive num of files, and continues the archive pointer
-	fread(&archiveNumOfFiles, SIZEnumOfFilesInArchive, 1, inputFile);
+		rewind(inputFile);
+		//Reads in the archive num of files, and continues the archive pointer
+		fread(&archiveNumOfFiles, SIZEnumOfFilesInArchive, 1, inputFile);
 
 	if (archiveNumOfFiles < numFiles){
 		fprintf(stderr, "Archive is corrupted.\n");

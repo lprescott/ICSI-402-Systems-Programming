@@ -31,6 +31,7 @@ void archive(char** fileNames, int numFiles, char* archiveName) {
 	tempArchiveName = strdup(archiveName); //duplicate data to above array
 	FILE * outputFile; //The output file
 	FILE * tempFile; //The temp file (input file)
+	FILE * fileOfFileNames; //A file to hold only file names of the created archive
 	int tempNumOfFiles = numFiles; //Assigning a temporary int the number of files
 
 	//opens a new bin file with new string for writing
@@ -78,13 +79,29 @@ void archive(char** fileNames, int numFiles, char* archiveName) {
 			char h = (char)c;
 			fprintf(outputFile, "%c", h);
 		}
-
-		//Location to add an EOF (or other) ending char **
 		
 		//close the tempFile
 		fclose(tempFile);
 		
 	}
+	//Store the file names of the archive in augmented archive
+	//That is, filesOf + archivename
+	char * fileOfFiles = malloc(strlen("filesOf") + strlen(tempArchiveName) + 1);
+	strcpy(fileOfFiles, "filesOf");
+	strcat(fileOfFiles, tempArchiveName);
+	
+	printf("\nFile names will be stored in: %s.\n", fileOfFiles);
+
+	fileOfFileNames = fopen(fileOfFiles, "wb");
+
+	i = 0;
+	for(i ; i < numFiles; i ++){
+		fwrite(fileNames[i], sizeof(char), strlen(fileNames[i]), fileOfFileNames);
+		fwrite("\n", sizeof(char), 1, fileOfFileNames);
+	}
+
+	fclose(fileOfFileNames);
+
 	//Close the outputFile
 	fclose(outputFile);
 	
@@ -165,4 +182,3 @@ void unarchive(char* archiveFile) {
 	fclose(inputFile);
 	
 } //End unarchive
-

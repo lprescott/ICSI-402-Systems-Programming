@@ -12,6 +12,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <errno.h>
+#include <stddef.h>
 
 #include "archivingTwo.h"
 #include "other.h"
@@ -197,7 +198,59 @@ void verifyArchive(char ** fileNames, int numFiles, char * archiveName) {
 			printf("\nThe file size of the archive: %ld.\n", totalArchiveSize);
 			printf("The size of the supplied files: %ld + %d (for SIZEnumOfFilesInArchive).\n", totalBytes, SIZEnumOfFilesInArchive);
 			
+			//Determine the missing bytes
+			
+			//total not supplied bytes given by subtracting totalArchiveSize minus the totalSupplied file bytes
+			long totalNOTsupplied = totalArchiveSize - totalBytes;
+			printf("Total supplied bytes : %ld.\n", totalArchiveSize);
+			printf("Total Bytes : %ld\n", totalBytes);
+			printf("Total NOT supplied bytes = %ld\n", totalNOTsupplied);
+
+			char * fileOfFiles = malloc(strlen("filesOf") + strlen(tempArchiveName) + 1);
+			strcpy(fileOfFiles, "filesOf");
+			strcat(fileOfFiles, tempArchiveName);
+			
+			printf("\nFile names will be stored in: %s.\n", fileOfFiles);
+
+			if ((tempFile = fopen(fileOfFiles, "rb")) == NULL) {
+				fprintf(stderr, "Could not allocate memory for %s\n", fileOfFiles);
+				exit(-1);
+			}
+
+
+			long count = 0;
+			int c;
+			char * buffer = NULL;
+			FILE * notSupplied;
+			size_t len = 0;
+			while ((getline(&buffer, &len, tempFile)) != -1) {
+				printf("Retrieved file name %s\n", buffer);
+				strtok(buffer, "\n");
+				if (checkIfContains(fileNames, numFiles, buffer) == -1) {
+					if ((notSupplied = fopen(buffer, "rb")) == NULL) {
+						fprintf(stderr, "Could not allocate memory for \"%s\"\n", buffer);
+						exit(-1);
+					}
+					count += fileSize(notSupplied);
+					count += SIZElengthOfFile;
+					count += SIZElengthOfFileName;
+					count += strlen(buffer) + 1;
+					fclose(notSupplied);
+				}
+
+			}
+
+			printf("the total bytes of the unsupplied files : %ld.\n", count);
+			
+			long difference = totalNOTsupplied - (count + SIZEnumOfFilesInArchive);
+
+			printf("Difference : %ld.\n", difference);
+
+			fclose(tempFile);
+
 			return;
+
+
 		}
 	
 		rewind(inputFile);

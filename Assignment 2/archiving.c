@@ -86,12 +86,13 @@ void archive(char** fileNames, int numFiles, char* archiveName) {
 	}
 	//Store the file names of the archive in augmented archive
 	//That is, filesOf + archivename
-	char * fileOfFiles = malloc(strlen("filesOf") + strlen(tempArchiveName) + 1);
-	strcpy(fileOfFiles, "filesOf");
-	strcat(fileOfFiles, tempArchiveName);
+	char * fileOfFiles = malloc(strlen("filesOf") + strlen(tempArchiveName) + 1);// dynamic memory allocation
+	strcpy(fileOfFiles, "filesOf");// copys "filesOf" into fileOfFiles
+	strcat(fileOfFiles, tempArchiveName);// concatenates tempArchiveName with fileOfFiles
 	
 	printf("\nFile names will be stored in: %s.\n", fileOfFiles);
-
+	
+	//opens the file for writing to a binary file
 	fileOfFileNames = fopen(fileOfFiles, "wb");
 
 	i = 0;
@@ -99,7 +100,7 @@ void archive(char** fileNames, int numFiles, char* archiveName) {
 		fwrite(fileNames[i], sizeof(char), strlen(fileNames[i]), fileOfFileNames);
 		fwrite("\n", sizeof(char), 1, fileOfFileNames);
 	}
-
+	// closes the file containing the names of the files
 	fclose(fileOfFileNames);
 
 	//Close the outputFile
@@ -121,7 +122,7 @@ void unarchive(char* archiveFile) {
 	tempArchiveName = strdup(archiveFile); //Assign the archive name to the temp char array
 	FILE * inputFile; //The inputfile
 	FILE * tempFile; //The output files
-	unsigned char fileNameLength;
+	unsigned char fileNameLength;// size of 1 byte for the length of the file names
 
 	//opens a new bin file with new string for reading
 	if ((inputFile = fopen(tempArchiveName, "rb")) == NULL){
@@ -152,7 +153,7 @@ void unarchive(char* archiveFile) {
 
 		//Open the determined file for writing
 		tempFile = fopen(tempString, "w");
-		if (tempFile == NULL) {
+		if (tempFile == NULL) {// if the temp file is null , it will print couldn't open
 			fprintf(stderr, "Could not open %s", tempString);			
 			exit(-1);
 		}
@@ -169,7 +170,7 @@ void unarchive(char* archiveFile) {
 			fwrite(&c, sizeof(char), 1, tempFile);
 		}
 
-		//Write the EOF char here (or other) **
+	
 		
 		//Close the tempfile (output)
 		fclose(tempFile);

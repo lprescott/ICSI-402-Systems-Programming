@@ -12,7 +12,6 @@
 #include <string.h>
 #include <stdlib.h>
 #include <errno.h>
-#include <stddef.h>
 
 #include "archivingTwo.h"
 #include "other.h"
@@ -195,22 +194,22 @@ void verifyArchive(char ** fileNames, int numFiles, char * archiveName) {
 			fclose(tempFile);
 			}
 			  
-			printf("\nThe file size of the archive: %ld.\n", totalArchiveSize);
-			printf("The size of the supplied files: %ld + %d (for SIZEnumOfFilesInArchive).\n", totalBytes, SIZEnumOfFilesInArchive);
+			//printf("\nThe file size of the archive: %ld.\n", totalArchiveSize);
+			//printf("The size of the supplied files: %ld + %d (for SIZEnumOfFilesInArchive).\n", totalBytes, SIZEnumOfFilesInArchive);
 			
 			//Determine the missing bytes
 			
 			//total not supplied bytes given by subtracting totalArchiveSize minus the totalSupplied file bytes
 			long totalNOTsupplied = totalArchiveSize - totalBytes;
-			printf("Total supplied bytes : %ld.\n", totalArchiveSize);
-			printf("Total Bytes : %ld\n", totalBytes);
-			printf("Total NOT supplied bytes = %ld\n", totalNOTsupplied);
+			//printf("Total supplied bytes : %ld.\n", totalArchiveSize);
+			//printf("Total Bytes : %ld\n", totalBytes);
+			//printf("Total NOT supplied bytes = %ld\n", totalNOTsupplied);
 
 			char * fileOfFiles = malloc(strlen("filesOf") + strlen(tempArchiveName) + 1);
 			strcpy(fileOfFiles, "filesOf");
 			strcat(fileOfFiles, tempArchiveName);
 			
-			printf("\nFile names will be stored in: %s.\n", fileOfFiles);
+			//printf("\nFile names will be stored in: %s.\n", fileOfFiles);
 
 			if ((tempFile = fopen(fileOfFiles, "rb")) == NULL) {
 				fprintf(stderr, "Could not allocate memory for %s\n", fileOfFiles);
@@ -220,17 +219,21 @@ void verifyArchive(char ** fileNames, int numFiles, char * archiveName) {
 
 			long count = 0;
 			int c;
-			char * buffer = NULL;
+			char buffer[SIZEmaxFileName];
 			FILE * notSupplied;
-			size_t len = 0;
-			while ((getline(&buffer, &len, tempFile)) != -1) {
-				printf("Retrieved file name %s\n", buffer);
-				strtok(buffer, "\n");
+
+			while ((fgets(buffer, SIZEmaxFileName, tempFile)) != NULL) {
+				//printf("Retrieved file name %s\n", buffer);
+				char * pos = strstr(buffer, "\n");
+				pos[0] = '\0';
+
+
 				if (checkIfContains(fileNames, numFiles, buffer) == -1) {
 					if ((notSupplied = fopen(buffer, "rb")) == NULL) {
 						fprintf(stderr, "Could not allocate memory for \"%s\"\n", buffer);
 						exit(-1);
 					}
+					//printf("%s will be added to the sum of files not supplied.\n", buffer);
 					count += fileSize(notSupplied);
 					count += SIZElengthOfFile;
 					count += SIZElengthOfFileName;
@@ -240,22 +243,22 @@ void verifyArchive(char ** fileNames, int numFiles, char * archiveName) {
 
 			}
 
-			printf("the total bytes of the unsupplied files : %ld.\n", count);
+			//printf("the total bytes of the unsupplied files : %ld.\n", count);
 			
-			long difference = totalNOTsupplied - (count + SIZEnumOfFilesInArchive);
-
-			printf("Difference : %ld.\n", difference);
+			long difference = (count + SIZEnumOfFilesInArchive) - totalNOTsupplied;
 
 			fclose(tempFile);
 
-			return;
-
+			if(difference != 0){
+				printf("\nThe archive is missing %ld bytes.\n", difference);
+				return;
+			}
 
 		}
 	
-		rewind(inputFile);
-		//Reads in the archive num of files, and continues the archive pointer
-		fread(&archiveNumOfFiles, SIZEnumOfFilesInArchive, 1, inputFile);
+	rewind(inputFile);
+	//Reads in the archive num of files, and continues the archive pointer
+	
 
 	if (archiveNumOfFiles < numFiles){
 		fprintf(stderr, "Archive is corrupted.\n");

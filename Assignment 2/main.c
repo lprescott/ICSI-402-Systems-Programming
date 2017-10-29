@@ -30,7 +30,7 @@
 #include "other.h"
 
 /*
-    Main function takes the first argument (either -a, -u, -l, and -v) and then verifyies if the rest of the arguments are correct
+    Main function takes the first argument (either -a, -u, -l, and -v) and then verifies if the rest of the arguments are correct
     and match the given command, calling the corresponding function per the first argument's flag. The funcions called and their
     corresponding flags are as follows:
         -a archivename file1 file2 ... fileN: (archive)
@@ -46,9 +46,6 @@ int main( int argc, char *argv[] )  {
 	int numOfFiles; //The number of files.
     char * archiveName; //char pointer specifies the archive name
 	char ** fileNames; //char * array that contains all the files
-
-    // prints out the number of arguments supplied
-    //printf("\nThe number of args is: %d\n", numOfArgs);
 
     //Check for at least two arguments.
     if (numOfArgs < 2){
@@ -100,8 +97,8 @@ int main( int argc, char *argv[] )  {
                     exit(-1);
                 }
                 
-				fileNames[i] = (char *)malloc(strlen(argv[i+4])+1);
-				strcpy(fileNames[i], argv[i+4]);
+				fileNames[i] = (char *)malloc(strlen(argv[i+4])+1);//dynamic memory allocation
+				strcpy(fileNames[i], argv[i+4]);// copy the arguments supplied into the fileNames array
 			}
 
 			//Print out the fileNames
@@ -249,7 +246,7 @@ int main( int argc, char *argv[] )  {
             printf("%d: \"%s\"\n", x + 1, fileNames[x]);
         }
 
-        verifyArchive(fileNames, numOfFiles, archiveName);
+        verifyArchive(fileNames, numOfFiles, archiveName);// using the verifyArchive function with following parameters
 
         //Free the memory of the dynamically allocated list here.
         int y;

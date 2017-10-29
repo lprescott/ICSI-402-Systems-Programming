@@ -10,7 +10,6 @@
 #include <stdlib.h>
 
 // included external header files
-#include "constants.h"
 #include "archivingSize.h"
 
 /*
@@ -19,20 +18,24 @@
   one argument, which is the FILE type needed to point to.
 */
 long fileSize(FILE * file){
-    //Position: the variable to be returned, and the position of the end character.S
-    long position;
+    //Position: the variable to be returned, and the position of the end character.
+    unsigned long endPosition = 0;
+    unsigned long startPosition = 0;
+
+    fflush(file); //Flush the buffer
+    startPosition = ftell(file); //Record the start pos.
 
 	// if it is null, and error is printed and terminates
     if (file == NULL){
-        fprintf(stderr, "Error opening file.\n");
+        fprintf(stderr, "Error opening file in fileSize().\n");
         return(-1);
     }
 
     fseek(file, 0, SEEK_END);// sets the file position of the stream to the given offset
 
-    position = ftell(file);// ftell returns the current file postion of the given stream, and that is the value of position.
+    endPosition = ftell(file);// ftell returns the current file postion of the given stream, and that is the value of position.
 
-    rewind(file);// returns to the beginning of the file
+    fseek(file,startPosition,SEEK_SET); //return to start position
 
-    return position;// returns the position of the file offset
+    return endPosition;// returns the position of the file offset
 }

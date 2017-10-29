@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS  = -g
-OBJECTS = main.o archiving.o archivingTwo.o archivingSize.o other.o
+OBJECTS = main.o archivingSize.o archiving.o archivingTwo.o other.o
 
 archiver: $(OBJECTS)
 	$(CC) $(CFLAGS) $(OBJECTS) -o archiver

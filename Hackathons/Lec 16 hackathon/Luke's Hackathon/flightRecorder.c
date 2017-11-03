@@ -349,11 +349,65 @@ int main( int argc, const char* argv[] )
         }
         else if(input == 6){
             //(g) Print a sorted list of origin airports based on the number of outbound flights
-
+		
         }
         else if(input == 7){
             //(h) Print a list of origin airports that have at least 2 flights that have a departure time earlier than noon
+
+            //Loop through every flight, looking for new DESTINATION airports
+            //Adding them to an inorder array of strings
+            //Incrementing a array list at that index
+            flightData = fopen("flightData.bin", "rb");
             
+            long archiveSize = fileSize(flightData);
+            int numOfFlights = archiveSize / sizeof(flight);
+            printf("Number of flights: %ld/%ld = %d.\n", archiveSize, sizeof(flight), numOfFlights);
+
+            char destinations[100][4];
+            //Loop through the array initializing to empty vals
+            int x = 0;
+            for (x; x < 100; x ++){
+                strcpy(destinations[x], "\0\0\0\0");
+            }
+
+            int destinationCounts[100];
+            for (x = 0; x < 100; x ++){
+                destinationCounts[x] = 0;
+            }  
+
+            rewind(flightData);
+
+            int i = 0; int index = 0; int tempIndex = 0;
+            for (i; i < numOfFlights; i++){
+                flight tempFlight;
+                fread(&tempFlight, sizeof(tempFlight), 1, flightData);
+				if (strcmp(tempFlight.DepartureTime, "12:00") < 0) {
+					//int checkIfContains(char ** fileNames, int numFiles, char * name)
+					if((tempIndex = checkIfContains(destinations, 100, tempFlight.DestinationAirportCode)) == -1){
+						//Does not exist in array
+						strcpy(destinations[index], tempFlight.DestinationAirportCode);
+						destinationCounts[index] += 1;
+						index ++;
+					}
+					else{
+						//Exists in array
+						destinationCounts[tempIndex] += 1;
+					}
+				}
+            }
+
+            fclose(flightData);
+
+            //Print
+            i  =  0;
+            while((strcmp(destinations[i], "\0\0\0\0") != 0) && (i < 100)){
+                if (destinationCounts[i] >= 2) {
+					printf("Airport: %s; Number of inbound flights: %d.\n", destinations[i], destinationCounts[i]);
+				}
+				i++;
+            }
+
+            printf("\nYour input: ");
         }
         else{
             //End

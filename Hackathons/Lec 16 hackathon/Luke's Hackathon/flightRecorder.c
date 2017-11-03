@@ -49,10 +49,10 @@ int main( int argc, const char* argv[] )
             flag = 0;
         }
         else if(input == 1){
-            flightData = fopen("flightData.bin", "ab");
+            
 
             flight tempFlight;
-            
+			
             char tempAirlineCodeAndFlightNumber [8]; //AAA1234 + '/0'
             char tempOriginAirportCode[4]; //JFK + '/0'
             char tempDestinationAirportCode[4]; //ORL + '/0'
@@ -67,7 +67,7 @@ int main( int argc, const char* argv[] )
             fflush(stdin); scanf("%s", tempAirlineCodeAndFlightNumber);
             //printf("The length is: %d.\n", strlen(tempAirlineCodeAndFlightNumber) + 1);
             strcpy(tempFlight.AirlineCodeAndFlightNumber, tempAirlineCodeAndFlightNumber);
-
+			
             printf("Please enter Origin Airport Code: ");
             fflush(stdin); scanf("%s", tempOriginAirportCode);
             //printf("The length is: %d.\n", strlen(tempOriginAirportCode) + 1);
@@ -100,7 +100,52 @@ int main( int argc, const char* argv[] )
             printf("Please enter departure year: ");
             fflush(stdin); scanf("%d", &tempDepartureYear);
             tempFlight.DepartureYear = tempDepartureYear;
+			
+			//CHECK
+			FILE * flightDataRead;
+			if ((flightDataRead = fopen("flightData.bin", "rb")) != NULL) {
 
+				long archiveSize = fileSize(flightData);
+				int numOfFlights = archiveSize / sizeof(flight);
+				printf("Number of flights: %ld/%d = %d.\n", archiveSize, sizeof(flight), numOfFlights);
+
+				
+
+				int i = 0;
+				for (i; i < numOfFlights; i++){
+					flight tempFlightRead;
+					fread(&tempFlightRead, sizeof(tempFlight), 1, flightData);
+
+					if (strcmp(tempFlightRead.AirlineCodeAndFlightNumber, tempFlight.AirlineCodeAndFlightNumber) == 0) {
+						if (strcmp(tempFlightRead.OriginAirportCode, tempFlight.OriginAirportCode) == 0) {
+							if (strcmp(tempFlightRead.DestinationAirportCode, tempFlight.DestinationAirportCode) == 0) {
+								if (strcmp(tempFlightRead.DepartureDayOfWeek, tempFlight.DepartureDayOfWeek) == 0) {
+									if (strcmp(tempFlightRead.DepartureMonth, tempFlight.DepartureMonth) == 0) {
+										if (tempFlightRead.DepartureDay == tempFlight.DepartureDay) {
+											if (strcmp(tempFlightRead.DepartureTime, tempFlight.DepartureTime) == 0) {
+												if (tempFlightRead.DepartureYear, tempFlight.DepartureYear) {
+													fprintf(stderr, "\nInputed the same flight, exiting now.\n");
+													exit(-1);
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+					
+				}
+
+				fclose(flightDataRead);
+				//End Check
+			
+			}
+			
+			flightData = fopen("flightData.bin", "ab");
+			
+			rewind(flightData);
+			
             printf("\nThe values of the newly created flight:\n");
             printf("AirlineCodeAndFlightNumber: \"%s\".\n", tempFlight.AirlineCodeAndFlightNumber);
             printf("OriginAirportCode: \"%s\".\n", tempFlight.OriginAirportCode);
@@ -148,7 +193,38 @@ int main( int argc, const char* argv[] )
         }
         else if(input == 3){
             //(d) Count number of airlines for a given airport
+			
+			flightData = fopen("flightData.bin", "rb");
 
+            long archiveSize = fileSize(flightData);
+            int numOfFlights = archiveSize / sizeof(flight), count = 0;
+			char airport[4];
+            printf("Number of flights: %ld/%d = %d.\n", archiveSize, sizeof(flight), numOfFlights);
+			
+			printf("\nEnter the airport you would like to count: ");
+			
+			fflush(stdin); scanf("%s", &airport);
+			printf("\nYour input: \"%s\"\n", airport);
+			
+            rewind(flightData);
+
+            int i = 0;
+            for (i; i < numOfFlights; i++){
+                
+				flight tempFlight;
+                fread(&tempFlight, sizeof(tempFlight), 1, flightData);
+				
+				if ((strcmp(airport, tempFlight.DestinationAirportCode) == 0) || (strcmp(airport, tempFlight.OriginAirportCode) == 0)) {
+					count++;
+				}
+				
+            }
+			
+			printf("The number of airlines for a given airport is : \"%d\".\n", count);
+
+            fclose(flightData);
+            printf("\nYour input: ");
+			
         }
         else if(input == 4){
             //(e) Print the number of inbound flights for airport x

@@ -19,6 +19,7 @@ typedef struct flight{
 
 //Prototypes
 long fileSize(FILE * file);
+int checkIfContains(char fileNames[100][4], int numFiles, char name[4]);
 
 int main( int argc, const char* argv[] )
 {
@@ -45,7 +46,6 @@ int main( int argc, const char* argv[] )
             flag = 0;
         }
         else if(input == 1){
-            
 
             flight tempFlight;
 			
@@ -57,31 +57,52 @@ int main( int argc, const char* argv[] )
             int tempDepartureDay;
             char tempDepartureTime[6]; //10:00 + '/0'
             int tempDepartureYear;
+            int length;
 
             printf("\nThe program will take a flight to add here.\n");
             printf("Please enter airline code and flight number: ");
             fflush(stdin); scanf("%s", tempAirlineCodeAndFlightNumber);
-            //printf("The length is: %d.\n", strlen(tempAirlineCodeAndFlightNumber) + 1);
+            length = strlen(tempAirlineCodeAndFlightNumber) + 1;
+            if (length > 8){
+                fprintf(stderr, "The supplied string is too large.\n");
+                exit(-1);
+            }
             strcpy(tempFlight.AirlineCodeAndFlightNumber, tempAirlineCodeAndFlightNumber);
 			
             printf("Please enter Origin Airport Code: ");
             fflush(stdin); scanf("%s", tempOriginAirportCode);
-            //printf("The length is: %d.\n", strlen(tempOriginAirportCode) + 1);
+            length = strlen(tempOriginAirportCode) + 1;
+            if (length > 8){
+                fprintf(stderr, "The supplied string is too large.\n");
+                exit(-1);
+            }
             strcpy(tempFlight.OriginAirportCode, tempOriginAirportCode);
 
             printf("Please enter Destination Airport Code: ");
             fflush(stdin); scanf("%s", tempDestinationAirportCode);
-            //printf("The length is: %d.\n", strlen(tempDestinationAirportCode) + 1);
+            length = strlen(tempDestinationAirportCode) + 1;
+            if (length > 8){
+                fprintf(stderr, "The supplied string is too large.\n");
+                exit(-1);
+            }
             strcpy(tempFlight.DestinationAirportCode, tempDestinationAirportCode);
 
             printf("Please enter departure day of week: ");
             fflush(stdin); scanf("%s", tempDepartureDayOfWeek);
-            //printf("The length is: %d.\n", strlen(tempDepartureDayOfWeek) + 1);
+            length = strlen(tempDepartureDayOfWeek) + 1;
+            if (length > 8){
+                fprintf(stderr, "The supplied string is too large.\n");
+                exit(-1);
+            }
             strcpy(tempFlight.DepartureDayOfWeek, tempDepartureDayOfWeek);
 
             printf("Please enter departure month: ");
             fflush(stdin); scanf("%s", tempDepartureMonth);
-            //printf("The length is: %d.\n", strlen(tempDepartureMonth) + 1);
+            length = strlen(tempDepartureMonth) + 1;
+            if (length > 8){
+                fprintf(stderr, "The supplied string is too large.\n");
+                exit(-1);
+            }
             strcpy(tempFlight.DepartureMonth, tempDepartureMonth);
 
             printf("Please enter departure day: ");
@@ -90,7 +111,11 @@ int main( int argc, const char* argv[] )
 
             printf("Please enter departure time: ");
             fflush(stdin); scanf("%s", tempDepartureTime);
-            //printf("The length is: %d.\n", strlen(tempDepartureTime) + 1);
+            length = strlen(tempDepartureTime) + 1;
+            if (length > 8){
+                fprintf(stderr, "The supplied string is too large.\n");
+                exit(-1);
+            };
             strcpy(tempFlight.DepartureTime, tempDepartureTime);
 
             printf("Please enter departure year: ");
@@ -101,12 +126,9 @@ int main( int argc, const char* argv[] )
 			FILE * flightDataRead;
 			if ((flightDataRead = fopen("flightData.bin", "rb")) != NULL) {
 
-				long archiveSize = fileSize(flightData);
+                long archiveSize = fileSize(flightData);
 				int numOfFlights = archiveSize / sizeof(flight);
-				printf("Number of flights: %ld/%d = %d.\n", archiveSize, sizeof(flight), numOfFlights);
-
 				
-
 				int i = 0;
 				for (i; i < numOfFlights; i++){
 					flight tempFlightRead;
@@ -133,14 +155,22 @@ int main( int argc, const char* argv[] )
 					
 				}
 
-				
+				fclose(flightDataRead);
 				//End Check
 			
 			}
-			fclose(flightDataRead);
 			
-			flightData = fopen("flightData.bin", "ab");
-			
+            flightData = fopen("flightData.bin", "ab");
+            
+            long archiveSize = fileSize(flightData);
+            int numOfFlights = archiveSize / sizeof(flight);
+            printf("Number of flights: %ld/%ld = %d.\n", archiveSize, sizeof(flight), numOfFlights);
+
+            if (numOfFlights > 100){
+                fprintf(stderr, "There cannot be more than 100 flights in the archive.");
+                exit(-1);
+            }
+
 			rewind(flightData);
 			
             printf("\nThe values of the newly created flight:\n");
@@ -165,7 +195,7 @@ int main( int argc, const char* argv[] )
 
             long archiveSize = fileSize(flightData);
             int numOfFlights = archiveSize / sizeof(flight);
-            printf("Number of flights: %ld/%d = %d.\n", archiveSize, sizeof(flight), numOfFlights);
+            printf("Number of flights: %ld/%ld = %d.\n", archiveSize, sizeof(flight), numOfFlights);
 
             rewind(flightData);
 
@@ -196,11 +226,16 @@ int main( int argc, const char* argv[] )
             long archiveSize = fileSize(flightData);
             int numOfFlights = archiveSize / sizeof(flight), count = 0;
 			char airport[4];
-            printf("Number of flights: %ld/%d = %d.\n", archiveSize, sizeof(flight), numOfFlights);
+            printf("Number of flights: %ld/%ld = %d.\n", archiveSize, sizeof(flight), numOfFlights);
+
+            if (numOfFlights > 100){
+                fprintf(stderr, "There cannot be more than 100 flights in the archive.");
+                exit(-1);
+            }
 			
 			printf("\nEnter the airport you would like to count: ");
 			
-			fflush(stdin); scanf("%s", &airport);
+			fflush(stdin); scanf("%s", airport);
 			printf("\nYour input: \"%s\"\n", airport);
 			
             rewind(flightData);
@@ -230,11 +265,11 @@ int main( int argc, const char* argv[] )
             long archiveSize = fileSize(flightData);
             int numOfFlights = archiveSize / sizeof(flight), count = 0;
 			char airport[4];
-            printf("Number of flights: %ld/%d = %d.\n", archiveSize, sizeof(flight), numOfFlights);
+            printf("Number of flights: %ld/%ld = %d.\n", archiveSize, sizeof(flight), numOfFlights);
 			
 			printf("\nEnter the airport you would like to count: ");
 			
-			fflush(stdin); scanf("%s", &airport);
+			fflush(stdin); scanf("%s", airport);
 			printf("\nYour input: \"%s\"\n", airport);
 			
             rewind(flightData);
@@ -260,6 +295,57 @@ int main( int argc, const char* argv[] )
         else if(input == 5){
             //(f) Print the number of inbound flights for each airport
 
+            //Loop through every flight, looking for new DESTINATION airports
+            //Adding them to an inorder array of strings
+            //Incrementing a array list at that index
+            flightData = fopen("flightData.bin", "rb");
+            
+            long archiveSize = fileSize(flightData);
+            int numOfFlights = archiveSize / sizeof(flight);
+            printf("Number of flights: %ld/%ld = %d.\n", archiveSize, sizeof(flight), numOfFlights);
+
+            char destinations[100][4];
+            //Loop through the array initializing to empty vals
+            int x = 0;
+            for (x; x < 100; x ++){
+                strcpy(destinations[x], "\0\0\0\0");
+            }
+
+            int destinationCounts[100];
+            for (x = 0; x < 100; x ++){
+                destinationCounts[x] = 0;
+            }  
+
+            rewind(flightData);
+
+            int i = 0; int index = 0; int tempIndex = 0;
+            for (i; i < numOfFlights; i++){
+                flight tempFlight;
+                fread(&tempFlight, sizeof(tempFlight), 1, flightData);
+
+                //int checkIfContains(char ** fileNames, int numFiles, char * name)
+                if((tempIndex = checkIfContains(destinations, 100, tempFlight.DestinationAirportCode)) == -1){
+                    //Does not exist in array
+                    strcpy(destinations[index], tempFlight.DestinationAirportCode);
+                    destinationCounts[index] += 1;
+                    index ++;
+                }
+                else{
+                    //Exists in array
+                    destinationCounts[tempIndex] += 1;
+                }
+            }
+
+            fclose(flightData);
+
+            //Print
+            i  =  0;
+            while((strcmp(destinations[i], "\0\0\0\0") != 0) && (i < 100)){
+                printf("Airport: %s; Number of inbound flights: %d.\n", destinations[i], destinationCounts[i]);
+                i++;
+            }
+
+            printf("\nYour input: ");
         }
         else if(input == 6){
             //(g) Print a sorted list of origin airports based on the number of outbound flights
@@ -303,4 +389,24 @@ long fileSize(FILE * file){
     fseek(file,startPosition,SEEK_SET); //return to start position
 
     return endPosition;// returns the position of the file offset
+}
+
+/*
+    This function loops through entire array, and if name is == fileNames the function returns the index, else it returns -1;
+    For parameters, this functions takes the string array of file names, the number of files, and the name to use in comparisons.
+*/
+int checkIfContains(char fileNames[100][4], int numFiles, char name[4]) {
+	//i for loop
+	int i;
+  //This loops through the number of files supplied, comparing the string at the index with name
+  //returning the location (index) of the correct file name.
+	for (i = 0; i < numFiles; i++) {
+		if (strcmp(fileNames[i], name) == 0) {
+			//printf("\n index Given : %d", i);
+			return i;
+		}
+	}
+
+  //If nothing else it returns -1
+	return -1;
 }

@@ -115,7 +115,7 @@ int main( int argc, const char* argv[] )
             if (length > 8){
                 fprintf(stderr, "The supplied string is too large.\n");
                 exit(-1);
-            };
+            }
             strcpy(tempFlight.DepartureTime, tempDepartureTime);
 
             printf("Please enter departure year: ");

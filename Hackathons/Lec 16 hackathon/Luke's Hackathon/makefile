@@ -1,8 +1,8 @@
 CC = gcc
 CFLAGS  = -g
-OBJECTS = main.o flight.o
+OBJECTS = flightRecorder.o
 
-flight: $(OBJECTS)
-	$(CC) $(CFLAGS) $(OBJECTS) -o flight
+flightRecorder: $(OBJECTS)
+	$(CC) $(CFLAGS) $(OBJECTS) -o flightRecorder
 %.o: %.c
 	$(CC) $(CFLAGS) -c $<

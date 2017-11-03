@@ -5,7 +5,7 @@
 
 //Imported headers
 
-//Typedef'd structure
+//Typedef'd structure(s)
 typedef struct flight{
     char AirlineCodeAndFlightNumber [8]; //AAA1234 + '/0'
     char OriginAirportCode[4]; //JFK + '/0'
@@ -16,6 +16,12 @@ typedef struct flight{
     char DepartureTime[6]; //10:00 + '/0'
     int DepartureYear;
 } flight;
+
+typedef struct originAirport{
+    char OriginAirportCode[4]; //JFK + '/0'
+    int count;
+} originAirport;
+
 
 //Prototypes
 long fileSize(FILE * file);
@@ -338,6 +344,7 @@ int main( int argc, const char* argv[] )
 
             fclose(flightData);
 
+            printf("\nThe number of inbound flights for each airport:\n");
             //Print
             i  =  0;
             while((strcmp(destinations[i], "\0\0\0\0") != 0) && (i < 100)){
@@ -349,7 +356,81 @@ int main( int argc, const char* argv[] )
         }
         else if(input == 6){
             //(g) Print a sorted list of origin airports based on the number of outbound flights
-		
+            flightData = fopen("flightData.bin", "rb");
+
+            long archiveSize = fileSize(flightData);
+            int numOfFlights = archiveSize / sizeof(flight);
+            printf("Number of flights: %ld/%ld = %d.\n", archiveSize, sizeof(flight), numOfFlights);
+
+            //Initializes everything 
+            originAirport originAirports[100];
+            int x = 0;
+            for (x; x < 100; x++){
+                strcpy(originAirports[x].OriginAirportCode, "\0\0\0\0");
+                originAirports[x].count = 0;
+            }
+
+            rewind(flightData);
+
+            //Loop for the number of flights in the archive
+            int i = 0, index = 0;
+            int ifContainsFlag = 0;
+            for (i; i < numOfFlights; i++){
+                flight tempFlight;
+                fread(&tempFlight, sizeof(tempFlight), 1, flightData);
+                char tempOriginAirportCode[4];
+                strcpy(tempOriginAirportCode, tempFlight.OriginAirportCode);
+                
+                ifContainsFlag = 0;
+
+                //Loop through array comparing the origin code of the current flight to current origin code
+                int x = 0;
+                for(x; x < 100; x++) {
+                    if (strcmp(originAirports[x].OriginAirportCode, tempOriginAirportCode) == 0) {                      
+                        ifContainsFlag = 1;
+                        originAirports[x].count++;
+                        break;
+                    }
+                }
+
+                //Adds a struct if it is not already existing
+                if(ifContainsFlag == 0) {
+                    strcpy(originAirports[index].OriginAirportCode, tempOriginAirportCode);
+                    originAirports[index].count++;
+                    index++;
+                }                    
+            }
+
+            originAirport tempOrigin;
+            
+            int z;
+            for (x = 0; x < index - 1; x ++){
+                for (z = 0; z < index - x - 1; z++){
+                    if (originAirports[z].count > originAirports[z+1].count){
+                        //Swap
+                        tempOrigin.count = originAirports[z].count;
+                        strcpy(tempOrigin.OriginAirportCode, originAirports[z].OriginAirportCode);
+
+                        originAirports[z].count = originAirports[z+1].count;
+                        strcpy(originAirports[z].OriginAirportCode, originAirports[z+1].OriginAirportCode);
+
+                        originAirports[z+1].count = tempOrigin.count;
+                        strcpy(originAirports[z+1].OriginAirportCode, tempOrigin.OriginAirportCode);
+
+                    }
+                }
+            }
+            
+            printf("Index: %d.\n", index);
+            //return 0;
+
+            for(x = 0; x < index; x++){
+                printf("Origin airport: %s; Number of outbound flights: %d.\n", originAirports[x].OriginAirportCode, originAirports[x].count);
+            }
+
+            fclose(flightData);
+            printf("\nYour input: ");
+
         }
         else if(input == 7){
             //(h) Print a list of origin airports that have at least 2 flights that have a departure time earlier than noon
@@ -408,10 +489,11 @@ int main( int argc, const char* argv[] )
             }
 
             printf("\nYour input: ");
+            
         }
         else{
             //End
-            printf("\nThe program will end.");
+            printf("\nThe program will end.\n");
             flag = 0;
         }
     }

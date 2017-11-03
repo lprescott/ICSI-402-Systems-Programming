@@ -32,10 +32,6 @@ int main( int argc, const char* argv[] )
     //(a) Create a binary file to store info about up to 100 flights from a txt file
     FILE * flightData;
 
-    if (flightData == NULL){
-        fprintf(stderr, "Could not allocate for * flightData.\n");
-    }
-
     //(b) Read input from user (i.e., create a menu)
     printf("\nThe possible commands are as follows: \n0 to end; \n1 to store info; \n2 to print info; \n3 to count airlines; \n4 to print inbound flights at airport x; \n5 to print inbound flights for all airports; \n6 to print sorted list of origin airports; \n7 to print origin airports with at least 2 flights with departures before noon.\n");
     printf("Your input: ");
@@ -137,10 +133,11 @@ int main( int argc, const char* argv[] )
 					
 				}
 
-				fclose(flightDataRead);
+				
 				//End Check
 			
 			}
+			fclose(flightDataRead);
 			
 			flightData = fopen("flightData.bin", "ab");
 			
@@ -228,6 +225,36 @@ int main( int argc, const char* argv[] )
         }
         else if(input == 4){
             //(e) Print the number of inbound flights for airport x
+			flightData = fopen("flightData.bin", "rb");
+
+            long archiveSize = fileSize(flightData);
+            int numOfFlights = archiveSize / sizeof(flight), count = 0;
+			char airport[4];
+            printf("Number of flights: %ld/%d = %d.\n", archiveSize, sizeof(flight), numOfFlights);
+			
+			printf("\nEnter the airport you would like to count: ");
+			
+			fflush(stdin); scanf("%s", &airport);
+			printf("\nYour input: \"%s\"\n", airport);
+			
+            rewind(flightData);
+
+            int i = 0;
+            for (i; i < numOfFlights; i++){
+                
+				flight tempFlight;
+                fread(&tempFlight, sizeof(tempFlight), 1, flightData);
+				
+				if ((strcmp(airport, tempFlight.DestinationAirportCode) == 0)) {
+					count++;
+				}
+				
+            }
+			
+			printf("The number of airlines for a given airport is : \"%d\".\n", count);
+
+            fclose(flightData);
+            printf("\nYour input: ");
 
         }
         else if(input == 5){

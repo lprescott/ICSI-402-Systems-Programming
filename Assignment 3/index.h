@@ -1,0 +1,1 @@
+void indexer(FILE * tempFile, LIST * memoryIndex);

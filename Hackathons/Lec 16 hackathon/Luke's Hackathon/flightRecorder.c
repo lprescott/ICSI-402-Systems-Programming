@@ -3,23 +3,23 @@
 #include <string.h>
 #include <stdlib.h>
 
-//Imported headers
+
 
 //Typedef'd structure(s)
 typedef struct flight{
-    char AirlineCodeAndFlightNumber [8]; //AAA1234 + '/0'
-    char OriginAirportCode[4]; //JFK + '/0'
-    char DestinationAirportCode[4]; //ORL + '/0'
-    char DepartureDayOfWeek[4]; //WED + '/0'
-    char DepartureMonth[4]; //JAN + '/0'
-    int DepartureDay;
-    char DepartureTime[6]; //10:00 + '/0'
-    int DepartureYear;
+    char AirlineCodeAndFlightNumber [8]; //AAA1234 + '/0', size, the code for the airline and its flight number, can hold an array up to a size of 8
+    char OriginAirportCode[4]; //JFK + '/0', origin airport code, can hold an array up to size of 4
+    char DestinationAirportCode[4]; //ORL + '/0'//, the code for the destination airport, can hold an array up to a size of 4
+    char DepartureDayOfWeek[4]; //WED + '/0', departure day of the week, can hold an array up to a size of 4
+    char DepartureMonth[4]; //JAN + '/0'// departure day of the month, can hold an array up to a size of 4
+    int DepartureDay;// an int value, for the which date of the month that the departure occurs
+    char DepartureTime[6]; //10:00 + '/0'// departure time of the flight/ holds an array up to a size of 6
+    int DepartureYear;// an int value that, for which year the departure occurs
 } flight;
 
 typedef struct originAirport{
-    char OriginAirportCode[4]; //JFK + '/0'
-    int count;
+    char OriginAirportCode[4]; //JFK + '/0', origin airport code, can hold an array up to size of 4
+    int count;// int value that holds the count
 } originAirport;
 
 
@@ -27,6 +27,7 @@ typedef struct originAirport{
 long fileSize(FILE * file);
 int checkIfContains(char fileNames[100][4], int numFiles, char name[4]);
 
+//main function, takes parameters for the standard command line arguments
 int main( int argc, const char* argv[] )
 {
     int flag = 1;
@@ -45,13 +46,14 @@ int main( int argc, const char* argv[] )
     int input;
 
     while(flag){
-        fflush(stdin); scanf("%d", &input);
+        fflush(stdin); scanf("%d", &input);// clears the output buffer, and asks the user for input
+		// if an input of 0 is entered, the program will end
         if(input == 0){
             //End
             printf("\nThe program will end.");
             flag = 0;
         }
-        else if(input == 1){
+        else if(input == 1){// if input is 1 it will create a binary file for the flight info
 
             flight tempFlight;
 			
@@ -67,79 +69,78 @@ int main( int argc, const char* argv[] )
 
             printf("\nThe program will take a flight to add here.\n");
             printf("Please enter airline code and flight number: ");
-            fflush(stdin); scanf("%s", tempAirlineCodeAndFlightNumber);
-            length = strlen(tempAirlineCodeAndFlightNumber) + 1;
-            if (length > 8){
+            fflush(stdin); scanf("%s", tempAirlineCodeAndFlightNumber);// clears the output buffer, asks for user input, user will enter an airline code and flight number.
+            length = strlen(tempAirlineCodeAndFlightNumber) + 1;// size of the airline code and flight number
+            if (length > 8){// if the length is greater than 8, notifies user about an error
                 fprintf(stderr, "The supplied string is too large.\n");
                 exit(-1);
             }
-            strcpy(tempFlight.AirlineCodeAndFlightNumber, tempAirlineCodeAndFlightNumber);
-			
+            strcpy(tempFlight.AirlineCodeAndFlightNumber, tempAirlineCodeAndFlightNumber);// copies the tempAirlineCodeAndFlightNumber into the location of Airline code and flight number in temp flight
             printf("Please enter Origin Airport Code: ");
-            fflush(stdin); scanf("%s", tempOriginAirportCode);
+            fflush(stdin); scanf("%s", tempOriginAirportCode);//clears the output buffer, asks the user for to enter the origin airport code
             length = strlen(tempOriginAirportCode) + 1;
-            if (length > 8){
+            if (length > 8){// if the length is greater than 8, notifies user about an error
                 fprintf(stderr, "The supplied string is too large.\n");
                 exit(-1);
             }
-            strcpy(tempFlight.OriginAirportCode, tempOriginAirportCode);
+            strcpy(tempFlight.OriginAirportCode, tempOriginAirportCode);// copies the temp origin airport code, into the location of origin airport code in tempflight
 
             printf("Please enter Destination Airport Code: ");
-            fflush(stdin); scanf("%s", tempDestinationAirportCode);
+            fflush(stdin); scanf("%s", tempDestinationAirportCode);//clears the output buffer, asks the user for to enter the destination airport code
             length = strlen(tempDestinationAirportCode) + 1;
-            if (length > 8){
+            if (length > 8){// if the length is greater than 8, notifies user about an error
                 fprintf(stderr, "The supplied string is too large.\n");
                 exit(-1);
             }
-            strcpy(tempFlight.DestinationAirportCode, tempDestinationAirportCode);
+            strcpy(tempFlight.DestinationAirportCode, tempDestinationAirportCode);// copies the the temp destination airport code, into the location of destination airport code in tempflight
 
             printf("Please enter departure day of week: ");
-            fflush(stdin); scanf("%s", tempDepartureDayOfWeek);
-            length = strlen(tempDepartureDayOfWeek) + 1;
-            if (length > 8){
+            fflush(stdin); scanf("%s", tempDepartureDayOfWeek);//clears the output buffer, asks the user for to enter the departure day of the week
+            if (length > 8){// if the length is greater than 8, notifies user about an error
                 fprintf(stderr, "The supplied string is too large.\n");
                 exit(-1);
             }
-            strcpy(tempFlight.DepartureDayOfWeek, tempDepartureDayOfWeek);
+            strcpy(tempFlight.DepartureDayOfWeek, tempDepartureDayOfWeek); //copies the temp destination airport code, into the location of destination airport code in tempflight
 
             printf("Please enter departure month: ");
-            fflush(stdin); scanf("%s", tempDepartureMonth);
+            fflush(stdin); scanf("%s", tempDepartureMonth);//clears the output buffer, asks the user for to enter the departure month
             length = strlen(tempDepartureMonth) + 1;
-            if (length > 8){
+            if (length > 8){// if the length is greater than 8, notifies user about an error
                 fprintf(stderr, "The supplied string is too large.\n");
                 exit(-1);
             }
-            strcpy(tempFlight.DepartureMonth, tempDepartureMonth);
+            strcpy(tempFlight.DepartureMonth, tempDepartureMonth);//copies the tempDepartureMonth , into the location of departure month in tempflight
 
             printf("Please enter departure day: ");
-            fflush(stdin); scanf("%d", &tempDepartureDay);
-            tempFlight.DepartureDay = tempDepartureDay;
+            fflush(stdin); scanf("%d", &tempDepartureDay);//clears the output buffer, asks the user for to enter the departure day
+            tempFlight.DepartureDay = tempDepartureDay;// take the temp departure day and set that equal to the location of departure day in tempflight
 
             printf("Please enter departure time: ");
-            fflush(stdin); scanf("%s", tempDepartureTime);
+            fflush(stdin); scanf("%s", tempDepartureTime);//clears the output buffer, asks the user for to enter the departure day
             length = strlen(tempDepartureTime) + 1;
-            if (length > 8){
+            if (length > 8){// if the length is greater than 8, notifies user about an error
                 fprintf(stderr, "The supplied string is too large.\n");
                 exit(-1);
             }
-            strcpy(tempFlight.DepartureTime, tempDepartureTime);
+            strcpy(tempFlight.DepartureTime, tempDepartureTime);//copies the tempDepartureTime , into the location of departure time in tempflight
 
             printf("Please enter departure year: ");
-            fflush(stdin); scanf("%d", &tempDepartureYear);
-            tempFlight.DepartureYear = tempDepartureYear;
+            fflush(stdin); scanf("%d", &tempDepartureYear); //clears the output buffer, asks the user for to enter the departure year
+            tempFlight.DepartureYear = tempDepartureYear;// set the value of tempDepartureYear equal to the location of departure year in tempflight
 			
 			//CHECK
-			FILE * flightDataRead;
-			if ((flightDataRead = fopen("flightData.bin", "rb")) != NULL) {
+			FILE * flightDataRead;// file pointer for the flight data that is being read
+			if ((flightDataRead = fopen("flightData.bin", "rb")) != NULL) {// checks if the file pointer being opened for reading to a binary file is not null
 
-                long archiveSize = fileSize(flightData);
-				int numOfFlights = archiveSize / sizeof(flight);
+                long archiveSize = fileSize(flightData);// the total size of the archive containing all of the flight data
+				int numOfFlights = archiveSize / sizeof(flight);// value of the number of the flights, 
 				
-				int i = 0;
-				for (i; i < numOfFlights; i++){
+				int i = 0;// intializes the starting count to zero
+				for (i; i < numOfFlights; i++){// looping
 					flight tempFlightRead;
-					fread(&tempFlightRead, sizeof(tempFlight), 1, flightData);
+					fread(&tempFlightRead, sizeof(tempFlight), 1, flightData);// reads the content from flightData into the tempFlightRecord
 
+					// checks each attribute in the struct to see if they contain the same value, if they do, the program terminates, and prints an errors
 					if (strcmp(tempFlightRead.AirlineCodeAndFlightNumber, tempFlight.AirlineCodeAndFlightNumber) == 0) {
 						if (strcmp(tempFlightRead.OriginAirportCode, tempFlight.OriginAirportCode) == 0) {
 							if (strcmp(tempFlightRead.DestinationAirportCode, tempFlight.DestinationAirportCode) == 0) {
@@ -161,24 +162,25 @@ int main( int argc, const char* argv[] )
 					
 				}
 
-				fclose(flightDataRead);
+				fclose(flightDataRead);// closes the file pointer
 				//End Check
 			
 			}
 			
-            flightData = fopen("flightData.bin", "ab");
+            flightData = fopen("flightData.bin", "ab");// opens the .bin file for appending to a binary file
             
-            long archiveSize = fileSize(flightData);
-            int numOfFlights = archiveSize / sizeof(flight);
+            long archiveSize = fileSize(flightData);// value of the total size of the archive containing the content stored in flight data
+            int numOfFlights = archiveSize / sizeof(flight);// value of the number of flight
             printf("Number of flights: %ld/%ld = %d.\n", archiveSize, sizeof(flight), numOfFlights);
 
-            if (numOfFlights > 100){
+            if (numOfFlights > 100){// if the total number of flights entered is greater than 100, terminates and prints an error
                 fprintf(stderr, "There cannot be more than 100 flights in the archive.");
                 exit(-1);
             }
 
-			rewind(flightData);
+			rewind(flightData);// sets the file postion back to the beginning of the file
 			
+			// prints the values of the user inputed data for the attributes of a flight.
             printf("\nThe values of the newly created flight:\n");
             printf("AirlineCodeAndFlightNumber: \"%s\".\n", tempFlight.AirlineCodeAndFlightNumber);
             printf("OriginAirportCode: \"%s\".\n", tempFlight.OriginAirportCode);
@@ -189,26 +191,25 @@ int main( int argc, const char* argv[] )
             printf("DepartureTime: \"%s\".\n", tempFlight.DepartureTime);
             printf("DepartureYear: \"%d\".\n", tempFlight.DepartureYear);
 
-            fwrite(&tempFlight, sizeof(flight), 1, flightData);
+            fwrite(&tempFlight, sizeof(flight), 1, flightData);// writes the content in flight data to tempflight
 
-            fclose(flightData);
+            fclose(flightData);//close the file pointer
             printf("\nYour input: ");
         }
-        else if(input == 2){
-            //(c) Read and print info about all flight records in the file
+        else if(input == 2){// if the user enters 2, read and print info about all flight records in the file
+          
+			flightData = fopen("flightData.bin", "rb");// opens the .bin file for reading to a binary file
 
-            flightData = fopen("flightData.bin", "rb");
-
-            long archiveSize = fileSize(flightData);
-            int numOfFlights = archiveSize / sizeof(flight);
+            long archiveSize = fileSize(flightData);// value of the total size of the archive containing the content stored in flight data
+            int numOfFlights = archiveSize / sizeof(flight);// value of the number of flight
             printf("Number of flights: %ld/%ld = %d.\n", archiveSize, sizeof(flight), numOfFlights);
 
-            rewind(flightData);
+            rewind(flightData);// sets the file position to the beginning of the file
 
             int i = 0;
-            for (i; i < numOfFlights; i++){
+            for (i; i < numOfFlights; i++){// looping
                 flight tempFlight;
-                fread(&tempFlight, sizeof(tempFlight), 1, flightData);
+                fread(&tempFlight, sizeof(tempFlight), 1, flightData);// reads the data from flightData into tempFlight
 
                 printf("\nFlight #%d:\n", i+1);
                 printf("AirlineCodeAndFlightNumber: \"%s\".\n", tempFlight.AirlineCodeAndFlightNumber);
@@ -221,120 +222,125 @@ int main( int argc, const char* argv[] )
                 printf("DepartureYear: \"%d\".\n", tempFlight.DepartureYear);
             }
 
-            fclose(flightData);
+            fclose(flightData);// closing the file pointer
             printf("\nYour input: ");
         }
-        else if(input == 3){
-            //(d) Count number of airlines for a given airport
+        else if(input == 3){//if the user, inputs 3, it counts number of airlines for a given airport
+           
 			
-			flightData = fopen("flightData.bin", "rb");
+			flightData = fopen("flightData.bin", "rb");// opens the .bin file for reading to 
 
-            long archiveSize = fileSize(flightData);
-            int numOfFlights = archiveSize / sizeof(flight), count = 0;
-			char airport[4];
+            long archiveSize = fileSize(flightData);// value of the total size of the archive containing the content stored in flight data
+            int numOfFlights = archiveSize / sizeof(flight), count = 0;// value of the number of flight
+			char airport[4];// char data type, holds an array of size 4
             printf("Number of flights: %ld/%ld = %d.\n", archiveSize, sizeof(flight), numOfFlights);
 
-            if (numOfFlights > 100){
+            if (numOfFlights > 100){// if the number of flights inputted is greater than 100, terminate and print error message
                 fprintf(stderr, "There cannot be more than 100 flights in the archive.");
                 exit(-1);
             }
 			
 			printf("\nEnter the airport you would like to count: ");
 			
-			fflush(stdin); scanf("%s", airport);
+			fflush(stdin); scanf("%s", airport);//clears the output buffer, asks the user for to enter the airport code that they would like to count
 			printf("\nYour input: \"%s\"\n", airport);
 			
-            rewind(flightData);
+            rewind(flightData);// sets the file position back to the beginning of the file.
 
             int i = 0;
-            for (i; i < numOfFlights; i++){
+            for (i; i < numOfFlights; i++){//looping
                 
 				flight tempFlight;
-                fread(&tempFlight, sizeof(tempFlight), 1, flightData);
+                fread(&tempFlight, sizeof(tempFlight), 1, flightData);// reads the content of flightdata into tempflight
 				
+				/*compare the to see if the user inputted airport code matches with either the origin airport code or the destination airport
+				if they do increment the count
+				*/
 				if ((strcmp(airport, tempFlight.DestinationAirportCode) == 0) || (strcmp(airport, tempFlight.OriginAirportCode) == 0)) {
 					count++;
 				}
 				
             }
 			
-			printf("The number of airlines for a given airport is : \"%d\".\n", count);
+			printf("The number of airlines for a given airport is : \"%d\".\n", count);// prints the number of airlines ar the specified airport
 
-            fclose(flightData);
+            fclose(flightData);// closing the file pointer
             printf("\nYour input: ");
 			
         }
-        else if(input == 4){
-            //(e) Print the number of inbound flights for airport x
-			flightData = fopen("flightData.bin", "rb");
+        else if(input == 4){// if the user enters 4, print the number of inbound flights for airport x
+           
+			flightData = fopen("flightData.bin", "rb");// opens the .bin file for reading to 
 
-            long archiveSize = fileSize(flightData);
-            int numOfFlights = archiveSize / sizeof(flight), count = 0;
-			char airport[4];
+            long archiveSize = fileSize(flightData);// value of the total size of the archive containing the content stored in flight data
+            int numOfFlights = archiveSize / sizeof(flight), count = 0;// value of the number of flights
+			char airport[4];// char data type, holds an array of size 4
             printf("Number of flights: %ld/%ld = %d.\n", archiveSize, sizeof(flight), numOfFlights);
 			
 			printf("\nEnter the airport you would like to count: ");
 			
-			fflush(stdin); scanf("%s", airport);
+			fflush(stdin); scanf("%s", airport);// clears the output buffer, and asks the user to enter an airport to count
 			printf("\nYour input: \"%s\"\n", airport);
 			
-            rewind(flightData);
+            rewind(flightData);//sets the file postion back to the beginning of the file
 
             int i = 0;
-            for (i; i < numOfFlights; i++){
+            for (i; i < numOfFlights; i++){//looping
                 
 				flight tempFlight;
-                fread(&tempFlight, sizeof(tempFlight), 1, flightData);
+                fread(&tempFlight, sizeof(tempFlight), 1, flightData);// reads the contents of flight data into tempflight
 				
+				// compares the destination airport code with the user inputted airport code and see if they match, if they do increment the count
 				if ((strcmp(airport, tempFlight.DestinationAirportCode) == 0)) {
+
 					count++;
 				}
 				
             }
 			
-			printf("The number of airlines for a given airport is : \"%d\".\n", count);
+			printf("The number of airlines for a given airport is : \"%d\".\n", count);// print the number airlines at the specified airport
 
-            fclose(flightData);
+            fclose(flightData);// closing the file pointer
             printf("\nYour input: ");
 
         }
-        else if(input == 5){
-            //(f) Print the number of inbound flights for each airport
+        else if(input == 5){// if the user enters 5, print the number of inbound flights for each airport
+            
 
             //Loop through every flight, looking for new DESTINATION airports
             //Adding them to an inorder array of strings
             //Incrementing a array list at that index
-            flightData = fopen("flightData.bin", "rb");
+            flightData = fopen("flightData.bin", "rb");// opens the .bin file for reading to binary
             
-            long archiveSize = fileSize(flightData);
-            int numOfFlights = archiveSize / sizeof(flight);
+            long archiveSize = fileSize(flightData);// value of the total size of the archive containing the content stored in flight data
+            int numOfFlights = archiveSize / sizeof(flight);// value of the number of flights
             printf("Number of flights: %ld/%ld = %d.\n", archiveSize, sizeof(flight), numOfFlights);
 
-            char destinations[100][4];
+            char destinations[100][4];/// two dimension array that holds up 100 flights, with each airport code not exceeding a size of 4
             //Loop through the array initializing to empty vals
             int x = 0;
             for (x; x < 100; x ++){
                 strcpy(destinations[x], "\0\0\0\0");
             }
 
-            int destinationCounts[100];
+            int destinationCounts[100];// max size of the destination airports
             for (x = 0; x < 100; x ++){
                 destinationCounts[x] = 0;
             }  
 
-            rewind(flightData);
+            rewind(flightData);// sets the file postion back to the beginning of the file
 
             int i = 0; int index = 0; int tempIndex = 0;
             for (i; i < numOfFlights; i++){
                 flight tempFlight;
-                fread(&tempFlight, sizeof(tempFlight), 1, flightData);
+                fread(&tempFlight, sizeof(tempFlight), 1, flightData);// reads the contents of flight data into tempflight
 
                 //int checkIfContains(char ** fileNames, int numFiles, char * name)
                 if((tempIndex = checkIfContains(destinations, 100, tempFlight.DestinationAirportCode)) == -1){
                     //Does not exist in array
-                    strcpy(destinations[index], tempFlight.DestinationAirportCode);
+                    strcpy(destinations[index], tempFlight.DestinationAirportCode);// copies the destination airport code in tempflight, into the specified index of destinations
                     destinationCounts[index] += 1;
-                    index ++;
+                    index ++;// increments the count of the index
                 }
                 else{
                     //Exists in array
@@ -342,7 +348,7 @@ int main( int argc, const char* argv[] )
                 }
             }
 
-            fclose(flightData);
+            fclose(flightData);// closing the file pointer
 
             printf("\nThe number of inbound flights for each airport:\n");
             //Print
@@ -355,17 +361,17 @@ int main( int argc, const char* argv[] )
             printf("\nYour input: ");
         }
         else if(input == 6){
-            //(g) Print a sorted list of origin airports based on the number of outbound flights
-            flightData = fopen("flightData.bin", "rb");
+            //if the user enters 6, print a sorted list of origin airports based on the number of outbound flights, using bubble sort
+            flightData = fopen("flightData.bin", "rb");// opens the .bin file for reading to binary
 
-            long archiveSize = fileSize(flightData);
-            int numOfFlights = archiveSize / sizeof(flight);
+            long archiveSize = fileSize(flightData);// value of the total size of the archive containing the content stored in flight data
+            int numOfFlights = archiveSize / sizeof(flight);// value of the number of flights
             printf("Number of flights: %ld/%ld = %d.\n", archiveSize, sizeof(flight), numOfFlights);
 
             //Initializes everything 
             originAirport originAirports[100];
             int x = 0;
-            for (x; x < 100; x++){
+            for (x; x < 100; x++){//looping
                 strcpy(originAirports[x].OriginAirportCode, "\0\0\0\0");
                 originAirports[x].count = 0;
             }
@@ -421,27 +427,27 @@ int main( int argc, const char* argv[] )
                 }
             }
             
-            printf("Index: %d.\n", index);
+            printf("Index: %d.\n", index);// prints the value of the index
             //return 0;
 
             for(x = 0; x < index; x++){
                 printf("Origin airport: %s; Number of outbound flights: %d.\n", originAirports[x].OriginAirportCode, originAirports[x].count);
             }
 
-            fclose(flightData);
+            fclose(flightData);// closing the file pointer
             printf("\nYour input: ");
 
         }
         else if(input == 7){
-            //(h) Print a list of origin airports that have at least 2 flights that have a departure time earlier than noon
+            //if users enters 7, print a list of origin airports that have at least 2 flights that have a departure time earlier than noon
 
             //Loop through every flight, looking for new DESTINATION airports
             //Adding them to an inorder array of strings
             //Incrementing a array list at that index
-            flightData = fopen("flightData.bin", "rb");
+            flightData = fopen("flightData.bin", "rb");// opens the .bin file for reading to binary
             
-            long archiveSize = fileSize(flightData);
-            int numOfFlights = archiveSize / sizeof(flight);
+            long archiveSize = fileSize(flightData);// value of the total size of the archive containing the content stored in flight data
+            int numOfFlights = archiveSize / sizeof(flight);// value of the number of flights
             printf("Number of flights: %ld/%ld = %d.\n", archiveSize, sizeof(flight), numOfFlights);
 
             char destinations[100][4];
@@ -456,13 +462,13 @@ int main( int argc, const char* argv[] )
                 destinationCounts[x] = 0;
             }  
 
-            rewind(flightData);
+            rewind(flightData);// setting the file postion back to the beginning of the file.
 
             int i = 0; int index = 0; int tempIndex = 0;
-            for (i; i < numOfFlights; i++){
+            for (i; i < numOfFlights; i++){//looping
                 flight tempFlight;
-                fread(&tempFlight, sizeof(tempFlight), 1, flightData);
-				if (strcmp(tempFlight.DepartureTime, "12:00") < 0) {
+                fread(&tempFlight, sizeof(tempFlight), 1, flightData);// reads the contents of flight data into tempflight
+				if (strcmp(tempFlight.DepartureTime, "12:00") < 0) {// compares to the departure time in tempflight to see if it is earlier than 12:00
 					//int checkIfContains(char ** fileNames, int numFiles, char * name)
 					if((tempIndex = checkIfContains(destinations, 100, tempFlight.DestinationAirportCode)) == -1){
 						//Does not exist in array
@@ -477,7 +483,7 @@ int main( int argc, const char* argv[] )
 				}
             }
 
-            fclose(flightData);
+            fclose(flightData);//closing file pointer
 
             //Print
             i  =  0;

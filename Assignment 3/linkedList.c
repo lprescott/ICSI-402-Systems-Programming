@@ -21,8 +21,6 @@ void addTerm(termList * head, char * term) {
 	termList * current;
 	termList * newNode;
 	
-	printf("REACHED HERE");
-	
 	if (head->term == NULL) {
 		
 		printf("Head is null, Adding \"%s\" to head.\n", term);
@@ -35,46 +33,45 @@ void addTerm(termList * head, char * term) {
 		return;
 		
 	}
+	
+	//THE CULPRIT FOR NOT ADDING TO THE FIRST NODE, IF TERM IS BEFORE HEAD->TERM, ADD DIRECTLY TO THE FRONT OF THE LIST
+	if (strcmp(term, head->term) < 0) {
+		newNode = malloc(sizeof(termList));
+		newNode->term = malloc(strlen(term) * sizeof(char));
+		strcpy(newNode->term, term);
 		
-	current = head;
+		newNode->next = head;
+		head = newNode;
+		return;
+	}
+		
+
 	//Purely for testing purposses
 	int index = 0;
-	
+	current = head;
 	printf("Head is not null, Adding \"%s\" to list.\n", term);
 	
 	//Adds objects too the list in alphabetical order
 	while (current != NULL) {
 		printf("Index %d\n", index);
-		
-		if (strcmp(term, current->term) < 0) {
+		//If the term is less than or equal to current->term, then add term to prev->next
+		if (strcmp(term, current->term) <= 0) {
 			printf("We add this term Here\n");
-			
-			if (prev == NULL) {
-				
-				printf("Head needs to be replaced\n");
-				
-				newNode = malloc(sizeof(termList));
-				newNode->term = malloc(strlen(term) * sizeof(char));
-				strcpy(newNode->term, term);
-				
-				newNode->next = current->next;
-				current = newNode;
-				
-				
-			} else {
-				prev->next = malloc(sizeof(termList));
-				prev->next->term = malloc(strlen(term) * sizeof(char));
-				strcpy(prev->next->term, term);
-				prev->next->next = current;
-			}
+
+			prev->next = malloc(sizeof(termList));
+			prev->next->term = malloc(strlen(term) * sizeof(char));
+			strcpy(prev->next->term, term);
+			prev->next->next = current;
 			return;
+			}
+			
 		}
-		
+		//Incrememnts both prev and current
 		prev = current;
 		current = current->next;
 		index++;
 	}
-	
+	//If this item is the largest, add to end of list with prev->next
 	prev->next = malloc(sizeof(termList));
 	prev->next->term = malloc(strlen(term) * sizeof(char));
 	strcpy(prev->next->term, term);

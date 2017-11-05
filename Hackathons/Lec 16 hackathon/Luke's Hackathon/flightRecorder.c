@@ -27,12 +27,23 @@ typedef struct originAirport{
 long fileSize(FILE * file);
 int checkIfContains(char fileNames[100][4], int numFiles, char name[4]);
 
-//main function, takes parameters for the standard command line arguments
+/*
+Main function, takes parameters for the standard command line arguments, returns data to stdout when required, otherwise main completes the following tasks based on user input:
+	(a) Create a binary file to store info about files. You may assume the user won't input info for more than 100 flights
+	(b) Read input from user (i.e., create a menu) to implement the following functionality
+	(c) Read and print info about all flight records in the file
+	(d) Count number of airlines for a given airport
+	(e) Print the number of inbound flights for airport x
+	(f) Print the number of inbound flights for each airport
+	(g) Print a sorted list of origin airports based on the number of outbound flights
+	(h) Print a list of origin airports that have at least 2 flights that have a departure time earlier than noon
+*/
+
 int main( int argc, const char* argv[] )
 {
-    int flag = 1;
-    int sizeOfFlight = sizeof(flight);
-    int sizeOfTotalFlight = sizeOfFlight + 8;
+    int flag = 1; //Flag for user input
+    int sizeOfFlight = sizeof(flight); //sizeof the flight's data
+    int sizeOfTotalFlight = sizeOfFlight + 8; //plus 8 for whitespace
 
     printf("The size of one flight is: %d.\n", sizeOfFlight);
     printf("The size of one flight including 8 1-byte spaces is: %d.\n", sizeOfTotalFlight);
@@ -43,7 +54,7 @@ int main( int argc, const char* argv[] )
     //(b) Read input from user (i.e., create a menu)
     printf("\nThe possible commands are as follows: \n0 to end; \n1 to store info; \n2 to print info; \n3 to count airlines; \n4 to print inbound flights at airport x; \n5 to print inbound flights for all airports; \n6 to print sorted list of origin airports; \n7 to print origin airports with at least 2 flights with departures before noon.\n");
     printf("Your input: ");
-    int input;
+    int input; //user input
 
     while(flag){
         fflush(stdin); scanf("%d", &input);// clears the output buffer, and asks the user for input
@@ -55,8 +66,9 @@ int main( int argc, const char* argv[] )
         }
         else if(input == 1){// if input is 1 it will create a binary file for the flight info
 
-            flight tempFlight;
-			
+            flight tempFlight; //A temporary flight struct
+		
+	    //temp variables for each symbol in struct of flight
             char tempAirlineCodeAndFlightNumber [8]; //AAA1234 + '/0'
             char tempOriginAirportCode[4]; //JFK + '/0'
             char tempDestinationAirportCode[4]; //ORL + '/0'
@@ -65,7 +77,8 @@ int main( int argc, const char* argv[] )
             int tempDepartureDay;
             char tempDepartureTime[6]; //10:00 + '/0'
             int tempDepartureYear;
-            int length;
+		
+            int length; //length int for length of input strings
 
             printf("\nThe program will take a flight to add here.\n");
             printf("Please enter airline code and flight number: ");
@@ -137,7 +150,7 @@ int main( int argc, const char* argv[] )
 				
 				int i = 0;// intializes the starting count to zero
 				for (i; i < numOfFlights; i++){// looping
-					flight tempFlightRead;
+					flight tempFlightRead; //another temp flight struct
 					fread(&tempFlightRead, sizeof(tempFlight), 1, flightData);// reads the content from flightData into the tempFlightRecord
 
 					// checks each attribute in the struct to see if they contain the same value, if they do, the program terminates, and prints an errors
@@ -206,9 +219,9 @@ int main( int argc, const char* argv[] )
 
             rewind(flightData);// sets the file position to the beginning of the file
 
-            int i = 0;
+            int i = 0; //count variable
             for (i; i < numOfFlights; i++){// looping
-                flight tempFlight;
+                flight tempFlight; //another temp flight struct
                 fread(&tempFlight, sizeof(tempFlight), 1, flightData);// reads the data from flightData into tempFlight
 
                 printf("\nFlight #%d:\n", i+1);
@@ -247,10 +260,10 @@ int main( int argc, const char* argv[] )
 			
             rewind(flightData);// sets the file position back to the beginning of the file.
 
-            int i = 0;
+            int i = 0; //count variable
             for (i; i < numOfFlights; i++){//looping
                 
-				flight tempFlight;
+				flight tempFlight; //another temp flight struct
                 fread(&tempFlight, sizeof(tempFlight), 1, flightData);// reads the content of flightdata into tempflight
 				
 				/*compare the to see if the user inputted airport code matches with either the origin airport code or the destination airport
@@ -284,10 +297,10 @@ int main( int argc, const char* argv[] )
 			
             rewind(flightData);//sets the file postion back to the beginning of the file
 
-            int i = 0;
+            int i = 0; //count variable
             for (i; i < numOfFlights; i++){//looping
                 
-				flight tempFlight;
+				flight tempFlight; //another temp flight struct
                 fread(&tempFlight, sizeof(tempFlight), 1, flightData);// reads the contents of flight data into tempflight
 				
 				// compares the destination airport code with the user inputted airport code and see if they match, if they do increment the count
@@ -318,7 +331,7 @@ int main( int argc, const char* argv[] )
 
             char destinations[100][4];/// two dimension array that holds up 100 flights, with each airport code not exceeding a size of 4
             //Loop through the array initializing to empty vals
-            int x = 0;
+            int x = 0; //count variable
             for (x; x < 100; x ++){
                 strcpy(destinations[x], "\0\0\0\0");
             }
@@ -332,7 +345,7 @@ int main( int argc, const char* argv[] )
 
             int i = 0; int index = 0; int tempIndex = 0;
             for (i; i < numOfFlights; i++){
-                flight tempFlight;
+                flight tempFlight; //another temp flight struct
                 fread(&tempFlight, sizeof(tempFlight), 1, flightData);// reads the contents of flight data into tempflight
 
                 //int checkIfContains(char ** fileNames, int numFiles, char * name)
@@ -370,7 +383,7 @@ int main( int argc, const char* argv[] )
 
             //Initializes everything 
             originAirport originAirports[100];
-            int x = 0;
+            int x = 0; //count variable
             for (x; x < 100; x++){//looping
                 strcpy(originAirports[x].OriginAirportCode, "\0\0\0\0");
                 originAirports[x].count = 0;
@@ -379,10 +392,10 @@ int main( int argc, const char* argv[] )
             rewind(flightData);
 
             //Loop for the number of flights in the archive
-            int i = 0, index = 0;
-            int ifContainsFlag = 0;
+            int i = 0, index = 0; //count and index variable
+            int ifContainsFlag = 0; //flag if the supplied string is contained already
             for (i; i < numOfFlights; i++){
-                flight tempFlight;
+                flight tempFlight; //another temp flight struct
                 fread(&tempFlight, sizeof(tempFlight), 1, flightData);
                 char tempOriginAirportCode[4];
                 strcpy(tempOriginAirportCode, tempFlight.OriginAirportCode);
@@ -390,7 +403,7 @@ int main( int argc, const char* argv[] )
                 ifContainsFlag = 0;
 
                 //Loop through array comparing the origin code of the current flight to current origin code
-                int x = 0;
+                int x = 0; //count variable
                 for(x; x < 100; x++) {
                     if (strcmp(originAirports[x].OriginAirportCode, tempOriginAirportCode) == 0) {                      
                         ifContainsFlag = 1;
@@ -407,9 +420,9 @@ int main( int argc, const char* argv[] )
                 }                    
             }
 
-            originAirport tempOrigin;
+            originAirport tempOrigin; //temp originAirport struct 
             
-            int z;
+            int z; //count variable
             for (x = 0; x < index - 1; x ++){
                 for (z = 0; z < index - x - 1; z++){
                     if (originAirports[z].count > originAirports[z+1].count){
@@ -450,23 +463,24 @@ int main( int argc, const char* argv[] )
             int numOfFlights = archiveSize / sizeof(flight);// value of the number of flights
             printf("Number of flights: %ld/%ld = %d.\n", archiveSize, sizeof(flight), numOfFlights);
 
-            char destinations[100][4];
+            char destinations[100][4]; //array of string to hold destination names
             //Loop through the array initializing to empty vals
-            int x = 0;
+            int x = 0; //count variable
             for (x; x < 100; x ++){
                 strcpy(destinations[x], "\0\0\0\0");
             }
 
-            int destinationCounts[100];
+            int destinationCounts[100]; //arraylist to hold destination counts
             for (x = 0; x < 100; x ++){
                 destinationCounts[x] = 0;
             }  
 
             rewind(flightData);// setting the file postion back to the beginning of the file.
 
+	    //variable for count, index, and a tempindex in the numofflights
             int i = 0; int index = 0; int tempIndex = 0;
             for (i; i < numOfFlights; i++){//looping
-                flight tempFlight;
+                flight tempFlight; //another temp flight struct
                 fread(&tempFlight, sizeof(tempFlight), 1, flightData);// reads the contents of flight data into tempflight
 				if (strcmp(tempFlight.DepartureTime, "12:00") < 0) {// compares to the departure time in tempflight to see if it is earlier than 12:00
 					//int checkIfContains(char ** fileNames, int numFiles, char * name)
@@ -486,7 +500,7 @@ int main( int argc, const char* argv[] )
             fclose(flightData);//closing file pointer
 
             //Print
-            i  =  0;
+            i  =  0; //count variable
             while((strcmp(destinations[i], "\0\0\0\0") != 0) && (i < 100)){
                 if (destinationCounts[i] >= 2) {
 					printf("Airport: %s; Number of inbound flights: %d.\n", destinations[i], destinationCounts[i]);
@@ -512,7 +526,7 @@ int main( int argc, const char* argv[] )
 */
 long fileSize(FILE * file){
     //Position: the variable to be returned, and the position of the end character.
-    unsigned long endPosition = 0;
+    unsigned long endPosition = 0; 
     unsigned long startPosition = 0;
 
     fflush(file); //Flush the buffer

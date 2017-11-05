@@ -1,13 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <dirent.h>
 #include <unistd.h>
 #include <errno.h>
 
-
+#include "structs.h"
 #include "index.h"
 #include "browse.h"
 #include "other.h"
+#include "linkedList.h"
 
 int main(int argc, const char * argv[]) {
 	
@@ -15,6 +17,35 @@ int main(int argc, const char * argv[]) {
 	FILE * invid, * tempFile; //file to store the inverted index
 	int i; //integer used for any for loops necessary in main function
 	
+	
+	//////////////////////////////////////
+	//TEST SPACE FOR LINKED LIST OBJECTS//
+	//////////////////////////////////////
+	//START
+								//THIS THING INITIALIZES ALL VALUES IN A STRUCT TO NULL OR 0
+		struct termList head = (const struct termList) { 0 };
+		
+		
+		addTerm(&head, "aa");
+		addTerm(&head, "aaaaa");
+		addTerm(&head, "aaa");
+		addTerm(&head, "aaaa");
+		addTerm(&head, "b");
+		addTerm(&head, "a");
+		
+		printAll(head);
+		
+
+		
+		//add()
+		
+	//END
+	
+	
+	//THIS BIG COMMENT IS WORKING CODE, JUST DOING LINKED LIST TESTING!!!!!!!
+	//DO NOT DELETE THIS BIG COMMENT
+	
+	/*
 	//Testing and printing all arguments, to be commented out later.
 	printf("\nArguments given : \"%d\".\n\n", argc);
 	for(i = 0; i < argc; i++) {
@@ -35,20 +66,20 @@ int main(int argc, const char * argv[]) {
 		if (isFile(argv[2])) {
 			printf("\nSecond argument is a file, opening and indexing\n");
 			
-			/*
-			tempFile = fopen(argv[2], "r");
-			invid = fopen(argv[1], "w");
-			indexer(tempFile);
-			*/
+			
+			//tempFile = fopen(argv[2], "r");
+			//invid = fopen(argv[1], "w");
+			//indexer(tempFile);
+			
 			
 		} else if (isDir(argv[2])) {
 			printf("\nSecond argument is a directory, opening and browsing\n");
 			
-			/*
-			invid = fopen(argv[1], "w");
-			dr = opendir(argv[2]);
-			browser(dr);
-			*/
+			
+			//invid = fopen(argv[1], "w");
+			//dr = opendir(argv[2]);
+			//browser(dr);
+			
 			
 		} else {
 			
@@ -65,20 +96,20 @@ int main(int argc, const char * argv[]) {
 			if (isFile(argv[1])) {
 			printf("\nArgument is a file, opening and indexing\n");
 			
-			/*
-			tempFile = fopen(argv[2], "r");
-			invid = fopen(argv[1], "w");
-			indexer(tempFile);
-			*/
+			
+			//tempFile = fopen(argv[2], "r");
+			//invid = fopen(argv[1], "w");
+			//indexer(tempFile);
+			
 			
 		} else if (isDir(argv[1])) {
 			printf("\nArgument is a directory, opening and browsing\n");
 			
-			/*
-			invid = fopen(argv[1], "w");
-			dr = opendir(argv[2]);
-			browser(dr);
-			*/
+			
+			//invid = fopen(argv[1], "w");
+			//dr = opendir(argv[2]);
+			//browser(dr);
+			
 			
 		} else {
 			
@@ -102,16 +133,18 @@ int main(int argc, const char * argv[]) {
 		
 		printf("Current Working Directory : \"%s\".\n", currentDir);
 		
-		/*
-		invid = fopen("invid.txt", "w");
-		dr = opendir(currentDir);
-		browser(dr);
-		*/
+		
+		//invid = fopen("invid.txt", "w");
+		//dr = opendir(currentDir);
+		//browser(dr);
+		
 		
 	}
 	
 	//PrintContents(LIST);
 	
 	printf("\n");
+	
+	*/
 	
 }

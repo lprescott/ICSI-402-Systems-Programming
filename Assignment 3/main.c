@@ -9,45 +9,17 @@
 #include "index.h"
 #include "browse.h"
 #include "other.h"
-#include "linkedList.h"
+
+//One source file must contain just the main function.
 
 int main(int argc, const char * argv[]) {
 	
-	DIR * dr; //Directory to be used if given
-	FILE * invid, * tempFile; //file to store the inverted index
+	DIR * dir; //Directory to be used if given
+	FILE * invInd, * tempFile; //file to store the inverted index
 	int i; //integer used for any for loops necessary in main function
-	
-	
-	//////////////////////////////////////
-	//TEST SPACE FOR LINKED LIST OBJECTS//
-	//////////////////////////////////////
-	//START
-								//THIS THING INITIALIZES ALL VALUES IN A STRUCT TO NULL OR 0
-		struct termList head = (const struct termList) { 0 };
-		
-		
-		addTerm(&head, "aa");
-		addTerm(&head, "aaaaa");
-		addTerm(&head, "aaa");
-		addTerm(&head, "aaaa");
-		addTerm(&head, "b");
-		addTerm(&head, "a");
-		
-		printAll(head);
-		
 
-		
-		//add()
-		
-	//END
-	
-	
-	//THIS BIG COMMENT IS WORKING CODE, JUST DOING LINKED LIST TESTING!!!!!!!
-	//DO NOT DELETE THIS BIG COMMENT
-	
-	/*
 	//Testing and printing all arguments, to be commented out later.
-	printf("\nArguments given : \"%d\".\n\n", argc);
+	printf("\nArguments given : \"%d\".\n", argc);
 	for(i = 0; i < argc; i++) {
 		printf("Argument %d : \"%s\".\n", (i + 1), argv[i]);
 	}
@@ -61,10 +33,10 @@ int main(int argc, const char * argv[]) {
 	}
 	//Case 1: Usr enters two arguments, open DIR dr and FILE invid
 	if (argc == 3) {
-		printf("User entered 2 arguments\n");
+		printf("User entered 2 arguments.\n");
 		//Case 1 1: Second argument is a directory
 		if (isFile(argv[2])) {
-			printf("\nSecond argument is a file, opening and indexing\n");
+			printf("\nSecond argument is a file, opening and indexing.\n");
 			
 			
 			//tempFile = fopen(argv[2], "r");
@@ -73,7 +45,7 @@ int main(int argc, const char * argv[]) {
 			
 			
 		} else if (isDir(argv[2])) {
-			printf("\nSecond argument is a directory, opening and browsing\n");
+			printf("\nSecond argument is a directory, browsing, opening and indexing.\n");
 			
 			
 			//invid = fopen(argv[1], "w");
@@ -91,10 +63,10 @@ int main(int argc, const char * argv[]) {
 	}
 	//Case 2: User enters one argument, open DIR dr and FILE invid as "invid.txt"
 	if (argc == 2) {
-		printf("User entered directory name, open inverted index as \"invid.txt\".\n");
+		printf("User has entered one argument, open inverted index as \"invid.txt\".\n");
 		
-			if (isFile(argv[1])) {
-			printf("\nArgument is a file, opening and indexing\n");
+		if (isFile(argv[1])) {
+			printf("\nArgument is a file, opening and indexing.\n");
 			
 			
 			//tempFile = fopen(argv[2], "r");
@@ -103,7 +75,7 @@ int main(int argc, const char * argv[]) {
 			
 			
 		} else if (isDir(argv[1])) {
-			printf("\nArgument is a directory, opening and browsing\n");
+			printf("\nArgument is a directory, browsing, opening and indexing.\n");
 			
 			
 			//invid = fopen(argv[1], "w");
@@ -126,7 +98,7 @@ int main(int argc, const char * argv[]) {
 		char currentDir[1024];
 		if ((getcwd(currentDir, sizeof(currentDir))) == NULL) {
 			
-			fprintf(stderr, "\nERROR: Could not get current working directory, exiting\n");
+			fprintf(stderr, "\nERROR: Could not get current working directory, exiting.\n");
 			exit(-1);
 			
 		} 
@@ -144,7 +116,5 @@ int main(int argc, const char * argv[]) {
 	//PrintContents(LIST);
 	
 	printf("\n");
-	
-	*/
 	
 }

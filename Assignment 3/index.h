@@ -1,0 +1,1 @@
+void indexer(char ** fullPaths, char * outputFileName);

@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -g
-OBJECTS = main.o index.o browse.o other.o linkedList.o
+OBJECTS = main.o index.o browse.o other.o
 
 indexer: $(OBJECTS)
 	$(CC) $(CFLAGS) $(OBJECTS) -o indexer

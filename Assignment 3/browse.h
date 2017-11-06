@@ -1,0 +1,1 @@
+char ** browse(char * directoryPath);

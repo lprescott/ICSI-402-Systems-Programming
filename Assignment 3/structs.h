@@ -6,6 +6,6 @@ typedef struct fileCountList {
 
 typedef struct termList {
 	char * term;
-	fileCountList * head;
+	fileCountList * firstFile;
 	struct termList * next;
 } termList; 

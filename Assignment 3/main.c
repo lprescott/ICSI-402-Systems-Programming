@@ -12,7 +12,7 @@
 //Output:  	A file containing the inverted index.
 //Assumption:	The possible command line argument is assumed to be a unix path to a directory in unix.
 
-//Inluded headers
+//standard c libraries
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -20,6 +20,7 @@
 #include <unistd.h>
 #include <errno.h>
 
+//include external header files, containing prototypes
 #include "structs.h"
 #include "index.h"
 #include "browse.h"
@@ -46,8 +47,8 @@ int main(int argc, const char * argv[]) {
 	}
 	printf("\n");
 	
-	//If argc is greater than 3, the user entered too many arguments, so the
-	//program exits
+	/*If argc is greater than 3, the user entered too many arguments
+	program exits*/
 	if (argc > 3) {
 		fprintf(stderr, "ERROR: Entered too many arguments, exiting now.\n");
 		exit(-1);
@@ -59,23 +60,23 @@ int main(int argc, const char * argv[]) {
 		char ** listOfFiles; //declares a list of string that holds all files to use
 		listOfFiles = malloc(sizeof(char *)); //Allocates memory for first pointer
 
-		if (isFile(argv[2])) {
+		if (isFile(argv[2])) {// checks if the 2nd argument that is supplied is a file or not
 			printf("\nSecond argument is a file, opening and indexing.\n");
-			listOfFiles[0] = strdup(argv[2]);
+			listOfFiles[0] = strdup(argv[2]);//duplicates the name of the second argument into the initial position in the listOfFiles
 			//indexer(listOfFiles, invID, 1);
-		} else if (isDir(argv[2])) {
+		} else if (isDir(argv[2])) {// checks if the second argument supplied is a directory or not
 			printf("\nSecond argument is a directory, browsing, opening and indexing.\n");
 			//listOfFiles = browse(argv[2]);
 			//int numofFiles = listLength(listOfFiles);
 			//indexer(listOfFiles, invID, numOfFiles);
-		} else {	
+		} else {// if the second supplied is not a file or a directory, it prints an error, and the program exits
 			fprintf(stderr, "\nERROR: neither a file nor directory, exiting.\n");
 			exit(-1);
 			
 		}
 
-		fclose(invID);
-		free(listOfFiles);
+		fclose(invID);// closes the file pointer for the inverted index
+		free(listOfFiles);// frees the string that holds all of the files that are used
 		
 	}
 	//Case 2: User enters one argument, open DIR dr and FILE invid as "invid.txt"
@@ -86,36 +87,36 @@ int main(int argc, const char * argv[]) {
 		char ** listOfFiles; //declares a list of string that holds all files to use
 		listOfFiles = malloc(sizeof(char *)); //Allocates memory for first pointer
 		
-		if (isFile(argv[1])) {
+		if (isFile(argv[1])) {// checks to see if the initial argument argument is a file or not using the isFile function
 			printf("\nArgument is a file, opening and indexing.\n");
-			listOfFiles[0] = strdup(argv[1]);
+			listOfFiles[0] = strdup(argv[1]);// duplicates the name of the intial argument and stores it at the initial position for listOfFiles
 			//indexer(listOfFiles, invID, 1);
 			
-		} else if (isDir(argv[1])) {
+		} else if (isDir(argv[1])) {// checks to see if the initial argument is a directory or not
 			printf("\nArgument is a directory, browsing, opening and indexing.\n");
 			//listOfFiles = browse(argv[1]);
 			//int numofFiles = listLength(listOfFiles);
 			//indexer(listOfFiles, invID, numOfFiles);
 			
-		} else {
+		} else {// if the initial argument is not a file or a directory, the program exits
 			fprintf(stderr, "\nERROR: neither a file nor directory, exiting.\n");
 			exit(-1);
 			
 		}
 		
-		fclose(invID);
-		free(listOfFiles);
+		fclose(invID);// closing the file pointer for the inverted index
+		free(listOfFiles);// freeing the listOfFiles
 	}
 	
 	//Case 3: No arguments, use current working directory and open FILE invid as "invid.txt"
 	if (argc == 1) {
 		printf("No user input, use current working directory and open inverted index as \"invid.txt\".\n");
-		char currentDir[1024]; //declare a string for the current dir path
+		char* currentDir; //declare a string for the current dir path
 		FILE * invID = fopen(defaultName, "a"); //open the default file name for appending
 		char ** listOfFiles; //declares a list of string that holds all files to use
 		listOfFiles = malloc(sizeof(char *)); //Allocates memory for first pointer
 
-		if ((getcwd(currentDir, sizeof(currentDir))) == NULL) {
+		if ((getcwd(currentDir, sizeof(currentDir))) == NULL) {// checks if the directory is the current working directory, if not in current directory, terminate
 			fprintf(stderr, "\nERROR: Could not get current working directory, exiting.\n");
 			exit(-1);	
 		} 
@@ -126,8 +127,8 @@ int main(int argc, const char * argv[]) {
 		//int numofFiles = listLength(listOfFiles);
 		//indexer(listOfFiles, invID, numOfFiles);
 
-		fclose(invID);
-		free(listOfFiles);
+		fclose(invID);// closing the file pointer for the inverted index
+		free(listOfFiles);// freeing the listOfFiles
 	
 	}
-}
+}//End main

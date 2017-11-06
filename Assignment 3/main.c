@@ -63,12 +63,11 @@ int main(int argc, const char * argv[]) {
 		if (isFile(argv[2])) {// checks if the 2nd argument that is supplied is a file or not
 			printf("\nSecond argument is a file, opening and indexing.\n");
 			listOfFiles[0] = strdup(argv[2]);//duplicates the name of the second argument into the initial position in the listOfFiles
-			//indexer(listOfFiles, invID, 1);
+			//indexer(listOfFiles, invID);
 		} else if (isDir(argv[2])) {// checks if the second argument supplied is a directory or not
 			printf("\nSecond argument is a directory, browsing, opening and indexing.\n");
 			//listOfFiles = browse(argv[2]);
-			//int numofFiles = listLength(listOfFiles);
-			//indexer(listOfFiles, invID, numOfFiles);
+			//indexer(listOfFiles, invID);
 		} else {// if the second supplied is not a file or a directory, it prints an error, and the program exits
 			fprintf(stderr, "\nERROR: neither a file nor directory, exiting.\n");
 			exit(-1);
@@ -90,13 +89,12 @@ int main(int argc, const char * argv[]) {
 		if (isFile(argv[1])) {// checks to see if the initial argument argument is a file or not using the isFile function
 			printf("\nArgument is a file, opening and indexing.\n");
 			listOfFiles[0] = strdup(argv[1]);// duplicates the name of the intial argument and stores it at the initial position for listOfFiles
-			//indexer(listOfFiles, invID, 1);
+			//indexer(listOfFiles, invID);
 			
 		} else if (isDir(argv[1])) {// checks to see if the initial argument is a directory or not
 			printf("\nArgument is a directory, browsing, opening and indexing.\n");
 			//listOfFiles = browse(argv[1]);
-			//int numofFiles = listLength(listOfFiles);
-			//indexer(listOfFiles, invID, numOfFiles);
+			//indexer(listOfFiles, invID);
 			
 		} else {// if the initial argument is not a file or a directory, the program exits
 			fprintf(stderr, "\nERROR: neither a file nor directory, exiting.\n");
@@ -124,8 +122,7 @@ int main(int argc, const char * argv[]) {
 		printf("Current Working Directory : \"%s\".\n", currentDir);
 	
 		//listOfFiles = browse(currentDir);
-		//int numofFiles = listLength(listOfFiles);
-		//indexer(listOfFiles, invID, numOfFiles);
+		//indexer(listOfFiles, invID);
 
 		fclose(invID);// closing the file pointer for the inverted index
 		free(listOfFiles);// freeing the listOfFiles

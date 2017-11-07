@@ -8,9 +8,9 @@ typedef struct termList{
 } termList;
 
 typedef struct fileCountList{
-	char * file
+	char * file;
+	int count;
 	struct fileCountList * next;
-	struct termList * next;
 } fileCountList;
 
 #endif

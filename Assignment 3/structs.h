@@ -1,6 +1,6 @@
-typdef struct termList{
+typedef struct termList{
 	char * fileName;
 	char * term;
-	int count
+	int count;
 	struct termList * next;
-}
+} termList;

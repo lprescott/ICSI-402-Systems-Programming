@@ -1,7 +1,9 @@
+#include <stdlib.h>
 
 int isFile(const char * path);
 int isDir(const char * path);
-char * addNumber(char * archiveName, int currentArchive);
+long fileSize(FILE * file);
+//char * addNumber(char * archiveName, int currentArchive);
 
 /*
 void insertAtFirst(char * term, termList * head);

@@ -7,4 +7,4 @@ indexer: $(OBJECTS)
 %.o: %.c
 	$(CC) $(CFLAGS) -c $<
 clean:
-	-rm *.o $(OBJECTS) indexer
+	-rm $(OBJECTS) indexer

@@ -7,6 +7,8 @@
 #include <stdlib.h>
 
 #include "other.h"
+#include "browse.h"
+#include "index.h"
 
 /*
 	The browse function is a recursive funtion; it returns nothing. There are three arguments taken as parameters: the directory path 
@@ -54,7 +56,7 @@ void browse(char * directoryPath, FILE * outputFile, char * outputFileName){
                 
                 printf("\tIndexing absolute path: \"%s\".\n", tempPath);
 
-                //indexer(tempPath, outputFile);
+                indexer(tempPath, outputFile, outputFileName);
 
 			}
 		}

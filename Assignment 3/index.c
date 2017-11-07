@@ -39,8 +39,10 @@ void indexer(char * inputFilePath, FILE * outputFile, char * outputFileName){
         //Print sorted data to outputFile
         //printSorted(inputList, outputFile, outputFileName) //Prints sorted list in alphabetical order, keeping order of file counts descending
 
-        free(inputList);
-        free(outputList);
+        deleteTermList(inputList);
+        deleteTermList(outputList);
+        if (inputList != NULL) free(inputList);
+        if (outputList != NULL) free(outputList);
     }
     
     //If the outputFile is not empty
@@ -82,7 +84,9 @@ void indexer(char * inputFilePath, FILE * outputFile, char * outputFileName){
         //Rewrite new merged list into outputFile
         //printSorted(newList, outputFile, outputFileName) //Prints sorted list in alphabetical order, keeping order of file counts descending
 
-
+        deleteTermList(inputList);
+        deleteTermList(outputList);
+        deleteTermList(newList);
         if (inputList != NULL) free(inputList);
         if (outputList != NULL) free(outputList);
         if (newList != NULL) free(newList);

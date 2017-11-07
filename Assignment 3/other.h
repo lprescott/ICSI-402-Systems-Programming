@@ -6,6 +6,9 @@ int isFile(const char * path);
 int isDir(const char * path);
 long fileSize(FILE * file);
 
+int isTermContained(char * termSupplied, termList * head);
+void deleteTermList(termList * head);
+
 termList * readFromFile(char * inputFilePath);
 termList * readFromIndex(FILE * outputFile, char * outputFileName);
 termList * sortTerms(termList * inputList);

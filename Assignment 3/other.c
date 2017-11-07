@@ -9,6 +9,8 @@
 #include "structs.h"
 #include "other.h"
 
+void swap(termList * a, termList * b);
+
 int isFile(const char * path) {
 	struct stat s;
 	stat(path, &s);
@@ -48,6 +50,39 @@ long fileSize(FILE * file){
     fseek(file,startPosition,SEEK_SET); //return to start position
 
     return endPosition;// returns the position of the file offset
+}
+
+int isTermContained(char * termSupplied, termList * head){
+	while (head != NULL){
+		if (strcmp(termSupplied, head->term) == 0){
+			return 1;
+		}
+		head = head->next;
+	}
+	return 0;
+}
+
+/*
+	Function void deleteTermList, frees all memory allocated for the list. Takes the head of the list 
+	as its only parameter.
+*/
+void deleteTermList(termList * head){
+	//if head is equal to null, then return
+	if (head == NULL){
+		return;
+	}
+	
+	//sets current equal to head
+	termList * current = head;
+	termList * next;
+	
+	//loops through the list, freeing up data for every variable until current hits null
+	while (current != NULL) {
+		next = current->next;
+		free(current);
+		current = next;
+	}
+	head = NULL;
 }
 
 /*

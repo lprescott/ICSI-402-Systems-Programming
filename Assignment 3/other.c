@@ -52,16 +52,6 @@ long fileSize(FILE * file){
     return endPosition;// returns the position of the file offset
 }
 
-int isTermContained(char * termSupplied, termList * head){
-	while (head != NULL){
-		if (strcmp(termSupplied, head->term) == 0){
-			return 1;
-		}
-		head = head->next;
-	}
-	return 0;
-}
-
 /*
 	Function void deleteTermList, frees all memory allocated for the list. Takes the head of the list 
 	as its only parameter.
@@ -83,6 +73,59 @@ void deleteTermList(termList * head){
 		current = next;
 	}
 	head = NULL;
+}
+
+int isTermContained(char * termSupplied, termList * head){
+	while (head != NULL){
+		if (strcmp(termSupplied, head->term) == 0){
+			return 1;
+		}
+		head = head->next;
+	}
+	return 0;
+}
+
+void insertTerm(termList * head, char * term, fileCountList temp){
+	if (isTermContained(term, head) == 1){
+		//The term is contained already
+		while (head != NULL){
+			if (strcmp(term, head->term) == 0){
+				fileCountList * searchingNode;
+				searchingNode = head->filesAndCounts;
+				while (searchingNode != NULL){
+					if(strcmp(temp.file, searchingNode->file) == 0){
+						searchingNode->count += 1;
+					}
+					searchingNode = searchingNode->next;
+				}
+			}
+			head = head->next;
+		}
+	}
+	else{
+		//The term is not already contained
+		while (head != NULL){
+			if ((strcmp(term, head->term) > 0)  && (strcmp(term, head->next->term) < 0)){
+				termList * tempTerm;
+				tempTerm = malloc(sizeof(termList));
+
+				fileCountList * tempFileAndCount;
+				tempFileAndCount = malloc(sizeof(fileCountList));
+
+				tempTerm->filesAndCounts = tempFileAndCount;
+
+				//Assigns the values of the new node (including its subnode)
+				tempTerm->term = strdup(term);
+				tempFileAndCount->file = strdup(temp.file);
+				tempFileAndCount->count = temp.count;
+
+				//changes pointers
+				tempTerm->next = head->next;
+				head->next = tempTerm;
+			}
+			head = head->next;
+		}		
+	}
 }
 
 /*

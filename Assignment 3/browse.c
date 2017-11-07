@@ -1,29 +1,59 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <dirent.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <dirent.h>
+#include <string.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
 
 #include "other.h"
 
-//A third source file must contain only the function that browses through the files.
-char ** browse(char * directoryPath){
+char ** browse(char * directoryPath, FILE * outputFile, char * outputFileName){
+
+	DIR * directory;
+	char tempPath[512];
+	struct dirent * entry;
 	
-	DIR * d = opendir(directoryPath);
-	struct dirent * dir;
+	directory = opendir(directoryPath);
 	
-	if (d) {
-		while ((dir = readdir(d)) != NULL) {
-			printf("%s : ", dir->d_name);
-			if (isFile(dir->d_name)) {
-				printf("Is a file!\n");
-			} else if(isDir(dir->d_name)) {
-				printf("Is a Directory!\n");
-				if ((strcmp(dir->d_name, ".") != 0) && (strcmp(dir->d_name, "..") != 0)) {
-					browse(dir->d_name);
-				}
+	if(directory == NULL){
+        fprintf(stderr, "Couldn't open: \"%s\"\n", directoryPath);
+        exit(-1);
+    }
+	else{
+
+		printf("Calling browse on: \"%s\".\n", directoryPath);
+		
+		while((entry = readdir(directory)) != NULL)
+		{
+			//Checks if directory is viable; i.e. NOT "." ".." or the outputFile name
+			if(strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0 || strcmp(entry->d_name, outputFileName) == 0){
+				continue;
+			}
+			
+			strcpy(tempPath, "");
+			strcat(tempPath, directoryPath);
+			strcat(tempPath, "/");
+			strcat(tempPath, entry->d_name);
+			
+			if(isDir(tempPath)) {
+				printf("Directory found: \"%s\".\n", entry->d_name);
+
+                browse(tempPath, outputFile, outputFileName);
+                
+                printf("\tFinished directory: \"%s\".\n\n", entry->d_name);
+			}
+			else {
+                //file name: entry->d_name);
+                
+                printf("\tIndexing absolute path: \"%s\".\n", tempPath);
+
+                //indexer(tempPath, outputFile);
+
 			}
 		}
-		closedir(d);
-	}
+		
+		closedir(directory);
+    }
+
 }

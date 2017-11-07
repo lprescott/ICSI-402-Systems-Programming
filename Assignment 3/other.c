@@ -50,6 +50,42 @@ long fileSize(FILE * file){
     return endPosition;// returns the position of the file offset
 }
 
+/*
+	The function readFromFile returns a pointer to the head of a linked list of termList 
+	structs. It accepts one parameter, the input file's absolute path. readFromFile reads through 
+	the supplied file, adding the terms to the linked list, the file their from, and the correct count
+	(incremented) when required.
+*/
+//termList * readFromFile(char * inputFilePath);
+
+/*
+	The function readFromIndex returns a pointer to the head of a linked list of termList 
+	structs. It accepts two parameters, the FILE that is to be read from and its name for re-
+	opening. readFromIndex reads through the supplied file, adding data in order to the linked 
+	list when required.
+*/
+//termList * readFromIndex(FILE * outputFile, char * outputFileName);
+
+/*
+	The function sortTerms returns and takes a pointer to the head of a linked list of termList 
+	structs. This function sorts the terms by alphabetical order.
+*/
+//termList * sortTerms(termList * inputList);
+
+/*
+	The function mergeSorted takes a pointer to two head nodes of termList structs, both are already 
+	sorted. It then creates and returns a new pointer to the head of a new termList struct that contains values
+	from both supplied linked lists in order.s
+*/
+//termList * mergeSorted(termList * inputList, termList * outputList);
+
+/*
+	The function printSorted returns nothing. It takes three parameter: One, a pointer to the head
+	of a linked list that is to be printed in the correct format to the output file that is supplied as
+	well - Two. Three, the name of the outputFile is supplied for reopening when required.
+*/
+//void printSorted(termList * inputList, FILE * outputFile, char * outputFileName);
+
 
 /*
 

@@ -61,7 +61,7 @@ int main(int argc, char * argv[]) {
 		getcwd(currentDir, 1024);
 
 		char * tempName = strdup(argv[1]); //Duplicate the outputfile name for use
-		invIND = fopen(tempName, "a"); //Opens the outputfile, its supplied name, for appending
+		invIND = fopen(tempName, "a+"); //Opens the outputfile, its supplied name, for appending
 		if (invIND == NULL){
 			fprintf(stderr, "Could no allocate memory for: %s.\n", tempName);
 			exit(-1);
@@ -90,7 +90,7 @@ int main(int argc, char * argv[]) {
 			
 		}
 
-		fclose(invIND);// closes the file pointer for the inverted index
+		if (invIND != NULL) fclose(invIND);// closes the file pointer for the inverted index
 		
 	}
 	//Case 2: User enters one argument, open DIR dr and FILE invind as "invind.txt"
@@ -128,7 +128,7 @@ int main(int argc, char * argv[]) {
 			
 		}
 		
-		fclose(invIND);// closing the file pointer for the inverted index
+		if (invIND != NULL) fclose(invIND);// closing the file pointer for the inverted index
 	}
 	
 	//Case 3: No arguments, use current working directory and open FILE invind as "invind.txt"
@@ -146,10 +146,8 @@ int main(int argc, char * argv[]) {
 		}
 
 		getcwd(currentDir, 1024);
-		printf("The current working directory is: \"%s\".\n\n", currentDir);
-
 		browse(currentDir, invIND, defaultName);
 
-		fclose(invIND);// closing the file pointer for the inverted index	
+		if (invIND != NULL) fclose(invIND);// closing the file pointer for the inverted index	
 	}
 }//End main

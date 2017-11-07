@@ -1,8 +1,18 @@
 #include <stdlib.h>
 
+#include "structs.h"
+
 int isFile(const char * path);
 int isDir(const char * path);
 long fileSize(FILE * file);
+
+termList * readFromFile(char * inputFilePath);
+termList * readFromIndex(FILE * outputFile, char * outputFileName);
+termList * sortTerms(termList * inputList);
+termList * mergeSorted(termList * inputList, termList * outputList);
+void printSorted(termList * inputList, FILE * outputFile, char * outputFileName);
+
+
 //char * addNumber(char * archiveName, int currentArchive);
 
 /*

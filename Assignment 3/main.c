@@ -1,5 +1,6 @@
 //Project: 	Prog3
 //Names:   	Luke Prescott, Rob Rose, Tommy Li (lprescott@albany.edu, rwrose@albany.edu, tli3@albany.edu)
+//			(001252879, 001247373, 001209184)
 //Roles:   	Leader, Monitor, Recorder Respectively
 //Date:    	11/9/2017
 //Course:  	ICSI 402

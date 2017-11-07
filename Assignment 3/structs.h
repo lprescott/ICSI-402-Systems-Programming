@@ -1,11 +1,6 @@
-typedef struct fileCountList {
+typdef struct termList{
 	char * fileName;
-	int count;
-	struct fileCountList * next;
-} fileCountList;
-
-typedef struct termList {
 	char * term;
-	fileCountList * firstFile;
+	int count
 	struct termList * next;
-} termList; 
+}

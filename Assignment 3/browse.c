@@ -8,7 +8,13 @@
 
 #include "other.h"
 
-char ** browse(char * directoryPath, FILE * outputFile, char * outputFileName){
+/*
+	The browse function is a recursive funtion; it returns nothing. There are three arguments taken as parameters: the directory path 
+	where browse will begin its recursive tree walk, the outputFile that the indexer functions outputs to, and the outputFileName as so
+	the browse function ignores its own output. During the file tree walk, if the browse function finds a file, it call idexer on that 
+	file's absolute path to add its data to the inverted index's output file.
+*/
+void browse(char * directoryPath, FILE * outputFile, char * outputFileName){
 
 	DIR * directory;
 	char tempPath[512];
@@ -26,7 +32,7 @@ char ** browse(char * directoryPath, FILE * outputFile, char * outputFileName){
 		
 		while((entry = readdir(directory)) != NULL)
 		{
-			//Checks if directory is viable; i.e. NOT "." ".." or the outputFile name
+			//Checks if name is viable; i.e. NOT "." ".." or the outputFile name
 			if(strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0 || strcmp(entry->d_name, outputFileName) == 0){
 				continue;
 			}

@@ -343,19 +343,40 @@ termList * readFromIndex(char * outputFileName){
 	}
 	char line[1024];
 	char * token;
+	char * tempTerm;
+	char * end1;
 	
 	while (fgets(line, 1024, inputFile) != NULL) {
 		token = strdup(line);
 		token[strlen(token) - 1] = '\0';
-		printf("\t\t\tLINE : %s\n", token);
+		//printf("\t\t\tLINE : %s\n", token);
 		
-		token = strtok(token, " ");
+		token = strtok_r(token, " ", &end1);
+				
+		if (strcmp(token, "<list>") == 0) {
+			
+			token = strtok_r(NULL, " ", &end1);
+			tempTerm = strdup(token);
+			
+			printf("\n\t\t\tList start, \"%s\" is the term.\n", tempTerm);
+			
+			continue;
+			
+		}
 		
-		printf("\t\t\t\tTokens : ");
+		if (strcmp(token, "</list>") == 0) {
+			
+			printf("\t\t\tList End, insert in head list\n");
+			
+			continue;
+			
+		}
+		
+		printf("\t\t\t\tList : ");
 		
 		while (token) {
 			printf("\"%s\" ", token);
-			token = strtok(NULL, token);
+			token = strtok_r(NULL, " ", &end1);
 		}
 		printf("\n");
 		

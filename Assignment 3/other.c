@@ -530,3 +530,33 @@ void printSorted(termList * inputList, char * outputFileName){
 }
 
 
+void insertFileAndCount(fileCountList ** head, fileCountList * inputList){
+
+	if (*head == NULL){
+		head = malloc(sizeof(fileCountList));
+		if (head == NULL){
+			fprintf(stderr, "Could not allocate memory for new head.\n");
+			exit(-1);
+		}
+		* head = inputList;
+		inputList -> next = NULL;
+	}
+
+	//Inserting a new node
+	fileCountList * temp; fileCountList * prev;
+	temp = * head; 
+
+	while(temp!=NULL){
+		if(temp->count > inputList->count){
+			//Insert here
+			inputList->next = temp;
+			prev->next = inputList;
+		}
+
+		prev = temp;
+		temp = temp->next;
+
+	}
+}
+
+

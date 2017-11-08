@@ -241,6 +241,10 @@ termList * readFromFile(char * inputFilePath) {
 	printf("\t\tFile contents: \n");
 
 	FILE * inputFile = fopen(inputFilePath, "r");
+	if(inputFile == NULL){
+		fprintf(stderr, "Could not allocate space for: %s.\n", inputFilePath);
+		exit(-1);	
+	}
 	char line[1024]; char * token;
 	int i; 
 	
@@ -251,7 +255,7 @@ termList * readFromFile(char * inputFilePath) {
 	}
 
 	printf("\n");
-	printf("\t\tFormatted file contents: \n");
+	
 	rewind(inputFile);
 
 	char * currentFile;
@@ -271,6 +275,9 @@ termList * readFromFile(char * inputFilePath) {
 	}
 
 	printf("\t\tCurrent file: \"%s\".\n", currentFile);
+
+	printf("\t\tFormatted file contents: \n");
+
 	while(fgets(line, 1024, inputFile) != NULL){
 		if (isEmpty(line)) continue;
 
@@ -317,7 +324,102 @@ termList * readFromFile(char * inputFilePath) {
 	opening. readFromIndex reads through the supplied file, adding data in order to the linked 
 	list when required.
 */
-//termList * readFromIndex(FILE * outputFile, char * outputFileName);
+termList * readFromIndex(char * outputFileName){
+	printf("\t\tAttempting to read from file \"%s\".\n", outputFileName);
+
+	FILE * inputFile;
+	inputFile = fopen(outputFileName, "r");
+	if(inputFile == NULL){
+		fprintf(stderr, "Could not allocate space for: %s.\n", outputFileName);
+		exit(-1);	
+	}
+
+	char line[1024]; char * token;
+	termList * head = NULL;
+	
+	/*
+	while(fgets(line, 1024, inputFile) != NULL){
+		
+	}
+	*/
+
+	/*
+	printf("\t\tAttempting to read from file \"%s\".\n", inputFilePath);
+	printf("\t\tFile contents: \n");
+
+	FILE * inputFile = fopen(inputFilePath, "r");
+	char line[1024]; char * token;
+	int i; 
+	
+	termList * head = NULL;
+
+	while(fgets(line, 1024, inputFile) != NULL){
+		printf("\t\t\t%s", line);
+	}
+
+	printf("\n");
+	
+	rewind(inputFile);
+
+	char * currentFile;
+	int x = 0, count = 0;
+
+	for(x; x < strlen(inputFilePath) + 1; x++){
+		if(inputFilePath[x] == '/'){
+			count ++;
+		}
+	}
+
+	currentFile = strstr(inputFilePath, "/");
+
+	for(x = 0; x < count; x ++){
+		currentFile = strstr(currentFile, "/");
+		++currentFile;
+	}
+
+	printf("\t\tCurrent file: \"%s\".\n", currentFile);
+
+	printf("\t\tFormatted file contents: \n");
+
+	while(fgets(line, 1024, inputFile) != NULL){
+		if (isEmpty(line)) continue;
+
+		for (i = 0; i < strlen(line); i++) {
+			
+			if (!isalnum(line[i])) {
+				line[i] = ' ';
+			}
+			
+		}
+
+		printf("\t\t%s\n", line);
+		
+		token = strdup(line);
+		token = strtok(token, " ");
+		
+		fflush(stdout);
+		printf("\t\t\tTerms: \n");
+		
+		int j;
+		while(token) {
+
+			for(j = 0; token[j]; j++){
+				token[j] = tolower(token[j]);  
+			}
+
+			printf("\t\t\t\"%s\" ", token);
+			insertTerm(&head, token, currentFile);
+			token = strtok(NULL, " ");
+			
+		}
+
+		printf("\n");
+	}
+
+	fclose(inputFile);
+	return head;
+	*/
+}
 
 /*
 	The function sortTerms returns and takes a pointer to the head of a linked list of termList 
@@ -337,6 +439,34 @@ termList * readFromFile(char * inputFilePath) {
 	of a linked list that is to be printed in the correct format to the output file that is supplied as
 	well - Two. Three, the name of the outputFile is supplied for reopening when required.
 */
-//void printSorted(termList * inputList, FILE * outputFile, char * outputFileName);
+void printSorted(termList * inputList, char * outputFileName){
+	FILE * outputFile;
+
+	//This erases the current outputFile
+	outputFile = fopen(outputFileName, "w");
+	if(outputFile == NULL){
+		fprintf(stderr, "Could not allocate memory for: %s.\n", outputFileName);
+	}
+
+	termList * temp;
+	temp = inputList;
+
+	while(temp!=NULL)
+	{
+		fprintf(outputFile, "<list> %s\n", temp->term);
+		fileCountList * tempFileCount;
+		tempFileCount = temp->filesAndCounts;
+		while(tempFileCount != NULL){
+			fprintf(outputFile, "%s %d ", tempFileCount->file, tempFileCount->count);
+			tempFileCount = tempFileCount->next;
+		}
+		fprintf(outputFile, "\n");
+		fprintf(outputFile, "</list>\n");
+		temp=temp->next;
+	}
+
+	fclose(outputFile);
+
+}
 
 

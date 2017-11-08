@@ -41,7 +41,6 @@ void indexer(char * inputFilePath, char * outputFileName){
 
         printf("\t\tCurrent list:\n");
 
-
         while(temp!=NULL)
         {
             fileCountList * tempFileCount;
@@ -56,11 +55,8 @@ void indexer(char * inputFilePath, char * outputFileName){
 
         free(temp);
 
-        //Sort data in memory
-        //inputList = sortTerms(inputList); //Sorts list by terms
-
         //Print sorted data to outputFile
-        //printSorted(inputList, outputFile, outputFileName) //Prints sorted list in alphabetical order, keeping order of file counts descending
+        printSorted(inputList, outputFileName);
 
         if (inputList != NULL) deleteTermList(inputList);
         if (outputList != NULL) deleteTermList(outputList);
@@ -89,9 +85,8 @@ void indexer(char * inputFilePath, char * outputFileName){
             fprintf(stderr, "Could not allocate memory for newList.");
         }
 
-
         //Read sorted data into memory
-        //outputList = readFromIndex(ouputFile, outputFileName); //Reads terms in order
+        //outputList = readFromIndex(outputFileName); //Reads terms in order
 
         //Read non-sorted data into memory
         //inputList = readFromFile(inputFilePath); //Reads terms in any order

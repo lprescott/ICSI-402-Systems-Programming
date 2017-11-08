@@ -10,10 +10,10 @@ int isTermContained(char * termSupplied, termList * head);
 void deleteTermList(termList * head);
 
 termList * readFromFile(char * inputFilePath);
-termList * readFromIndex(FILE * outputFile, char * outputFileName);
+termList * readFromIndex(char * outputFileName);
 termList * sortTerms(termList * inputList);
 termList * mergeSorted(termList * inputList, termList * outputList);
-void printSorted(termList * inputList, FILE * outputFile, char * outputFileName);
+void printSorted(termList * inputList, char * outputFileName);
 
 
 //char * addNumber(char * archiveName, int currentArchive);

@@ -347,7 +347,9 @@ termList * readFromIndex(char * outputFileName){
 	char line[1024]; char * token;
 	termList * head = NULL; int count = 0;
 	char * tempTerm;
-	char * tempFileCount;
+	char * tempFileName;
+	int tempCount;
+	fileCountList * tempSubList = NULL;
 	
 	while(fgets(line, 1024, inputFile) != NULL){
 		token = strdup(line);
@@ -357,25 +359,49 @@ termList * readFromIndex(char * outputFileName){
 			token = strtok(NULL, " ");
 			tempTerm = strdup(token);
 
-			count++;
+			continue;
 		}
 		else if((strstr(token, "<list>") == NULL) && (strstr(token, "</list") == NULL)){
 			//Line is a sublist of the previous term
-			fileCountList * tempSubList = NULL;
+			//This will be the file name
+			token = strtok(token, " ");
+			tempFileName = strdup(token);
 			
-
-			count++;
+			//This is the count
+			token = strtok(NULL, " ");
+			tempCount = atoi(token);
+			
+			while (token) {
+				fileCountList * newNode = malloc(sizeof(fileCountList));	
+				if (newNode == NULL) {
+					fprintf(stderr, "ERROR: Could not allocate space for newNode in FileCountList : readFromIndex\n");
+					exit(-1);
+				}
+				newNode->file = malloc(strlen(tempFileName) * sizeof(char));
+				strcpy(newNode->file, tempFileName);
+				newNode->count = tempCount;
+				
+				//insertFileAndCount(&tempSubList, newNode);
+				
+				token = strtok(token, " ");
+				tempFileName = strdup(token);
+				
+				//This is the count
+				token = strtok(NULL, " ");
+				tempCount = atoi(token);
+			}
+			
+			
+			continue;
 		}
 		else{
 			//Line is the end of list
-			count++;
-		}
-
-		if(count%3 == 0){
-			//Add a new list and sublist to head
+			insertTerm(&head, tempTerm, tempSubList);
 		}
 		
 	}
+	
+	return head;
 
 	/*
 	printf("\t\tAttempting to read from file \"%s\".\n", inputFilePath);

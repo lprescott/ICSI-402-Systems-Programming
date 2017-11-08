@@ -336,149 +336,31 @@ termList * readFromFile(char * inputFilePath) {
 */
 termList * readFromIndex(char * outputFileName){
 	printf("\t\tAttempting to read from file \"%s\".\n", outputFileName);
-
-	FILE * inputFile;
-	inputFile = fopen(outputFileName, "r");
-	if(inputFile == NULL){
-		fprintf(stderr, "Could not allocate space for: %s.\n", outputFileName);
-		exit(-1);	
-	}
-
-	char line[1024]; char * token;
-	termList * head = NULL; int count = 0;
-	char * tempTerm;
-	char * tempFileName;
-	int tempCount;
-	fileCountList * tempSubList = NULL;
 	
-	while(fgets(line, 1024, inputFile) != NULL){
+	FILE * inputFile = fopen(outputFileName, "r");
+	if (inputFile == NULL) {
+		exit(-1);
+	}
+	char line[1024];
+	char * token;
+	
+	while (fgets(line, 1024, inputFile) != NULL) {
 		token = strdup(line);
-		if (strstr(token, "<list>") != NULL){
-			//Line is start of list
-			token = strtok(token, " ");
-			token = strtok(NULL, " ");
-			tempTerm = strdup(token);
-
-			continue;
-		}
-		else if((strstr(token, "<list>") == NULL) && (strstr(token, "</list") == NULL)){
-			//Line is a sublist of the previous term
-			//This will be the file name
-			token = strtok(token, " ");
-			tempFileName = strdup(token);
-			
-			//This is the count
-			token = strtok(NULL, " ");
-			tempCount = atoi(token);
-			
-			while (token) {
-				fileCountList * newNode = malloc(sizeof(fileCountList));	
-				if (newNode == NULL) {
-					fprintf(stderr, "ERROR: Could not allocate space for newNode in FileCountList : readFromIndex\n");
-					exit(-1);
-				}
-				newNode->file = malloc(strlen(tempFileName) * sizeof(char));
-				strcpy(newNode->file, tempFileName);
-				newNode->count = tempCount;
-				
-				//insertFileAndCount(&tempSubList, newNode);
-				
-				token = strtok(token, " ");
-				tempFileName = strdup(token);
-				
-				//This is the count
-				token = strtok(NULL, " ");
-				tempCount = atoi(token);
-			}
-			
-			
-			continue;
-		}
-		else{
-			//Line is the end of list
-			insertTerm(&head, tempTerm, tempSubList);
-		}
+		token[strlen(token) - 1] = '\0';
+		printf("\t\t\tLINE : %s\n", token);
 		
-	}
-	
-	return head;
-
-	/*
-	printf("\t\tAttempting to read from file \"%s\".\n", inputFilePath);
-	printf("\t\tFile contents: \n");
-
-	FILE * inputFile = fopen(inputFilePath, "r");
-	char line[1024]; char * token;
-	int i; 
-	
-	termList * head = NULL;
-
-	while(fgets(line, 1024, inputFile) != NULL){
-		printf("\t\t\t%s", line);
-	}
-
-	printf("\n");
-	
-	rewind(inputFile);
-
-	char * currentFile;
-	int x = 0, count = 0;
-
-	for(x; x < strlen(inputFilePath) + 1; x++){
-		if(inputFilePath[x] == '/'){
-			count ++;
-		}
-	}
-
-	currentFile = strstr(inputFilePath, "/");
-
-	for(x = 0; x < count; x ++){
-		currentFile = strstr(currentFile, "/");
-		++currentFile;
-	}
-
-	printf("\t\tCurrent file: \"%s\".\n", currentFile);
-
-	printf("\t\tFormatted file contents: \n");
-
-	while(fgets(line, 1024, inputFile) != NULL){
-		if (isEmpty(line)) continue;
-
-		for (i = 0; i < strlen(line); i++) {
-			
-			if (!isalnum(line[i])) {
-				line[i] = ' ';
-			}
-			
-		}
-
-		printf("\t\t%s\n", line);
-		
-		token = strdup(line);
 		token = strtok(token, " ");
 		
-		fflush(stdout);
-		printf("\t\t\tTerms: \n");
+		printf("\t\t\t\tTokens : ");
 		
-		int j;
-		while(token) {
-
-			for(j = 0; token[j]; j++){
-				token[j] = tolower(token[j]);  
-			}
-
-			printf("\t\t\t\"%s\" ", token);
-			insertTerm(&head, token, currentFile);
-			token = strtok(NULL, " ");
-			
+		while (token) {
+			printf("\"%s\" ", token);
+			token = strtok(NULL, token);
 		}
-
 		printf("\n");
+		
 	}
-
-	fclose(inputFile);
-	return head;
-	*/
+	
 }
 
 /*
@@ -529,17 +411,27 @@ void printSorted(termList * inputList, char * outputFileName){
 
 }
 
-
 void insertFileAndCount(fileCountList ** head, fileCountList * inputList){
 
+	printf("Inserting file : %s\n", inputList->file);
+
 	if (*head == NULL){
-		head = malloc(sizeof(fileCountList));
-		if (head == NULL){
+		
+		printf("HEAD IS NULL\n");
+		
+		*head = malloc(sizeof(fileCountList));
+		
+
+		if (*head == NULL){
 			fprintf(stderr, "Could not allocate memory for new head.\n");
 			exit(-1);
 		}
-		* head = inputList;
+		printf("IT MALLOCS\n"); fflush(stdout);
+		
+		*head = inputList;
 		inputList -> next = NULL;
+		
+		return;
 	}
 
 	//Inserting a new node

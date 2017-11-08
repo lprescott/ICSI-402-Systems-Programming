@@ -86,8 +86,8 @@ void indexer(char * inputFilePath, char * outputFileName){
         }
 
         //Read sorted data into memory
-        //outputList = readFromIndex(outputFileName); //Reads terms in order
-
+        outputList = readFromIndex(outputFileName); //Reads terms in order
+		
         //Read non-sorted data into memory
         //inputList = readFromFile(inputFilePath); //Reads terms in any order
 

@@ -8,9 +8,6 @@
 
 #include "structs.h"
 #include "other.h"
-
-void swap(termList * a, termList * b);
-
 int isFile(const char * path) {
 	struct stat s;
 	stat(path, &s);
@@ -79,15 +76,18 @@ void deleteTermList(termList * head){
 	//loops through the list, freeing up data for every variable until current hits null
 	while (current != NULL) {
 		next = current->next;
+		if(next = NULL){
+			free(current);
+			//free(current->filesAndCounts);
+			return;
+		}
 		free(current);
+		//free(current->filesAndCounts);
 		current = next;
 	}
-	head = NULL;
+	//head = NULL;
 }
 
-/*
-	This function finds the first non alphanumeric character in the string and then returns its index 
-*/
 
 void printAll(struct termList ** head) {
 	termList * current = *head;
@@ -106,88 +106,118 @@ void printAll(struct termList ** head) {
 }
 
 void insertTerm(termList ** head, char * term, char * tempFileName){
+
+	printf("Called insertTerm on : ");
 	
 	termList * current;
 	termList * prev;
 	termList * newNode;
 	fileCountList * newFileCount;
-	char * toLowerArg;
-	char * toLowerThing;
 	
 	newNode = malloc(sizeof(termList));
+	if(newNode == NULL){
+		fprintf(stderr, "Could not allocate memory for termList * newNode.\n");
+		exit(-1);
+	}
+
 	newNode->term = malloc(strlen(term) * sizeof(char));
 	strcpy(newNode->term, term);
 	
 	newFileCount = malloc(sizeof(fileCountList));
+	if(newFileCount == NULL){
+		fprintf(stderr, "Could not allocate memory for fileCountList * newFileCount.\n");
+		exit(-1);
+	}
+
 	newFileCount->file = malloc(strlen(tempFileName) * sizeof(char));
 	strcpy(newFileCount->file, tempFileName);
 	newFileCount->count = 1;
 	
 	newNode->filesAndCounts = newFileCount;
-	
+
+	printf("File: \"%s\" ; Term: \"%s\" ; Count %d.\n", newFileCount->file, newNode->term, newFileCount->count);
+
 	//Head is equal to null, assign it new node
 	if (*head == NULL) {
-		//printf("HEAD IS NULL "); fflush(stdout);
+
+		printf("\t\t\t...inserted at head\n"); fflush(stdout);
 		*head = newNode;
+		newNode->next = NULL;
 		return;
 	}
-	
+
+	//If the new term goes before or is equal to head
 	if (strcmp(term, (*head)->term) <= 0) {
-		//printf("HEAD IS LESS THAN FIRST ");
+		//The new term is equal to the head
 		if (strcmp(term, (*head)->term) == 0) {
 			//DO INCREMENT
-			printf("INCREMENTING %s on term %s\n", (*head)->term, term);
+			//printf("INCREMENTING %s on term %s\n", (*head)->term, term);
+			printf("\t\t\t...incremented at head\n"); fflush(stdout);
 			fileCountList * current;
 			current = (*head)->filesAndCounts;
 			
+			//Increment count in head if contains same file
 			while(current != NULL) {
 				if (strcmp(current->file, newFileCount->file) == 0) {
 					current->count++;
 					return;
 				}
+				current = current->next;
 			}
+
 		} 
+		//The term is inserted before the head
 		else {
+			printf("\t\t\t...inserted before head\n"); fflush(stdout);
 			newNode->next = *head;
 			*head = newNode;
 		}
 		return;
 		
 	}
-	//printf("INSERTING INTO BODY ");
+
+	//Inserting or incrementing in body
 	current = (*head);
 	while (current != NULL) {
 		if (strcmp(term, (current)->term) <= 0) {
 		
 			if (strcmp(term, (current)->term) == 0) {
 				//DO INCREMENT
-				printf("INCREMENTING (In Loop) %s on term %s\n", (current->term), term);
+				//printf("INCREMENTING (In Loop) %s on term %s\n", (current->term), term);
+				printf("\t\t\t...incremented in body\n");
 				fileCountList * currentFile;
 				currentFile = current->filesAndCounts;
 				
-				while(current != NULL) {
+				while(currentFile != NULL) {
 					if (strcmp(currentFile->file, newFileCount->file) == 0) {
 						currentFile->count++;
 						return;
 					}
+					currentFile = currentFile->next;
 				}
 				
 			} 
 			else {
+				printf("\t\t\t...inserted in body\n");
 				newNode->next = current;
-				prev->next = * head;
+				prev->next = newNode;
+				return;
 			}
-			
-			return;
-			
+
 		}
 		
 		prev = current;
 		current = current->next;
 	}
-	
-	prev->next = newNode;
 
+	current = (*head);
+	while(current->next != NULL){
+		current = current->next;
+	}
+	
+	current->next = newNode;
+	newNode->next = NULL;
+	printf("\t\t\t...added on end.\n");
 }
 
 int isEmpty(const char *s) {
@@ -198,6 +228,7 @@ int isEmpty(const char *s) {
   }
   return 1;
 }
+
 /*
 	The function readFromFile returns a pointer to the head of a linked list of termList 
 	structs. It accepts one parameter, the input file's absolute path. readFromFile reads through 
@@ -205,22 +236,44 @@ int isEmpty(const char *s) {
 	(incremented) when required.
 */
 termList * readFromFile(char * inputFilePath) {
-	
-	FILE * inputFile = fopen(inputFilePath, "r"); //inputFile is the unformatted file to be read
-	char line[1024]; //Each line of the input file
-	char * token;
-	int i = 0;
-	
-	int start = 0; //Start of string
-	int end = 0; //end of string
+
+	printf("\t\tAttempting to read from file \"%s\".\n", inputFilePath);
+	printf("\t\tFile contents: \n");
+
+	FILE * inputFile = fopen(inputFilePath, "r");
+	char line[1024]; char * token;
+	int i; 
 	
 	termList * head = NULL;
-	
-	while(fgets(line, 1024, inputFile) != NULL) {
-		
-		
-		if (isEmpty(line)) { continue; }
-		
+
+	while(fgets(line, 1024, inputFile) != NULL){
+		printf("\t\t\t%s", line);
+	}
+
+	printf("\n");
+	printf("\t\tFormatted file contents: \n");
+	rewind(inputFile);
+
+	char * currentFile;
+	int x = 0, count = 0;
+
+	for(x; x < strlen(inputFilePath) + 1; x++){
+		if(inputFilePath[x] == '/'){
+			count ++;
+		}
+	}
+
+	currentFile = strstr(inputFilePath, "/");
+
+	for(x = 0; x < count; x ++){
+		currentFile = strstr(currentFile, "/");
+		++currentFile;
+	}
+
+	printf("\t\tCurrent file: \"%s\".\n", currentFile);
+	while(fgets(line, 1024, inputFile) != NULL){
+		if (isEmpty(line)) continue;
+
 		for (i = 0; i < strlen(line); i++) {
 			
 			if (!isalnum(line[i])) {
@@ -228,35 +281,34 @@ termList * readFromFile(char * inputFilePath) {
 			}
 			
 		}
-		
-		//printf("Line : %s\n", line);
+
+		printf("\t\t%s\n", line);
 		
 		token = strdup(line);
-		
 		token = strtok(token, " ");
 		
-		//printf("Tokens : ", token);
-		
 		fflush(stdout);
+		printf("\t\t\tTerms: \n");
 		
+		int j;
 		while(token) {
-			
-			//printf("\"%s\" ", token);
-			
-			insertTerm(&head, token, inputFilePath);
-			
+
+			for(j = 0; token[j]; j++){
+				token[j] = tolower(token[j]);  
+			}
+
+			printf("\t\t\t\"%s\" ", token);
+			insertTerm(&head, token, currentFile);
 			token = strtok(NULL, " ");
 			
 		}
-		
-		//printf("\n");
-		
+
+		printf("\n");
 	}
-	
-	printAll(&head);
-	
+
+	fclose(inputFile);
 	return head;
-	
+
 }
 
 /*

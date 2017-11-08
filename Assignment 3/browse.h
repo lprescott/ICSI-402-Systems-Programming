@@ -1,3 +1,3 @@
 #include <stdlib.h>
 
-void browse(char * directoryPath, FILE * outputFile, char * outputFileName);
+void browse(char * directoryPath,  char * outputFileName);

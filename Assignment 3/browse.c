@@ -16,7 +16,7 @@
 	the browse function ignores its own output. During the file tree walk, if the browse function finds a file, it call idexer on that 
 	file's absolute path to add its data to the inverted index's output file.
 */
-void browse(char * directoryPath, FILE * outputFile, char * outputFileName){
+void browse(char * directoryPath,  char * outputFileName){
 
 	DIR * directory;
 	char tempPath[512];
@@ -47,7 +47,7 @@ void browse(char * directoryPath, FILE * outputFile, char * outputFileName){
 			if(isDir(tempPath)) {
 				printf("Directory found: \"%s\".\n", entry->d_name);
 
-                browse(tempPath, outputFile, outputFileName);
+                browse(tempPath, outputFileName);
                 
                 printf("\tFinished directory: \"%s\".\n\n", entry->d_name);
 			}
@@ -56,7 +56,7 @@ void browse(char * directoryPath, FILE * outputFile, char * outputFileName){
                 
                 printf("\tIndexing absolute path: \"%s\".\n", tempPath);
 
-                indexer(tempPath, outputFile, outputFileName);
+                indexer(tempPath,  outputFileName);
 
 			}
 		}

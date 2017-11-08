@@ -8,15 +8,18 @@
     The indexer function returns nothing, but takes two arguments as parameters: the absolute path of an input file to added to the supplied FILE * to the
     output file. This function reads data from outputFile, adds data to outputFile, sorts said data and rewrites is back to the outputFile. 
 */
-void indexer(char * inputFilePath, FILE * outputFile, char * outputFileName){
+void indexer(char * inputFilePath, char * outputFileName){
     //Note the outputFile has been opened for "a+" currently (appending and reading)
     //To open the outputFile for writing, that is, delete the file and start over use:
     //FILE *freopen(const char *filename, const char *mode, FILE *stream)
 
-    //If the outputFile is empty
-    if (fileSize(outputFile) == 0){
-        printf("\tThe output file is empty!\n");
+    FILE * tempFile;
+    tempFile = fopen(outputFileName, "a+");
 
+    //If the outputFile is empty
+    if (fileSize(tempFile) == 0){
+        printf("\tThe output, \"%s\", is empty!\n", outputFileName);
+        printf("\t\tAdding first entry...\n");
         termList * inputList;
         termList * outputList;
 
@@ -30,7 +33,28 @@ void indexer(char * inputFilePath, FILE * outputFile, char * outputFileName){
             fprintf(stderr, "Could not allocate memory for outputList.");
         }
 
-        inputList = readFromFile(inputFilePath); //Reads terms in any order
+        //readFromFile(inputFilePath);
+        inputList = readFromFile(inputFilePath);
+
+        termList * temp;
+        temp = inputList;
+
+        printf("\t\tCurrent list:\n");
+
+
+        while(temp!=NULL)
+        {
+            fileCountList * tempFileCount;
+            printf("\t\t\t\"%s\"", temp->term);
+            tempFileCount = temp->filesAndCounts;
+            while(tempFileCount != NULL){
+                printf(" \"%s\" %d\n", tempFileCount->file, tempFileCount->count);
+                tempFileCount = tempFileCount->next;
+            }
+            temp=temp->next;
+        }
+
+        free(temp);
 
         //Sort data in memory
         //inputList = sortTerms(inputList); //Sorts list by terms
@@ -38,10 +62,8 @@ void indexer(char * inputFilePath, FILE * outputFile, char * outputFileName){
         //Print sorted data to outputFile
         //printSorted(inputList, outputFile, outputFileName) //Prints sorted list in alphabetical order, keeping order of file counts descending
 
-        deleteTermList(inputList);
-        deleteTermList(outputList);
-        if (inputList != NULL) free(inputList);
-        if (outputList != NULL) free(outputList);
+        if (inputList != NULL) deleteTermList(inputList);
+        if (outputList != NULL) deleteTermList(outputList);
     }
     
     //If the outputFile is not empty
@@ -83,11 +105,15 @@ void indexer(char * inputFilePath, FILE * outputFile, char * outputFileName){
         //Rewrite new merged list into outputFile
         //printSorted(newList, outputFile, outputFileName) //Prints sorted list in alphabetical order, keeping order of file counts descending
 
-        deleteTermList(inputList);
-        deleteTermList(outputList);
-        deleteTermList(newList);
+        fclose(tempFile);
+
+        if (inputList != NULL) deleteTermList(inputList);
+        if (outputList != NULL) deleteTermList(outputList);
+        if (newList != NULL) deleteTermList(newList);
         if (inputList != NULL) free(inputList);
         if (outputList != NULL) free(outputList);
         if (newList != NULL) free(newList);
+
+
     }
 }

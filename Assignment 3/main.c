@@ -36,7 +36,7 @@
 int main(int argc, char * argv[]) {
 	
 	//Variables
-	FILE * invIND; //file to store the inverted index
+	//FILE * invIND; //file to store the inverted index
 	int i; //integer used for any for loops necessary in main function
 	char * defaultName = "invind.txt"; //The default name of the output file
 	
@@ -59,13 +59,7 @@ int main(int argc, char * argv[]) {
 		char currentDir [1024]; //declare a string for the current dir path
 		char tempPath [1024];
 		getcwd(currentDir, 1024);
-
 		char * tempName = strdup(argv[1]); //Duplicate the outputfile name for use
-		invIND = fopen(tempName, "a+"); //Opens the outputfile, its supplied name, for appending
-		if (invIND == NULL){
-			fprintf(stderr, "Could no allocate memory for: %s.\n", tempName);
-			exit(-1);
-		} 
 
 		if (isFile(argv[2])) {// checks if the 2nd argument that is supplied is a file or not
 			printf("\nSecond argument is a file, opening and indexing.\n");
@@ -75,23 +69,19 @@ int main(int argc, char * argv[]) {
 			strcat(tempPath, "/");
 			strcat(tempPath, argv[2]);
 
-			printf("\tIndexing absolute path: \"%s\".\n", tempPath);
-			indexer(tempPath, invIND, tempName);
+			printf("\tIndexing path: \"%s\".\n", tempPath);
+			//indexer(tempPath, tempName);
 		} 
 		
 		else if (isDir(argv[2])) {// checks if the second argument supplied is a directory or not
 			printf("\nSecond argument is a directory, browsing, opening and indexing.\n");
-			browse(argv[2], invIND, tempName);
+			browse(argv[2], tempName);
 		} 
 		
 		else {// if the second supplied is not a file or a directory, it prints an error, and the program exits
 			fprintf(stderr, "\nERROR: neither a file nor directory, exiting.\n");
 			exit(-1);
-			
 		}
-
-		if (invIND != NULL) fclose(invIND);// closes the file pointer for the inverted index
-		
 	}
 	//Case 2: User enters one argument, open DIR dr and FILE invind as "invind.txt"
 	if (argc == 2) {
@@ -101,12 +91,6 @@ int main(int argc, char * argv[]) {
 		char tempPath [1024];
 		getcwd(currentDir, 1024);
 
-		FILE * invIND = fopen(defaultName, "a+"); //Open default file for appending
-		if (invIND == NULL){
-			fprintf(stderr, "Could no allocate memory for: %s.\n", defaultName);
-			exit(-1);
-		} 
-
 		if (isFile(argv[1])) {// checks to see if the initial argument argument is a file or not using the isFile function
 			printf("\nArgument is a file, opening and indexing.\n");
 
@@ -115,39 +99,27 @@ int main(int argc, char * argv[]) {
 			strcat(tempPath, "/");
 			strcat(tempPath, argv[1]);
 
-			printf("\tIndexing absolute path: \"%s\".\n", tempPath);
-			indexer(tempPath, invIND, defaultName);
+			printf("\tIndexing path: \"%s\".\n", tempPath);
+			indexer(tempPath, defaultName);
 			
 		} else if (isDir(argv[1])) {// checks to see if the initial argument is a directory or not
 			printf("\nArgument is a directory, browsing, opening and indexing.\n");
-			browse(argv[1], invIND, defaultName);
+			browse(argv[1], defaultName);
 			
 		} else {// if the initial argument is not a file or a directory, the program exits
 			fprintf(stderr, "\nERROR: neither a file nor directory, exiting.\n");
 			exit(-1);
 			
 		}
-		
-		if (invIND != NULL) fclose(invIND);// closing the file pointer for the inverted index
 	}
 	
 	//Case 3: No arguments, use current working directory and open FILE invind as "invind.txt"
 	if (argc == 1) {
 		printf("No user input, use current working directory and open inverted index as \"invind.txt\".\n");
 		char currentDir [1024]; //declare a string for the current dir path
-		FILE * invIND = fopen(defaultName, "a+"); //open the default file name for appending and reading
-		if (invIND == NULL){
-			fprintf(stderr, "Could no allocate memory for: %s.\n", defaultName);
-			exit(-1);
-		} 
-
-		else{
-			printf("\nAllocated memory for: \"%s\".\n", defaultName);
-		}
 
 		getcwd(currentDir, 1024);
-		browse(currentDir, invIND, defaultName);
+		browse(currentDir, defaultName);
 
-		if (invIND != NULL) fclose(invIND);// closing the file pointer for the inverted index	
 	}
 }//End main

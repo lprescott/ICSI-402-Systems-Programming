@@ -1,3 +1,3 @@
 #include <stdlib.h>
 
-void indexer(char * inputFilePath, FILE * outputFile,  char * outputFileName);
+void indexer(char * inputFilePath,  char * outputFileName);

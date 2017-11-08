@@ -127,13 +127,13 @@ void insertTerm(termList ** head, char * term, char * tempFileName){
 	
 	//Head is equal to null, assign it new node
 	if (*head == NULL) {
-		printf("HEAD IS NULL "); fflush(stdout);
+		//printf("HEAD IS NULL "); fflush(stdout);
 		*head = newNode;
 		return;
 	}
 	
 	if (strcmp(term, (*head)->term) <= 0) {
-		printf("HEAD IS LESS THAN FIRST ");
+		//printf("HEAD IS LESS THAN FIRST ");
 		if (strcmp(term, (*head)->term) == 0) {
 			//DO INCREMENT
 			printf("INCREMENTING %s on term %s\n", (*head)->term, term);
@@ -143,7 +143,6 @@ void insertTerm(termList ** head, char * term, char * tempFileName){
 			while(current != NULL) {
 				if (strcmp(current->file, newFileCount->file) == 0) {
 					current->count++;
-					free(newNode->term);
 					return;
 				}
 			}
@@ -151,11 +150,11 @@ void insertTerm(termList ** head, char * term, char * tempFileName){
 		else {
 			newNode->next = *head;
 			*head = newNode;
-			return;
 		}
+		return;
 		
 	}
-	printf("INSERTING INTO BODY ");
+	//printf("INSERTING INTO BODY ");
 	current = (*head);
 	while (current != NULL) {
 		if (strcmp(term, (current)->term) <= 0) {
@@ -191,16 +190,14 @@ void insertTerm(termList ** head, char * term, char * tempFileName){
 
 }
 
-isEmpty(char * line) {
-	int i;
-	for (i = 0; i < strlen(line); i++) {
-		if (isalnum(line[i])) {
-			return 0;
-		}
-	}
-	return 1;
+int isEmpty(const char *s) {
+  while (*s != '\0') {
+    if (!isspace((unsigned char)*s))
+      return 0;
+    s++;
+  }
+  return 1;
 }
-
 /*
 	The function readFromFile returns a pointer to the head of a linked list of termList 
 	structs. It accepts one parameter, the input file's absolute path. readFromFile reads through 
@@ -222,7 +219,7 @@ termList * readFromFile(char * inputFilePath) {
 	while(fgets(line, 1024, inputFile) != NULL) {
 		
 		
-		if (isEmpty(line)) { printf("skipping line\n"); continue; }
+		if (isEmpty(line)) { continue; }
 		
 		for (i = 0; i < strlen(line); i++) {
 			
@@ -232,19 +229,19 @@ termList * readFromFile(char * inputFilePath) {
 			
 		}
 		
-		printf("Line : %s\n", line);
+		//printf("Line : %s\n", line);
 		
 		token = strdup(line);
 		
 		token = strtok(token, " ");
 		
-		printf("Tokens : ", token);
+		//printf("Tokens : ", token);
 		
 		fflush(stdout);
 		
 		while(token) {
 			
-			printf("\"%s\" ", token);
+			//printf("\"%s\" ", token);
 			
 			insertTerm(&head, token, inputFilePath);
 			
@@ -252,7 +249,7 @@ termList * readFromFile(char * inputFilePath) {
 			
 		}
 		
-		printf("\n");
+		//printf("\n");
 		
 	}
 	

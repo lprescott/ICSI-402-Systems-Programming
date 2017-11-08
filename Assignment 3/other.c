@@ -4,6 +4,7 @@
 #include <string.h>
 #include <dirent.h>
 #include <errno.h>
+#include <ctype.h>
 
 #include "structs.h"
 #include "other.h"
@@ -174,7 +175,7 @@ void insertTerm(termList ** head, char * term, char * tempFileName){
 			} 
 			else {
 				newNode->next = current;
-				prev->next = head;
+				prev->next = * head;
 			}
 			
 			return;

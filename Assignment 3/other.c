@@ -105,14 +105,13 @@ void printAll(struct termList ** head) {
 	}
 }
 
-void insertTerm(termList ** head, char * term, char * tempFileName){
+void insertTerm(termList ** head, char * term, fileCountList * filesAndCounts){
 
 	printf("Called insertTerm on : ");
 	
 	termList * current;
 	termList * prev;
 	termList * newNode;
-	fileCountList * newFileCount;
 	
 	newNode = malloc(sizeof(termList));
 	if(newNode == NULL){
@@ -122,7 +121,7 @@ void insertTerm(termList ** head, char * term, char * tempFileName){
 
 	newNode->term = malloc(strlen(term) * sizeof(char));
 	strcpy(newNode->term, term);
-	
+	/*
 	newFileCount = malloc(sizeof(fileCountList));
 	if(newFileCount == NULL){
 		fprintf(stderr, "Could not allocate memory for fileCountList * newFileCount.\n");
@@ -132,10 +131,10 @@ void insertTerm(termList ** head, char * term, char * tempFileName){
 	newFileCount->file = malloc(strlen(tempFileName) * sizeof(char));
 	strcpy(newFileCount->file, tempFileName);
 	newFileCount->count = 1;
-	
-	newNode->filesAndCounts = newFileCount;
+	*/
+	newNode->filesAndCounts = filesAndCounts;
 
-	printf("File: \"%s\" ; Term: \"%s\" ; Count %d.\n", newFileCount->file, newNode->term, newFileCount->count);
+	printf("File: \"%s\" ; Term: \"%s\" ; Count %d.\n", filesAndCounts->file, newNode->term, filesAndCounts->count);
 
 	//Head is equal to null, assign it new node
 	if (*head == NULL) {
@@ -158,7 +157,7 @@ void insertTerm(termList ** head, char * term, char * tempFileName){
 			
 			//Increment count in head if contains same file
 			while(current != NULL) {
-				if (strcmp(current->file, newFileCount->file) == 0) {
+				if (strcmp(current->file, filesAndCounts->file) == 0) {
 					current->count++;
 					return;
 				}
@@ -189,7 +188,7 @@ void insertTerm(termList ** head, char * term, char * tempFileName){
 				currentFile = current->filesAndCounts;
 				
 				while(currentFile != NULL) {
-					if (strcmp(currentFile->file, newFileCount->file) == 0) {
+					if (strcmp(currentFile->file, filesAndCounts->file) == 0) {
 						currentFile->count++;
 						return;
 					}
@@ -305,7 +304,18 @@ termList * readFromFile(char * inputFilePath) {
 			}
 
 			printf("\t\t\t\"%s\" ", token);
-			insertTerm(&head, token, currentFile);
+			
+			fileCountList * newFileCount = malloc(sizeof(fileCountList));
+			if(newFileCount == NULL){
+				fprintf(stderr, "Could not allocate memory for fileCountList * newFileCount.\n");
+				exit(-1);
+			}
+
+			newFileCount->file = malloc(strlen(currentFile) * sizeof(char));
+			strcpy(newFileCount->file, currentFile);
+			newFileCount->count = 1;
+			
+			insertTerm(&head, token, newFileCount);
 			token = strtok(NULL, " ");
 			
 		}
@@ -337,6 +347,7 @@ termList * readFromIndex(char * outputFileName){
 	char line[1024]; char * token;
 	termList * head = NULL; int count = 0;
 	char * tempTerm;
+	char * tempFileCount;
 	
 	while(fgets(line, 1024, inputFile) != NULL){
 		token = strdup(line);

@@ -9,6 +9,7 @@ long fileSize(FILE * file);
 int isTermContained(char * termSupplied, termList * head);
 void deleteTermList(termList * head);
 
+void insertTerm(termList ** head, char * term, fileCountList * filesAndCounts);
 termList * readFromFile(char * inputFilePath);
 termList * readFromIndex(char * outputFileName);
 termList * sortTerms(termList * inputList);

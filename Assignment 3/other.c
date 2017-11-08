@@ -328,12 +328,36 @@ termList * readFromFile(char * inputFilePath) {
 
 }
 
+printAllCount(fileCountList ** head) {
+	fileCountList * current = *head;
+	printf("It is here!\n");
+	while(current != NULL) {
+		printf("File Name: %s %d\n", current->file, current->count);
+		current = current->next;
+	}
+}
+
 /*
 	The function readFromIndex returns a pointer to the head of a linked list of termList 
 	structs. It accepts two parameters, the FILE that is to be read from and its name for re-
 	opening. readFromIndex reads through the supplied file, adding data in order to the linked 
 	list when required.
 */
+
+void deleteFileCountList(fileCountList ** head) {
+	
+	fileCountList * tmp;
+	
+	while (head == NULL) {
+		
+		tmp = (*head);
+		(*head) = (*head)->next;
+		free(tmp);
+		
+	}
+	
+}
+
 termList * readFromIndex(char * outputFileName){
 	printf("\t\tAttempting to read from file \"%s\".\n", outputFileName);
 	
@@ -345,6 +369,12 @@ termList * readFromIndex(char * outputFileName){
 	char * token;
 	char * tempTerm;
 	char * end1;
+	char * tempFileName;
+	int tempCount;
+	
+	termList * head = NULL;
+	
+	fileCountList * fileCountHead = NULL;
 	
 	while (fgets(line, 1024, inputFile) != NULL) {
 		token = strdup(line);
@@ -368,6 +398,13 @@ termList * readFromIndex(char * outputFileName){
 			
 			printf("\t\t\tList End, insert in head list\n");
 			
+			printAllCount(&fileCountHead);
+			
+			insertTerm(&head, tempTerm, fileCountHead);
+			
+			deleteFileCountList(&fileCountHead);
+			fileCountHead = NULL;
+			
 			continue;
 			
 		}
@@ -375,12 +412,40 @@ termList * readFromIndex(char * outputFileName){
 		printf("\t\t\t\tList : ");
 		
 		while (token) {
-			printf("\"%s\" ", token);
+			
+			tempFileName = strdup(token);
+			
 			token = strtok_r(NULL, " ", &end1);
+			
+			int count = atoi(token);
+			
+			fileCountList * newNode = malloc(sizeof(fileCountList));
+			
+			if (newNode == NULL) {
+				fprintf(stderr, "ERROR IN readFromIndex: could not allocate newNode\n");
+				exit(-1);
+			}
+			
+			newNode->file = malloc(strlen(tempFileName) * sizeof(char));
+			strcpy(newNode->file, tempFileName);
+			newNode->count = count;
+			
+			printf("\n\t\t\t\t\"File name : %s, count : %d\" \n", newNode->file, newNode->count); fflush(stdout);
+			token = strtok_r(NULL, " ", &end1);
+			
+			insertFileAndCount(&fileCountHead, newNode);
+		
 		}
+		
 		printf("\n");
 		
 	}
+	
+	printAll(&head);
+	
+	return head;
+	
+	//printf("\n");
 	
 }
 
@@ -432,44 +497,41 @@ void printSorted(termList * inputList, char * outputFileName){
 
 }
 
-void insertFileAndCount(fileCountList ** head, fileCountList * inputList){
+void insertFileAndCount(fileCountList ** head, fileCountList * tempNode){
 
-	printf("Inserting file : %s\n", inputList->file);
-
-	if (*head == NULL){
-		
-		printf("HEAD IS NULL\n");
-		
+	if (*head == NULL) {
+		//printf("\t\t\t\t... %s inserting into head\n", tempNode->file);
 		*head = malloc(sizeof(fileCountList));
-		
+		*head = tempNode;
 
-		if (*head == NULL){
-			fprintf(stderr, "Could not allocate memory for new head.\n");
-			exit(-1);
-		}
-		printf("IT MALLOCS\n"); fflush(stdout);
-		
-		*head = inputList;
-		inputList -> next = NULL;
+		return;
+	}
+	
+	if ((*head)->count < tempNode->count) {
+		//printf("\t\t\t\t... %s replacing head");
+		tempNode->next = *head;
+		*head = tempNode;
 		
 		return;
 	}
-
-	//Inserting a new node
-	fileCountList * temp; fileCountList * prev;
-	temp = * head; 
-
-	while(temp!=NULL){
-		if(temp->count > inputList->count){
-			//Insert here
-			inputList->next = temp;
-			prev->next = inputList;
+	
+	//printf("\t\t\t\t... %s inserting into list\n", tempNode->file);
+	
+	fileCountList * current = *head;
+	fileCountList * prev;
+	
+	while(current != NULL) {
+		if (current->count < tempNode->count) {
+			prev->next = tempNode;
+			tempNode->next = current;
 		}
-
-		prev = temp;
-		temp = temp->next;
-
+		prev = current;
+		current = current->next;
 	}
+	prev->next = tempNode;
+	
+	
 }
+
 
 

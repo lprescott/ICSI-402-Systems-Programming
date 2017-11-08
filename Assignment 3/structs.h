@@ -3,7 +3,7 @@
 
 typedef struct termList{
 	char * term;
-	struct fileCountList * head;
+	struct fileCountList * filesAndCounts;
 	struct termList * next;
 } termList;
 

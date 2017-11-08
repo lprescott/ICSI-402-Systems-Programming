@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <sys/stat.h>
 #include <stdlib.h>
@@ -52,6 +51,16 @@ long fileSize(FILE * file){
     return endPosition;// returns the position of the file offset
 }
 
+int isTermContained(char * termSupplied, termList * head){
+	while (head != NULL){
+		if (strcmp(termSupplied, head->term) == 0){
+			return 1;
+		}
+		head = head->next;
+	}
+	return 0;
+}
+
 /*
 	Function void deleteTermList, frees all memory allocated for the list. Takes the head of the list 
 	as its only parameter.
@@ -75,66 +84,179 @@ void deleteTermList(termList * head){
 	head = NULL;
 }
 
-int isTermContained(char * termSupplied, termList * head){
-	while (head != NULL){
-		if (strcmp(termSupplied, head->term) == 0){
-			return 1;
+/*
+	This function finds the first non alphanumeric character in the string and then returns its index 
+*/
+
+void printAll(struct termList ** head) {
+	termList * current = *head;
+	fileCountList * currentFile;
+	int i = 1;
+	while (current != NULL) {
+		printf("\nTerm %d : \"%s\".\n", i, current->term);
+		currentFile = current->filesAndCounts;
+		while (currentFile != NULL) {
+			printf("File %s : %d\n", currentFile->file, currentFile->count);
+			currentFile = currentFile->next;
 		}
-		head = head->next;
+		current = current->next;
+		i++;
 	}
-	return 0;
 }
 
-void insertTerm(termList * head, char * term, fileCountList temp){
-	if (isTermContained(term, head) == 1){
-		//The term is contained already
-		while (head != NULL){
-			if (strcmp(term, head->term) == 0){
-				fileCountList * searchingNode;
-				searchingNode = head->filesAndCounts;
-				while (searchingNode != NULL){
-					if(strcmp(temp.file, searchingNode->file) == 0){
-						searchingNode->count += 1;
-					}
-					searchingNode = searchingNode->next;
+void insertTerm(termList ** head, char * term, char * tempFileName){
+	
+	termList * current;
+	termList * prev;
+	termList * newNode;
+	fileCountList * newFileCount;
+	char * toLowerArg;
+	char * toLowerThing;
+	
+	newNode = malloc(sizeof(termList));
+	newNode->term = malloc(strlen(term) * sizeof(char));
+	strcpy(newNode->term, term);
+	
+	newFileCount = malloc(sizeof(fileCountList));
+	newFileCount->file = malloc(strlen(tempFileName) * sizeof(char));
+	strcpy(newFileCount->file, tempFileName);
+	newFileCount->count = 1;
+	
+	newNode->filesAndCounts = newFileCount;
+	
+	//Head is equal to null, assign it new node
+	if (*head == NULL) {
+		//printf("HEAD IS NULL "); fflush(stdout);
+		*head = newNode;
+		return;
+	}
+	
+	if (strcmp(term, (*head)->term) <= 0) {
+		//printf("HEAD IS LESS THAN FIRST ");
+		if (strcmp(term, (*head)->term) == 0) {
+			//DO INCREMENT
+			printf("INCREMENTING %s on term %s\n", (*head)->term, term);
+			fileCountList * current;
+			current = (*head)->filesAndCounts;
+			
+			while(current != NULL) {
+				if (strcmp(current->file, newFileCount->file) == 0) {
+					current->count++;
+					return;
 				}
 			}
-			head = head->next;
+		} 
+		else {
+			newNode->next = *head;
+			*head = newNode;
 		}
+		return;
+		
 	}
-	else{
-		//The term is not already contained
-		while (head != NULL){
-			if ((strcmp(term, head->term) > 0)  && (strcmp(term, head->next->term) < 0)){
-				termList * tempTerm;
-				tempTerm = malloc(sizeof(termList));
-
-				fileCountList * tempFileAndCount;
-				tempFileAndCount = malloc(sizeof(fileCountList));
-
-				tempTerm->filesAndCounts = tempFileAndCount;
-
-				//Assigns the values of the new node (including its subnode)
-				tempTerm->term = strdup(term);
-				tempFileAndCount->file = strdup(temp.file);
-				tempFileAndCount->count = temp.count;
-
-				//changes pointers
-				tempTerm->next = head->next;
-				head->next = tempTerm;
+	//printf("INSERTING INTO BODY ");
+	current = (*head);
+	while (current != NULL) {
+		if (strcmp(term, (current)->term) <= 0) {
+		
+			if (strcmp(term, (current)->term) == 0) {
+				//DO INCREMENT
+				printf("INCREMENTING (In Loop) %s on term %s\n", (current->term), term);
+				fileCountList * currentFile;
+				currentFile = current->filesAndCounts;
+				
+				while(current != NULL) {
+					if (strcmp(currentFile->file, newFileCount->file) == 0) {
+						currentFile->count++;
+						return;
+					}
+				}
+				
+			} 
+			else {
+				newNode->next = current;
+				prev->next = head;
 			}
-			head = head->next;
-		}		
+			
+			return;
+			
+		}
+		
+		prev = current;
+		current = current->next;
 	}
+	
+	prev->next = newNode;
+
 }
 
+int isEmpty(const char *s) {
+  while (*s != '\0') {
+    if (!isspace((unsigned char)*s))
+      return 0;
+    s++;
+  }
+  return 1;
+}
 /*
 	The function readFromFile returns a pointer to the head of a linked list of termList 
 	structs. It accepts one parameter, the input file's absolute path. readFromFile reads through 
 	the supplied file, adding the terms to the linked list, the file their from, and the correct count
 	(incremented) when required.
 */
-//termList * readFromFile(char * inputFilePath);
+termList * readFromFile(char * inputFilePath) {
+	
+	FILE * inputFile = fopen(inputFilePath, "r"); //inputFile is the unformatted file to be read
+	char line[1024]; //Each line of the input file
+	char * token;
+	int i = 0;
+	
+	int start = 0; //Start of string
+	int end = 0; //end of string
+	
+	termList * head = NULL;
+	
+	while(fgets(line, 1024, inputFile) != NULL) {
+		
+		
+		if (isEmpty(line)) { continue; }
+		
+		for (i = 0; i < strlen(line); i++) {
+			
+			if (!isalnum(line[i])) {
+				line[i] = ' ';
+			}
+			
+		}
+		
+		//printf("Line : %s\n", line);
+		
+		token = strdup(line);
+		
+		token = strtok(token, " ");
+		
+		//printf("Tokens : ", token);
+		
+		fflush(stdout);
+		
+		while(token) {
+			
+			//printf("\"%s\" ", token);
+			
+			insertTerm(&head, token, inputFilePath);
+			
+			token = strtok(NULL, " ");
+			
+		}
+		
+		//printf("\n");
+		
+	}
+	
+	printAll(&head);
+	
+	return head;
+	
+}
 
 /*
 	The function readFromIndex returns a pointer to the head of a linked list of termList 
@@ -165,161 +287,3 @@ void insertTerm(termList * head, char * term, fileCountList temp){
 //void printSorted(termList * inputList, FILE * outputFile, char * outputFileName);
 
 
-/*
-
-void insertAtFirst(char * term, termList * head) {
-	termList * newNode;
-	newNode = malloc(sizeof(termList));
-	newNode->term = malloc(strlen(term) * sizeof(char));
-	strcpy(newNode->term, term);
-	
-	newNode->next = head;
-	head = newNode;
-}
-
-void addTerm(termList * head, char * term) {
-	
-	//Create newNode to be added
-	termList * prev;
-	termList * current;
-	termList * newNode;
-	
-	if (head->term == NULL) {
-		
-		printf("Head is null, Adding \"%s\" to head.\n", term);
-		
-		head->term = malloc(strlen(term) * sizeof(char));
-		strcpy(head->term, term);
-		
-		//printf("REACHED HERE : HEAD TERM %s\n", head->term);
-		
-		return;
-		
-	}
-	
-	//THE CULPRIT FOR NOT ADDING TO THE FIRST NODE, IF TERM IS BEFORE HEAD->TERM, ADD DIRECTLY TO THE FRONT OF THE LIST
-	if (strcmp(term, head->term) < 0) {
-		newNode = malloc(sizeof(termList));
-		newNode->term = malloc(strlen(term) * sizeof(char));
-		strcpy(newNode->term, term);
-		
-		newNode->next = head;
-		head = newNode;
-		return;
-	}
-		
-
-	//Purely for testing purposses
-	int index = 0;
-	current = head;
-	printf("Head is not null, Adding \"%s\" to list.\n", term);
-	
-	//Adds objects too the list in alphabetical order
-	while (current != NULL) {
-		printf("Index %d\n", index);
-		//If the term is less than or equal to current->term, then add term to prev->next
-		if (strcmp(term, current->term) <= 0) {
-			printf("We add this term Here\n");
-
-			prev->next = malloc(sizeof(termList));
-			prev->next->term = malloc(strlen(term) * sizeof(char));
-			strcpy(prev->next->term, term);
-			prev->next->next = current;
-			return;
-			}
-			
-		}
-		//Incrememnts both prev and current
-		prev = current;
-		current = current->next;
-		index++;
-	}
-	//If this item is the largest, add to end of list with prev->next
-	prev->next = malloc(sizeof(termList));
-	prev->next->term = malloc(strlen(term) * sizeof(char));
-	strcpy(prev->next->term, term);
-	
-}
-
-void printAll(struct termList * head) {
-	termList * current = head;
-	int i = 1;
-	while (current != NULL) {
-		printf("Term %d : \"%s\".\n", i, current->term);
-		current = current->next;
-		i++;
-	}
-}
-*/
-
-/*
-addNumber returns a char * to the new augmented string that has been created by the supplied archive name and the current archive input,
-the character to be inputted or changed.
-*/
-
-/*
-char * addNumber(char * archiveName, int currentArchive) {
-	if (strstr(archiveName, ".") == NULL) {
-		char * newName; char c; int length;
-		char * tempName;
-		//There is no extension
-		if (currentArchive > 1) {
-			//change the number
-			length = strlen(archiveName) + 1;// value of the length is equal to the length the name of the archive +1
-			newName = strdup(archiveName);// duplicate the name of archive into new name
-			c = currentArchive + '0';
-			newName[length - 1] = c;
-			newName[length] = '\0';
-			tempName = strdup(newName);// duplicates the newName into tempName
-		}
-		else {
-			//add the number one
-			length = strlen(archiveName) + 1; 1;// value of the length is equal to the length the name of the archive +1
-			newName = malloc((length * sizeof(char)) + 1);//dynamic memory allocation
-			c = currentArchive + '0';
-			strcpy(newName, archiveName);// copy archiveName into newName
-			newName[length - 1] = c;
-			newName[length] = '\0';
-			tempName = strdup(newName);// duplicates newName into tempName
-			free(newName);// frees newName
-		}
-		return tempName;
-	}
-	else {
-		char * pos; int index; char c; int length, strlength;// variable to position, the index, the length, and the string length
-		char * newName, tempName, *extension;// variable for newName, the temp name, the extension
-											 //There is an extension
-		if (currentArchive > 1) {
-			length = strlen(archiveName) + 1;
-			newName = strdup(archiveName);
-			//Change the number
-			index = 0;
-			strlength = strlen(newName);// gets the length of newName
-			length = strlen(extension = strstr(newName, "."));
-			pos = strchr(archiveName, '.');// searches for a . in the name of the archive, postion is set to that location
-			index = (int)(pos - archiveName);
-			c = currentArchive + '0';
-			newName[strlength - length] = c;
-			newName[index] = c;
-			newName[index + 1] = '\0';
-			strcat(newName, pos);// concatenates position with newName
-		}
-		else {
-			//Find the pos before the extension and add the number 1
-			length = strlen(archiveName) + 1;
-			newName = malloc((length * sizeof(char)) + 1);// dynamic memory allocation allocation
-			c = currentArchive + '0';
-			pos = strchr(archiveName, '.');
-			//extension = strdup(pos);
-			index = (int)(pos - archiveName);
-			strncpy(newName, archiveName, index);
-			//strcpy(newName, archiveName);
-			newName[index] = c;
-			newName[index + 1] = '\0';
-			newName = strcat(newName, pos);// conatenate pos with newName
-		}
-		return newName;
-		free(newName);
-	}
-}
-*/

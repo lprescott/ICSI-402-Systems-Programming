@@ -39,7 +39,7 @@ int main(int argc, char * argv[]) {
 	FILE * invIND; //file to store the inverted index
 	int i; //integer used for any for loops necessary in main function
 	char * defaultName = "invind.txt"; //The default name of the output file
-
+	
 	//Testing and printing all arguments, to be commented out later.
 	printf("\nArguments given : \"%d\".\n", argc);
 	for(i = 0; i < argc; i++) {

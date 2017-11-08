@@ -11,7 +11,7 @@
 void indexer(char * inputFilePath, FILE * outputFile, char * outputFileName){
     //Note the outputFile has been opened for "a+" currently (appending and reading)
     //To open the outputFile for writing, that is, delete the file and start over use:
-        //FILE *freopen(const char *filename, const char *mode, FILE *stream)
+    //FILE *freopen(const char *filename, const char *mode, FILE *stream)
 
     //If the outputFile is empty
     if (fileSize(outputFile) == 0){
@@ -20,18 +20,17 @@ void indexer(char * inputFilePath, FILE * outputFile, char * outputFileName){
         termList * inputList;
         termList * outputList;
 
-        inputList = malloc(sizeof (termList));
+        inputList = malloc(sizeof(termList));
         if (inputList == NULL){
             fprintf(stderr, "Could not allocate memory for inputList.");
         }
 
-        outputList = malloc(sizeof (termList));
+        outputList = malloc(sizeof(termList));
         if (outputList == NULL){
             fprintf(stderr, "Could not allocate memory for outputList.");
         }
 
-        //Read data into memory 
-        //inputList = readFromFile(inputFilePath); //Reads terms in any order
+        inputList = readFromFile(inputFilePath); //Reads terms in any order
 
         //Sort data in memory
         //inputList = sortTerms(inputList); //Sorts list by terms

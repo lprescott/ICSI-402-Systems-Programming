@@ -335,13 +335,36 @@ termList * readFromIndex(char * outputFileName){
 	}
 
 	char line[1024]; char * token;
-	termList * head = NULL;
+	termList * head = NULL; int count = 0;
+	char * tempTerm;
 	
-	/*
 	while(fgets(line, 1024, inputFile) != NULL){
+		token = strdup(line);
+		if (strstr(token, "<list>") != NULL){
+			//Line is start of list
+			token = strtok(token, " ");
+			token = strtok(NULL, " ");
+			tempTerm = strdup(token);
+
+			count++;
+		}
+		else if((strstr(token, "<list>") == NULL) && (strstr(token, "</list") == NULL)){
+			//Line is a sublist of the previous term
+			fileCountList * tempSubList = NULL;
+			
+
+			count++;
+		}
+		else{
+			//Line is the end of list
+			count++;
+		}
+
+		if(count%3 == 0){
+			//Add a new list and sublist to head
+		}
 		
 	}
-	*/
 
 	/*
 	printf("\t\tAttempting to read from file \"%s\".\n", inputFilePath);

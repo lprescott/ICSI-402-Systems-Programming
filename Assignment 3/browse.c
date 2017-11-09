@@ -1,3 +1,14 @@
+//Project: 	Prog3
+//Names:   	Luke Prescott, Rob Rose, Tommy Li (lprescott@albany.edu, rwrose@albany.edu, tli3@albany.edu)
+//			(001252879, 001247373, 001209184)
+//Roles:   	Leader, Monitor, Recorder Respectively
+//Date:    	11/9/2017
+//Course:  	ICSI 402
+//Desc:    	contains a browse function,The browse function is a recursive funtion; it returns nothing. There are three arguments taken as parameters: the directory path 
+//		where browse will begin its recursive tree walk, the outputFile that the indexer functions outputs to, and the outputFileName as so
+//		the browse function ignores its own output. During the file tree walk, if the browse function finds a file, it call indexer on that 
+//		file's absolute path to add its data to the inverted index's output file.
+	
 //standard libraries
 #include <sys/stat.h>
 #include <sys/types.h>
@@ -51,7 +62,8 @@ void browse(char * directoryPath,  char * outputFileName){
 			//check is the tempPath is a directory using the isDir function,
 			if(isDir(tempPath)) {
 				printf("Directory found: \"%s\".\n", entry->d_name);
-
+		
+		
                 browse(tempPath, outputFileName);
                 
                 printf("\tFinished directory: \"%s\".\n\n", entry->d_name);
@@ -60,7 +72,8 @@ void browse(char * directoryPath,  char * outputFileName){
                 //file name: entry->d_name);
                 
                 printf("\tIndexing absolute path: \"%s\".\n", tempPath);
-				//calls indexer on the tempPath
+		
+		//calls indexer on the tempPath
                 indexer(tempPath,  outputFileName);
 
 			}

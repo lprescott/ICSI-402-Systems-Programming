@@ -545,6 +545,23 @@ This function returns nothing, and adds a fileCountList into a filefileCount lis
 */
 void insertFileAndCount(fileCountList ** head, fileCountList * tempNode){
 
+	if(tempNode->next != NULL) {
+		printf("MULTIPLE NODES IN TEMPNODE\n");
+		
+		fileCountList * curTemp = tempNode;
+		fileCountList * temp;
+		
+		while (curTemp != NULL) {
+			temp = curTemp;
+			temp->next = NULL;
+			
+			insertFileAndCount(&(*head), temp);
+			
+			curTemp = curTemp->next;
+		}
+		
+	}
+
 	if (*head == NULL) {
 		//printf("\t\t\t\t... %s inserting into head\n", tempNode->file);
 		*head = malloc(sizeof(fileCountList));
@@ -568,6 +585,7 @@ void insertFileAndCount(fileCountList ** head, fileCountList * tempNode){
 		if (current->count < tempNode->count) {
 			prev->next = tempNode;
 			tempNode->next = current;
+			break;
 		}
 		prev = current;
 		current = current->next;

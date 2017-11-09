@@ -75,12 +75,6 @@ void browse(char * directoryPath,  char * outputFileName){
 			indexer(tempPath,  outputFileName);
 			}
 		
-		//Check if directory is not readable
-		if(entry == NULL){
-			fprintf(stderr, "Could not read directory.");
-			exit(-1);`
-		}
-		
 		closedir(directory);// closes the directory
     }
 

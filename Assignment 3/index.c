@@ -131,9 +131,9 @@ void indexer(char * inputFilePath, char * outputFileName){
         if (inputList != NULL) deleteTermList(inputList);
         if (outputList != NULL) deleteTermList(outputList);
         if (newList != NULL) deleteTermList(newList);
-        if (inputList != NULL) free(inputList);
-        if (outputList != NULL) free(outputList);
-        if (newList != NULL) free(newList);
+        //if (inputList != NULL) free(inputList);
+        //if (outputList != NULL) free(outputList);
+        //if (newList != NULL) free(newList);
 
 
     }

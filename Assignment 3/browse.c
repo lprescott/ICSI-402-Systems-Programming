@@ -33,7 +33,7 @@ void browse(char * directoryPath,  char * outputFileName){
 
 	DIR * directory;// directory pointer
 	char tempPath[512];//max size of the tempPath
-	struct dirent * entry;
+	struct dirent * entry; //directory structure
 	//opens the path of the directory and sets it equal to directory
 	directory = opendir(directoryPath);
 	
@@ -54,6 +54,7 @@ void browse(char * directoryPath,  char * outputFileName){
 				continue;
 			}
 			
+			//Determine the full path
 			strcpy(tempPath, "");// copies whitespace into tempPath
 			strcat(tempPath, directoryPath);//concatenates the path of the directory to the temporary path
 			strcat(tempPath, "/");// concatenates the backslash character into the temporary path
@@ -62,6 +63,8 @@ void browse(char * directoryPath,  char * outputFileName){
 			//check is the tempPath is a directory using the isDir function,
 			if(isDir(tempPath)) {
 				//printf("Directory found: \"%s\".\n", entry->d_name);
+				
+				//recursively call browse on the newly found directory
                 		browse(tempPath, outputFileName);
                 
                 		//printf("\tFinished directory: \"%s\".\n\n", entry->d_name);
@@ -71,7 +74,7 @@ void browse(char * directoryPath,  char * outputFileName){
 
 			//printf("\tIndexing absolute path: \"%s\".\n", tempPath);
 
-			//calls indexer on the tempPath
+			//calls indexer on the tempPath of the current directory
 			indexer(tempPath,  outputFileName);
 		}
 		

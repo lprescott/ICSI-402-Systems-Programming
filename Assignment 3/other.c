@@ -102,7 +102,10 @@ void deleteTermList(termList * head){
 	//head = NULL;
 }
 
-
+/* 
+The printAll function takes a pointer to the head of a termList as a parameter; its function is to print out all
+terms and sublists in the data structure using a nested while loop.
+*/
 void printAll(struct termList ** head) {
 	termList * current = *head;
 	fileCountList * currentFile;
@@ -119,6 +122,11 @@ void printAll(struct termList ** head) {
 	}
 }
 
+/*
+The insertTerm fuction inserts a fileCountList (third parameter) and a term (second parameter) in order into a linked list with the head 
+node head (first paramater). It accomplishes this by loopthing through the list comparing the terms alphabetically and the sublist numberically
+(count).
+*/
 void insertTerm(termList ** head, char * term, fileCountList * filesAndCounts){
 
 	printf("Called insertTerm on : ");

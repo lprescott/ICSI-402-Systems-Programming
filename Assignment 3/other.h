@@ -17,7 +17,7 @@ void deleteTermList(termList * head);
 void insertFileAndCount(fileCountList ** head, fileCountList * inputList);
 void insertTerm(termList ** head, char * term, fileCountList * filesAndCounts);
 
-termList * readFromFile(char * inputFilePath);
+termList * readFromFile(char * inputFilePath, char * currentFile);
 termList * readFromIndex(char * outputFileName);
 
 termList * sortTerms(termList * inputList);

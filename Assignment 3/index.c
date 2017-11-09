@@ -1,6 +1,7 @@
 //standard libraries
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 //include external header files, containing prototypes
 #include "index.h"
@@ -43,7 +44,25 @@ void indexer(char * inputFilePath, char * outputFileName){
 
         //readFromFile(inputFilePath);
 		// reads a supplied file, to the inputList
-        inputList = readFromFile(inputFilePath);
+		
+		char * currentFile;
+		
+		int count = 0;
+		int x;
+		for(x; x < strlen(inputFilePath) + 1; x++){
+			if(inputFilePath[x] == '/'){
+				count ++;
+			}
+		}
+
+		currentFile = strstr(inputFilePath, "/");
+		
+		for(x = 0; x < count; x ++){
+			currentFile = strstr(currentFile, "/");
+			++currentFile;
+		}
+		
+        inputList = readFromFile(inputFilePath, currentFile);
 
 		//temp is pointer to termList struct
         termList * temp;
@@ -111,8 +130,34 @@ void indexer(char * inputFilePath, char * outputFileName){
 		//prints the contents of the outputList
 		printAll(&outputList);
 		
+		//Get only the file name
+		char * currentFile;
+		
+		
+		int count = 0;
+		int x;
+		for(x; x < strlen(inputFilePath) + 1; x++){
+			if(inputFilePath[x] == '/'){
+				count ++;
+			}
+		}
+
+		currentFile = strstr(inputFilePath, "/");
+		
+		for(x = 0; x < count; x ++){
+			currentFile = strstr(currentFile, "/");
+			++currentFile;
+		}
+		
+		if (ifFileContained(&outputList, inputFilePath) == 1) {
+			printf("The file is contained! ");
+			currentFile = addNumber(currentFile, 1);
+			printf("%s\n", currentFile);
+			
+		}
+		
         //Read non-sorted data into memory
-        inputList = readFromFile(inputFilePath); //Reads terms in any order
+        inputList = readFromFile(inputFilePath, currentFile); //Reads terms in any order
 
         //Sort data in memory
         //inputList = sortTerms(inputList); //Sorts list by terms

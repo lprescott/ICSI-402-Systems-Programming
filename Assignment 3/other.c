@@ -272,7 +272,7 @@ int isEmpty(const char *s) {
 	the supplied file, adding the terms to the linked list, the file their from, and the correct count
 	(incremented) when required.
 */
-termList * readFromFile(char * inputFilePath) {
+termList * readFromFile(char * inputFilePath, char * currentFile) {
 
 	printf("\t\tAttempting to read from file \"%s\".\n", inputFilePath);
 	printf("\t\tFile contents: \n");
@@ -294,10 +294,12 @@ termList * readFromFile(char * inputFilePath) {
 	printf("\n");
 	
 	rewind(inputFile);
-
+	/*
 	char * currentFile;
 	int x = 0, count = 0;
 
+
+	
 	for(x; x < strlen(inputFilePath) + 1; x++){
 		if(inputFilePath[x] == '/'){
 			count ++;
@@ -305,12 +307,12 @@ termList * readFromFile(char * inputFilePath) {
 	}
 
 	currentFile = strstr(inputFilePath, "/");
-
+	
 	for(x = 0; x < count; x ++){
 		currentFile = strstr(currentFile, "/");
 		++currentFile;
 	}
-
+	*/
 	printf("\t\tCurrent file: \"%s\".\n", currentFile);
 
 	printf("\t\tFormatted file contents: \n");

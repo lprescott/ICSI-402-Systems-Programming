@@ -110,8 +110,8 @@ void insertTerm(termList ** head, char * term, fileCountList * filesAndCounts){
 	printf("Called insertTerm on : ");
 	
 	termList * current;
-	termList * prev;
 	termList * newNode;
+	termList * prev;
 	
 	newNode = malloc(sizeof(termList));
 	if(newNode == NULL){
@@ -163,6 +163,9 @@ void insertTerm(termList ** head, char * term, fileCountList * filesAndCounts){
 				}
 				current = current->next;
 			}
+			insertFileAndCount(&(*head)->filesAndCounts, filesAndCounts);
+			return;
+			
 
 		} 
 		//The term is inserted before the head
@@ -187,6 +190,7 @@ void insertTerm(termList ** head, char * term, fileCountList * filesAndCounts){
 				fileCountList * currentFile;
 				currentFile = current->filesAndCounts;
 				
+				
 				while(currentFile != NULL) {
 					if (strcmp(currentFile->file, filesAndCounts->file) == 0) {
 						currentFile->count++;
@@ -194,6 +198,9 @@ void insertTerm(termList ** head, char * term, fileCountList * filesAndCounts){
 					}
 					currentFile = currentFile->next;
 				}
+				insertFileAndCount(&current->filesAndCounts, filesAndCounts);
+				
+				return;
 				
 			} 
 			else {
@@ -450,17 +457,26 @@ termList * readFromIndex(char * outputFileName){
 }
 
 /*
-	The function sortTerms returns and takes a pointer to the head of a linked list of termList 
-	structs. This function sorts the terms by alphabetical order.
-*/
-//termList * sortTerms(termList * inputList);
-
-/*
 	The function mergeSorted takes a pointer to two head nodes of termList structs, both are already 
 	sorted. It then creates and returns a new pointer to the head of a new termList struct that contains values
 	from both supplied linked lists in order.s
 */
-//termList * mergeSorted(termList * inputList, termList * outputList);
+void mergeSorted(termList ** inputList, termList ** outputList) {
+	printf("... Attempting Merge\n");
+	
+	termList * tempList;
+	termList * current;
+	
+	current = *inputList;
+	
+	while (current != NULL) {
+		printf("Term to be merged : %s\n", current->term);
+		insertTerm(outputList, current->term, current->filesAndCounts);
+		current = current->next;
+		
+	}
+	
+}
 
 /*
 	The function printSorted returns nothing. It takes three parameter: One, a pointer to the head

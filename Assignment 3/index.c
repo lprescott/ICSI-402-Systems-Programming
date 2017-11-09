@@ -91,16 +91,18 @@ void indexer(char * inputFilePath, char * outputFileName){
 		printAll(&outputList);
 		
         //Read non-sorted data into memory
-        //inputList = readFromFile(inputFilePath); //Reads terms in any order
+        inputList = readFromFile(inputFilePath); //Reads terms in any order
 
         //Sort data in memory
         //inputList = sortTerms(inputList); //Sorts list by terms
 
         //MergeSort latter into former
-        //newList = mergeSorted(inputList, outputList); //merges inputList and outputList, keeps terms in alphabetical order
-
+        mergeSorted(&inputList, &outputList); //merges inputList and outputList, keeps terms in alphabetical order
+		
+		printAll(&outputList);
+		
         //Rewrite new merged list into outputFile
-        //printSorted(newList, outputFile, outputFileName) //Prints sorted list in alphabetical order, keeping order of file counts descending
+        printSorted(outputList, outputFileName); //Prints sorted list in alphabetical order, keeping order of file counts descending
 
         fclose(tempFile);
 

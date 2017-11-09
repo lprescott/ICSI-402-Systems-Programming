@@ -13,7 +13,7 @@ void insertTerm(termList ** head, char * term, fileCountList * filesAndCounts);
 termList * readFromFile(char * inputFilePath);
 termList * readFromIndex(char * outputFileName);
 termList * sortTerms(termList * inputList);
-termList * mergeSorted(termList * inputList, termList * outputList);
+void mergeSorted(termList ** inputList, termList ** outputList);
 void printSorted(termList * inputList, char * outputFileName);
 
 

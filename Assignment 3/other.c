@@ -369,7 +369,7 @@ termList * readFromFile(char * inputFilePath) {
 /*
 	This function prints all the counts of an inputted fileCountList, taking a pointer to the head as a parameter.
 */
-printAllCount(fileCountList ** head) {
+void printAllCount(fileCountList ** head) {
 	fileCountList * current = *head;
 	printf("It is here!\n");
 	while(current != NULL) {

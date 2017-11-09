@@ -23,8 +23,8 @@ void indexer(char * inputFilePath, char * outputFileName){
 
     //checks if the outputFile is empty
     if (fileSize(tempFile) == 0){
-        printf("\tThe output, \"%s\", is empty!\n", outputFileName);
-        printf("\t\tAdding first entry...\n");
+        //printf("\tThe output, \"%s\", is empty!\n", outputFileName);
+        //printf("\t\tAdding first entry...\n");
 		//inputList and outputList are pointers to the struct termList
         termList * inputList;
         termList * outputList;
@@ -42,7 +42,6 @@ void indexer(char * inputFilePath, char * outputFileName){
             fprintf(stderr, "Could not allocate memory for outputList.");
         }
 
-        //readFromFile(inputFilePath);
 		// reads a supplied file, to the inputList
 		
 		char * currentFile;
@@ -69,17 +68,17 @@ void indexer(char * inputFilePath, char * outputFileName){
 		// the contents of temp is equal to the inputList
         temp = inputList;
         
-        printf("\t\tCurrent list:\n");
+        //printf("\t\tCurrent list:\n");
 		//checks to see if temp is not equal to NULL
         while(temp!=NULL)
         {	//tempFileCount is a pointer to the fileCountList
             fileCountList * tempFileCount;
-            printf("\t\t\t\"%s\"", temp->term);
+            //printf("\t\t\t\"%s\"", temp->term);
 			// the tempFileCount is equal to pointer of filesAndCounts of temp
             tempFileCount = temp->filesAndCounts;
             // checks to see if the count of the temp file is not equal to null
 			while(tempFileCount != NULL){
-                printf(" \"%s\" %d\n", tempFileCount->file, tempFileCount->count);
+                //printf(" \"%s\" %d\n", tempFileCount->file, tempFileCount->count);
                 tempFileCount = tempFileCount->next;
             }
 			//temp is equal to a pointer next of temp
@@ -89,7 +88,7 @@ void indexer(char * inputFilePath, char * outputFileName){
         free(temp);// frees temp
 
         //Print sorted data to outputFile
-        printSorted(inputList, outputFileName);
+        //printSorted(inputList, outputFileName);
         
 		
         if (inputList != NULL) deleteTermList(inputList);
@@ -98,7 +97,7 @@ void indexer(char * inputFilePath, char * outputFileName){
     
     //If the outputFile is not empty
     else{
-        printf("\tThe output file is NOT empty!\n");
+        //printf("\tThe output file is NOT empty!\n");
 
 		//inputList, outputList, and newList are all pointers to termList
         termList * inputList;
@@ -128,7 +127,7 @@ void indexer(char * inputFilePath, char * outputFileName){
         outputList = readFromIndex(outputFileName); //Reads terms in order
 		
 		//prints the contents of the outputList
-		printAll(&outputList);
+		//printAll(&outputList);
 		
 		//Get only the file name
 		char * currentFile;
@@ -150,9 +149,9 @@ void indexer(char * inputFilePath, char * outputFileName){
 		}
 		
 		if (ifFileContained(&outputList, inputFilePath) == 1) {
-			printf("The file is contained! ");
+			//printf("The file is contained! ");
 			currentFile = addNumber(currentFile, 1);
-			printf("%s\n", currentFile);
+			//printf("%s\n", currentFile);
 			
 		}
 		
@@ -166,7 +165,7 @@ void indexer(char * inputFilePath, char * outputFileName){
         mergeSorted(&inputList, &outputList);
 		
 		//prints the contents of the outputList
-		printAll(&outputList);
+		//printAll(&outputList);
 		
         //Rewrite new merged list into outputFile
         printSorted(outputList, outputFileName); //Prints sorted list in alphabetical order, keeping order of file counts descending

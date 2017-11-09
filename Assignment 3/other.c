@@ -357,6 +357,9 @@ termList * readFromFile(char * inputFilePath) {
 
 }
 
+/*
+	This function prints all the counts of an inputted fileCountList, taking a pointer to the head as a parameter.
+*/
 printAllCount(fileCountList ** head) {
 	fileCountList * current = *head;
 	printf("It is here!\n");
@@ -372,7 +375,6 @@ printAllCount(fileCountList ** head) {
 	opening. readFromIndex reads through the supplied file, adding data in order to the linked 
 	list when required.
 */
-
 void deleteFileCountList(fileCountList ** head) {
 	
 	fileCountList * tmp;
@@ -387,6 +389,10 @@ void deleteFileCountList(fileCountList ** head) {
 	
 }
 
+/*
+The function readFrom index returns a pointer to a new termList that has been read from an inputted inverted index file given by the
+only parameter, a char array, containing the outputFileName.
+*/
 termList * readFromIndex(char * outputFileName){
 	printf("\t\tAttempting to read from file \"%s\".\n", outputFileName);
 	
@@ -533,6 +539,10 @@ void printSorted(termList * inputList, char * outputFileName){
 	fclose(outputFile);
 }
 
+
+/*
+This function returns nothing, and adds a fileCountList into a filefileCount list array, such being its parameters.
+*/
 void insertFileAndCount(fileCountList ** head, fileCountList * tempNode){
 
 	if (*head == NULL) {

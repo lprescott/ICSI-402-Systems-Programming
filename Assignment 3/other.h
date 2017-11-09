@@ -24,3 +24,5 @@ termList * sortTerms(termList * inputList);
 
 void mergeSorted(termList ** inputList, termList ** outputList);
 char * addNumber(char * archiveName, int currentArchive);
+
+int ifFileContained(termList ** head, char * currentFilePath);

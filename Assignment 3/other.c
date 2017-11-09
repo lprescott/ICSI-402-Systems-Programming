@@ -683,4 +683,40 @@ char * addNumber(char * archiveName, int currentArchive){
   }
 } //End addNumber
 
+int ifFileContained(termList ** head, char * currentFilePath){
+
+	char * currentFileName;
+	int x = 0, count = 0;
+
+	for(x; x < strlen(currentFilePath) + 1; x++){
+		if(currentFilePath[x] == '/'){
+			count ++;
+		}
+	}
+
+	currentFileName = strstr(currentFilePath, "/");
+
+	for(x = 0; x < count; x ++){
+		currentFileName = strstr(currentFileName, "/");
+		++currentFileName;
+	}
+
+	termList * current = *head;
+	fileCountList * currentFile;
+	int i = 1;
+	while (current != NULL) {
+		currentFile = current->filesAndCounts;
+		while (currentFile != NULL) {
+			if((strcmp(currentFile->file, currentFileName)) == 0){
+				return 1;
+			}
+			currentFile = currentFile->next;
+		}
+		current = current->next;
+		i++;
+	}
+
+	return 0;
+}	
+
 

@@ -181,11 +181,17 @@ void insertTerm(termList ** head, char * term, fileCountList * filesAndCounts){
 			while(current != NULL) {
 				if (strcmp(current->file, filesAndCounts->file) == 0) {
 					current->count++;
+					
+					printf("\t\t\t...Finished Incremented\n"); fflush(stdout);
+					
 					return;
 				}
 				current = current->next;
 			}
 			insertFileAndCount(&(*head)->filesAndCounts, filesAndCounts);
+			
+			printf("\t\t\t...Finished Incremented\n"); fflush(stdout);
+			
 			return;
 			
 
@@ -216,11 +222,14 @@ void insertTerm(termList ** head, char * term, fileCountList * filesAndCounts){
 				while(currentFile != NULL) {
 					if (strcmp(currentFile->file, filesAndCounts->file) == 0) {
 						currentFile->count++;
+						printf("\t\t\t...Finished Incremented\n"); fflush(stdout);
 						return;
 					}
 					currentFile = currentFile->next;
 				}
 				insertFileAndCount(&current->filesAndCounts, filesAndCounts);
+				
+				printf("\t\t\t...Finished Incremented\n"); fflush(stdout);
 				
 				return;
 				
@@ -544,9 +553,10 @@ void printSorted(termList * inputList, char * outputFileName){
 This function returns nothing, and adds a fileCountList into a filefileCount list array, such being its parameters.
 */
 void insertFileAndCount(fileCountList ** head, fileCountList * tempNode){
+printf("\t\t\t\tAttempting incrementation of File \"%s\"\n", tempNode->file);
 
 	if(tempNode->next != NULL) {
-		printf("MULTIPLE NODES IN TEMPNODE\n");
+		printf("MULTIPLE NODES IN TEMPNODE\n"); fflush(stdout);
 		
 		fileCountList * curTemp = tempNode;
 		fileCountList * temp;
@@ -559,24 +569,24 @@ void insertFileAndCount(fileCountList ** head, fileCountList * tempNode){
 			
 			curTemp = curTemp->next;
 		}
-		
+		return;
 	}
-
+	
 	if (*head == NULL) {
-		//printf("\t\t\t\t... %s inserting into head\n", tempNode->file);
+		printf("\t\t\t\t... %s inserting into head\n", tempNode->file);
 		*head = malloc(sizeof(fileCountList));
 		*head = tempNode;
 		return;
 	}
 	
 	if ((*head)->count < tempNode->count) {
-		//printf("\t\t\t\t... %s replacing head");
+		printf("\t\t\t\t... %s replacing head");
 		tempNode->next = *head;
 		*head = tempNode;
 		return;
 	}
 	
-	//printf("\t\t\t\t... %s inserting into list\n", tempNode->file);
+	printf("\t\t\t\t... %s inserting into list\n", tempNode->file);
 	
 	fileCountList * current = *head;
 	fileCountList * prev;

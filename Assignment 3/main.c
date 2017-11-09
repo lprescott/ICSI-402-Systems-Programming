@@ -70,7 +70,7 @@ int main(int argc, char * argv[]) {
 			strcat(tempPath, argv[2]);
 
 			printf("\tIndexing path: \"%s\".\n", tempPath);
-			//indexer(tempPath, tempName);
+			indexer(tempPath, tempName);
 		} 
 		
 		else if (isDir(argv[2])) {// checks if the second argument supplied is a directory or not

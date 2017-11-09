@@ -604,6 +604,83 @@ printf("\t\t\t\tAttempting incrementation of File \"%s\"\n", tempNode->file);
 	
 	
 }
+/*
+  addNumber returns a char * to the new augmented string that has been created by the supplied archive name and the current archive input,
+  the character to be inputted or changed.
+*/
+char * addNumber(char * archiveName, int currentArchive){
+  if(strstr(archiveName, ".") == NULL){
+    char * newName; char c; int length;
+    char * tempName;
+    
+    //There is no extension
+    if(currentArchive > 1){
+      //change the number
+      length = strlen(archiveName) + 1;// value of the length is equal to the length the name of the archive +1
+      newName = strdup(archiveName);// duplicate the name of archive into new name
+      c = currentArchive + '0';
+      newName[length-1] = c;
+      newName[length] = '\0';
+      tempName = strdup(newName);// duplicates the newName into tempName
+    }
+    else{
+      //add the number one
+      length = strlen(archiveName) + 1; 1;// value of the length is equal to the length the name of the archive +1
+      newName = malloc((length * sizeof(char)) + 1);//dynamic memory allocation
+      c = currentArchive + '0';
+      strcpy(newName, archiveName);// copy archiveName into newName
+      newName[length-1] = c;
+      newName[length] = '\0';
 
+      tempName = strdup(newName);// duplicates newName into tempName
+      free(newName);// frees newName
+    }
+    return tempName;
+  }
+  else{
+
+
+    char * pos; int index; char c; int length, strlength;// variable to position, the index, the length, and the string length
+    char * newName, tempName, * extension;// variable for newName, the temp name, the extension
+    //There is an extension
+    if(currentArchive > 1){
+        length = strlen(archiveName) + 1;
+        newName = strdup(archiveName);
+        //Change the number
+        index = 0;
+        
+        strlength = strlen(newName);// gets the length of newName
+        length = strlen(extension = strstr(newName, "."));
+        pos = strchr(archiveName, '.');// searches for a . in the name of the archive, postion is set to that location
+        index = (int)(pos - archiveName);
+        c = currentArchive + '0';
+        newName[strlength - length] = c;
+
+        newName[index] = c;
+        newName[index + 1] = '\0';
+
+        strcat(newName, pos);// concatenates position with newName
+    }    
+    else{
+      //Find the pos before the extension and add the number 1
+      length = strlen(archiveName) + 1;
+      newName = malloc((length * sizeof(char)) + 1);// dynamic memory allocation allocation
+      c = currentArchive + '0';
+      
+      pos = strchr(archiveName, '.');
+      //extension = strdup(pos);
+      index = (int)(pos - archiveName);
+      strncpy(newName, archiveName, index);
+      //strcpy(newName, archiveName);
+      newName[index] = c;
+      newName[index + 1] = '\0';
+      
+      newName = strcat(newName, pos);// conatenate pos with newName
+    }
+  
+    return newName;
+    free(newName);
+  }
+} //End addNumber
 
 

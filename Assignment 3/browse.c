@@ -62,21 +62,23 @@ void browse(char * directoryPath,  char * outputFileName){
 			//check is the tempPath is a directory using the isDir function,
 			if(isDir(tempPath)) {
 				printf("Directory found: \"%s\".\n", entry->d_name);
-		
-		
-                browse(tempPath, outputFileName);
+                		browse(tempPath, outputFileName);
                 
-                printf("\tFinished directory: \"%s\".\n\n", entry->d_name);
+                		printf("\tFinished directory: \"%s\".\n\n", entry->d_name);
 			}
 			else {
-                //file name: entry->d_name);
-                
-                printf("\tIndexing absolute path: \"%s\".\n", tempPath);
-		
-		//calls indexer on the tempPath
-                indexer(tempPath,  outputFileName);
+			//file name: entry->d_name);
 
+			printf("\tIndexing absolute path: \"%s\".\n", tempPath);
+
+			//calls indexer on the tempPath
+			indexer(tempPath,  outputFileName);
 			}
+		
+		//Check if directory is not readable
+		if(entry == NULL){
+			fprintf(stderr, "Could not read directory.");
+			exit(-1);`
 		}
 		
 		closedir(directory);// closes the directory

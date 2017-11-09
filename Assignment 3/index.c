@@ -1,6 +1,8 @@
+//standard libraries
 #include <stdio.h>
 #include <stdlib.h>
 
+//include external header files, containing prototypes
 #include "index.h"
 #include "other.h"
 #include "structs.h"
@@ -13,51 +15,64 @@ void indexer(char * inputFilePath, char * outputFileName){
     //To open the outputFile for writing, that is, delete the file and start over use:
     //FILE *freopen(const char *filename, const char *mode, FILE *stream)
 
+	// file pointer for the temporary file
     FILE * tempFile;
+	//the name of the output file is opened for appending and reading and is assigned to be equal to tempFile
     tempFile = fopen(outputFileName, "a+");
 
-    //If the outputFile is empty
+    //checks if the outputFile is empty
     if (fileSize(tempFile) == 0){
         printf("\tThe output, \"%s\", is empty!\n", outputFileName);
         printf("\t\tAdding first entry...\n");
+		//inputList and outputList are pointers to the struct termList
         termList * inputList;
         termList * outputList;
-
+        
+		// allocates space for the inputlist
         inputList = malloc(sizeof(termList));
+		// if the inputlist is empty, error is printed
         if (inputList == NULL){
             fprintf(stderr, "Could not allocate memory for inputList.");
         }
-
+		//allocates space for the output list
         outputList = malloc(sizeof(termList));
+		//if the outputList is empty, error is printed
         if (outputList == NULL){
             fprintf(stderr, "Could not allocate memory for outputList.");
         }
 
         //readFromFile(inputFilePath);
+		// reads a supplied file, to the inputList
         inputList = readFromFile(inputFilePath);
 
+		//temp is pointer to termList struct
         termList * temp;
+		// the contents of temp is equal to the inputList
         temp = inputList;
-
+        
         printf("\t\tCurrent list:\n");
-
+		//checks to see if temp is not equal to NULL
         while(temp!=NULL)
-        {
+        {	//tempFileCount is a pointer to the fileCountList
             fileCountList * tempFileCount;
             printf("\t\t\t\"%s\"", temp->term);
+			// the tempFileCount is equal to pointer of filesAndCounts of temp
             tempFileCount = temp->filesAndCounts;
-            while(tempFileCount != NULL){
+            // checks to see if the count of the temp file is not equal to null
+			while(tempFileCount != NULL){
                 printf(" \"%s\" %d\n", tempFileCount->file, tempFileCount->count);
                 tempFileCount = tempFileCount->next;
             }
+			//temp is equal to a pointer next of temp
             temp=temp->next;
         }
 
-        free(temp);
+        free(temp);// frees temp
 
         //Print sorted data to outputFile
         printSorted(inputList, outputFileName);
-
+        
+		
         if (inputList != NULL) deleteTermList(inputList);
         if (outputList != NULL) deleteTermList(outputList);
     }
@@ -66,10 +81,15 @@ void indexer(char * inputFilePath, char * outputFileName){
     else{
         printf("\tThe output file is NOT empty!\n");
 
+		//inputList, outputList, and newList are all pointers to termList
         termList * inputList;
         termList * outputList;
         termList * newList;
-
+        
+		/*
+		allocating space for the inputList, outputList and newList,
+		if they are null, an error is printed
+		*/
         inputList = malloc(sizeof (termList));
         if (inputList == NULL){
             fprintf(stderr, "Could not allocate memory for inputList.");
@@ -88,6 +108,7 @@ void indexer(char * inputFilePath, char * outputFileName){
         //Read sorted data into memory
         outputList = readFromIndex(outputFileName); //Reads terms in order
 		
+		//prints the contents of the outputList
 		printAll(&outputList);
 		
         //Read non-sorted data into memory
@@ -95,16 +116,17 @@ void indexer(char * inputFilePath, char * outputFileName){
 
         //Sort data in memory
         //inputList = sortTerms(inputList); //Sorts list by terms
-
-        //MergeSort latter into former
-        mergeSorted(&inputList, &outputList); //merges inputList and outputList, keeps terms in alphabetical order
 		
+		//merges inputList and outputList, keeps terms in alphabetical order
+        mergeSorted(&inputList, &outputList);
+		
+		//prints the contents of the outputList
 		printAll(&outputList);
 		
         //Rewrite new merged list into outputFile
         printSorted(outputList, outputFileName); //Prints sorted list in alphabetical order, keeping order of file counts descending
 
-        fclose(tempFile);
+        fclose(tempFile);// close tempFile
 
         if (inputList != NULL) deleteTermList(inputList);
         if (outputList != NULL) deleteTermList(outputList);

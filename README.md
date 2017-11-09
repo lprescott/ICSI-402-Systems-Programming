@@ -66,6 +66,7 @@ possible for the Instructor to identify or fix the bugs in the submitted version
 
 ### Assignment 3:
 #### TODO:
+- [ ] Delete "invid.txt" or related output text file (This is rob saying this, it messes up the program)
 - [ ] Complete case for same file name in subdirectory
 - [ ] Complete comments
 - [ ] Testing

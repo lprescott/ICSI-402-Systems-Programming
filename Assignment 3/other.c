@@ -580,7 +580,7 @@ printf("\t\t\t\tAttempting incrementation of File \"%s\"\n", tempNode->file);
 	}
 	
 	if ((*head)->count < tempNode->count) {
-		printf("\t\t\t\t... %s replacing head");
+		printf("\t\t\t\t... replacing head");
 		tempNode->next = *head;
 		*head = tempNode;
 		return;

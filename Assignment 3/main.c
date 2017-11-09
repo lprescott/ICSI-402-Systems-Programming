@@ -64,6 +64,7 @@ int main(int argc, char * argv[]) {
 		if (isFile(argv[2])) {// checks if the 2nd argument that is supplied is a file or not
 			printf("\nSecond argument is a file, opening and indexing.\n");
 
+			//Find absolute path
 			strcpy(tempPath, "");
 			strcat(tempPath, currentDir);
 			strcat(tempPath, "/");
@@ -94,6 +95,7 @@ int main(int argc, char * argv[]) {
 		if (isFile(argv[1])) {// checks to see if the initial argument argument is a file or not using the isFile function
 			printf("\nArgument is a file, opening and indexing.\n");
 
+			//Find absolute path
 			strcpy(tempPath, "");
 			strcat(tempPath, currentDir);
 			strcat(tempPath, "/");

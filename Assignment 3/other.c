@@ -1,3 +1,4 @@
+//standard libraries
 #include <stdio.h>
 #include <sys/stat.h>
 #include <stdlib.h>
@@ -6,8 +7,13 @@
 #include <errno.h>
 #include <ctype.h>
 
+//included external header files containing prototypes
 #include "structs.h"
 #include "other.h"
+
+/*isFile check if the supplied path is a file or not
+isDir checks the supplied file path to see if the it is a directory or not.
+*/
 int isFile(const char * path) {
 	struct stat s;
 	stat(path, &s);
@@ -49,11 +55,19 @@ long fileSize(FILE * file){
     return endPosition;// returns the position of the file offset
 }
 
+/*this functions checks to if the a supplied term is in the list or not
+it takes parameters of the char pointer for the term that is supplied, 
+and a pointer to the termList struct for the head of the list
+*/
 int isTermContained(char * termSupplied, termList * head){
 	while (head != NULL){
+		/*if the head is not equal to NULL, it compares the supplied term, 
+		with the term of the head of the list and checks to see if it is equal
+		*/
 		if (strcmp(termSupplied, head->term) == 0){
 			return 1;
 		}
+		//if they are equal head is equal the pointer to the next
 		head = head->next;
 	}
 	return 0;
@@ -473,8 +487,7 @@ void mergeSorted(termList ** inputList, termList ** outputList) {
 		printf("Term to be merged : %s\n", current->term);
 		insertTerm(outputList, current->term, current->filesAndCounts);
 		current = current->next;
-		
-	}
+		}
 	
 }
 
@@ -510,7 +523,6 @@ void printSorted(termList * inputList, char * outputFileName){
 	}
 
 	fclose(outputFile);
-
 }
 
 void insertFileAndCount(fileCountList ** head, fileCountList * tempNode){
@@ -519,7 +531,6 @@ void insertFileAndCount(fileCountList ** head, fileCountList * tempNode){
 		//printf("\t\t\t\t... %s inserting into head\n", tempNode->file);
 		*head = malloc(sizeof(fileCountList));
 		*head = tempNode;
-
 		return;
 	}
 	
@@ -527,7 +538,6 @@ void insertFileAndCount(fileCountList ** head, fileCountList * tempNode){
 		//printf("\t\t\t\t... %s replacing head");
 		tempNode->next = *head;
 		*head = tempNode;
-		
 		return;
 	}
 	

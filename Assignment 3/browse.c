@@ -39,14 +39,14 @@ void browse(char * directoryPath,  char * outputFileName){
 	
 	// checks to see if the directory is null, if it is prints an error and terminates
 	if(directory == NULL){
-        fprintf(stderr, "Couldn't open: \"%s\"\n", directoryPath);
-        exit(-1);
-    }
+        	fprintf(stderr, "Couldn't open: \"%s\"\n", directoryPath);
+        	exit(-1);
+    	}
 	else{
-        
-		printf("Calling browse on: \"%s\".\n", directoryPath);
+        	//The directory is openable
+		//printf("Calling browse on: \"%s\".\n", directoryPath);
 		
-		
+		//While there are more items in the directory
 		while((entry = readdir(directory)) != NULL)
 		{
 			//Checks if name is viable; i.e. NOT "." ".." or the outputFile name
@@ -61,21 +61,21 @@ void browse(char * directoryPath,  char * outputFileName){
 			
 			//check is the tempPath is a directory using the isDir function,
 			if(isDir(tempPath)) {
-				printf("Directory found: \"%s\".\n", entry->d_name);
+				//printf("Directory found: \"%s\".\n", entry->d_name);
                 		browse(tempPath, outputFileName);
                 
-                		printf("\tFinished directory: \"%s\".\n\n", entry->d_name);
+                		//printf("\tFinished directory: \"%s\".\n\n", entry->d_name);
 			}
 			else {
 			//file name: entry->d_name);
 
-			printf("\tIndexing absolute path: \"%s\".\n", tempPath);
+			//printf("\tIndexing absolute path: \"%s\".\n", tempPath);
 
 			//calls indexer on the tempPath
 			indexer(tempPath,  outputFileName);
-			}
+		}
 		
 		closedir(directory);// closes the directory
-    }
+	}
 
 }

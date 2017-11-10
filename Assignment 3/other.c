@@ -409,8 +409,10 @@ termList * readFromFile(char * inputFilePath, char * currentFile) {
 	This function prints all the counts of an inputted fileCountList, taking a pointer to the head as a parameter.
 */
 void printAllCount(fileCountList ** head) {
+	//the current node, to get the info from
 	fileCountList * current = *head;
-	printf("It is here!\n");
+	//printf("It is here!\n");
+	//while current != null, print the data in current
 	while(current != NULL) {
 		printf("File Name: %s %d\n", current->file, current->count);
 		current = current->next;
@@ -423,49 +425,38 @@ void printAllCount(fileCountList ** head) {
 	opening. readFromIndex reads through the supplied file, adding data in order to the linked 
 	list when required.
 */
-void deleteFileCountList(fileCountList ** head) {
-	
-	fileCountList * tmp;
-	
-	while (head == NULL) {
-		
-		tmp = (*head);
-		(*head) = (*head)->next;
-		free(tmp);
-		
-	}
-	
-}
 
 /*
 The function readFrom index returns a pointer to a new termList that has been read from an inputted inverted index file given by the
 only parameter, a char array, containing the outputFileName.
 */
 termList * readFromIndex(char * outputFileName){
-	printf("\t\tAttempting to read from file \"%s\".\n", outputFileName);
+	//printf("\t\tAttempting to read from file \"%s\".\n", outputFileName);
 	
-	FILE * inputFile = fopen(outputFileName, "r");
+	FILE * inputFile = fopen(outputFileName, "r"); //opens inputfilename for reading, if null, it exits
 	if (inputFile == NULL) {
+		fprintf(stderr, "ERROR: could not open inputFile");
 		exit(-1);
 	}
-	char line[1024];
-	char * token;
-	char * tempTerm;
-	char * end1;
-	char * tempFileName;
-	int tempCount;
+	char line[1024]; //the line to be read
+	char * token; //the string that will be tokenized, is a duplicate of line
+	char * tempTerm; //the char * to hold the term
+	char * end1; //the storage variable for strtok_r
+	char * tempFileName; //The temp file name for each term
+	int tempCount; //The count for each file
 	
-	termList * head = NULL;
+	termList * head = NULL; //The list to be returned
 	
-	fileCountList * fileCountHead = NULL;
+	fileCountList * fileCountHead = NULL; //The sublist to be put into the temp term list
 	
 	while (fgets(line, 1024, inputFile) != NULL) {
-		token = strdup(line);
-		token[strlen(token) - 1] = '\0';
+		token = strdup(line); //duplicates line into token
+		token[strlen(token) - 1] = '\0'; //Sets the newline character to null
 		//printf("\t\t\tLINE : %s\n", token);
 		
-		token = strtok_r(token, " ", &end1);
+		token = strtok_r(token, " ", &end1); //tokenizes token by the whitespace character
 				
+		//when the list starts, this is where the tempTerm is given
 		if (strcmp(token, "<list>") == 0) {
 			
 			token = strtok_r(NULL, " ", &end1);
@@ -476,12 +467,12 @@ termList * readFromIndex(char * outputFileName){
 			continue;
 			
 		}
-		
+		//This is the end of the list, this is where the tempTerm list is opened, initialized, and inserted into the full list
 		if (strcmp(token, "</list>") == 0) {
 			
 			printf("\t\t\tList End, insert in head list\n");
 			
-			printAllCount(&fileCountHead);
+			//printAllCount(&fileCountHead);
 			
 			insertTerm(&head, tempTerm, fileCountHead);
 			
@@ -492,8 +483,8 @@ termList * readFromIndex(char * outputFileName){
 			
 		}
 		
-		printf("\t\t\t\tList : ");
-		
+		//printf("\t\t\t\tList : ");
+		//This is where all the fileCountLists are added, while token != null
 		while (token) {
 			
 			tempFileName = strdup(token);
@@ -501,7 +492,7 @@ termList * readFromIndex(char * outputFileName){
 			token = strtok_r(NULL, " ", &end1);
 			
 			int count = atoi(token);
-			
+			//Alocates space for new node
 			fileCountList * newNode = malloc(sizeof(fileCountList));
 			
 			if (newNode == NULL) {
@@ -513,7 +504,7 @@ termList * readFromIndex(char * outputFileName){
 			strcpy(newNode->file, tempFileName);
 			newNode->count = count;
 			
-			printf("\n\t\t\t\t\"File name : %s, count : %d\" \n", newNode->file, newNode->count); fflush(stdout);
+			//printf("\n\t\t\t\t\"File name : %s, count : %d\" \n", newNode->file, newNode->count); fflush(stdout);
 			token = strtok_r(NULL, " ", &end1);
 			
 			insertFileAndCount(&fileCountHead, newNode);
@@ -524,7 +515,7 @@ termList * readFromIndex(char * outputFileName){
 		
 	}
 	
-	printAll(&head);
+	//printAll(&head);
 	
 	return head;
 	
@@ -538,15 +529,15 @@ termList * readFromIndex(char * outputFileName){
 	from both supplied linked lists in order.s
 */
 void mergeSorted(termList ** inputList, termList ** outputList) {
-	printf("... Attempting Merge\n");
+	//printf("... Attempting Merge\n");
 	
-	termList * tempList;
-	termList * current;
+	termList * current; //the current node, each term is inserted into ouput list
 	
-	current = *inputList;
+	current = *inputList; //initializes current
 	
+	//while current != null, insert currents term and filesAndCounts into the outputList
 	while (current != NULL) {
-		printf("Term to be merged : %s\n", current->term);
+	//	printf("Term to be merged : %s\n", current->term);
 		insertTerm(outputList, current->term, current->filesAndCounts);
 		current = current->next;
 		}

@@ -1,3 +1,14 @@
+//Project: 	Prog3
+//Names:   	Luke Prescott, Rob Rose, Tommy Li (lprescott@albany.edu, rwrose@albany.edu, tli3@albany.edu)
+//			(001252879, 001247373, 001209184)
+//Roles:   	Leader, Monitor, Recorder Respectively
+//Date:    	11/9/2017
+//Course:  	ICSI 402
+//Desc:    	
+//        	
+//Input:   	 
+//Output:  	
+//Assumption:	
 //standard libraries
 #include <stdio.h>
 #include <sys/stat.h>
@@ -11,8 +22,8 @@
 #include "structs.h"
 #include "other.h"
 
-/*isFile check if the supplied path is a file or not
-isDir checks the supplied file path to see if the it is a directory or not.
+/*isFile check if the supplied path is a file or not, accepts a constant char pointer named path as a parameter
+isDir checks the supplied file path to see if the it is a directory or not, accept a constant char pointer named file_path as a parameter
 */
 int isFile(const char * path) {
 	struct stat s;
@@ -55,7 +66,7 @@ long fileSize(FILE * file){
     return endPosition;// returns the position of the file offset
 }
 
-/*this functions checks to if the a supplied term is in the list or not
+/* this functions checks to if the a supplied term is in the list or not
 it takes parameters of the char pointer for the term that is supplied, 
 and a pointer to the termList struct for the head of the list
 */
@@ -110,6 +121,7 @@ void printAll(struct termList ** head) {
 	termList * current = *head;
 	fileCountList * currentFile;
 	int i = 1;
+	//when current is not equal to NULL, current is set to the next pointer, and its contents are printed.
 	while (current != NULL) {
 		printf("\nTerm %d : \"%s\".\n", i, current->term);
 		currentFile = current->filesAndCounts;
@@ -118,7 +130,7 @@ void printAll(struct termList ** head) {
 			currentFile = currentFile->next;
 		}
 		current = current->next;
-		i++;
+		i++;//increment
 	}
 }
 
@@ -131,17 +143,21 @@ void insertTerm(termList ** head, char * term, fileCountList * filesAndCounts){
 
 	printf("Called insertTerm on : ");
 	
+	//pointers to the termList struct for current, previous and the new nodes.
 	termList * current;
 	termList * newNode;
 	termList * prev;
 	
+	//allocate space for newNode
 	newNode = malloc(sizeof(termList));
+	//if the newNode is equal to null, error is printed and terminates
 	if(newNode == NULL){
 		fprintf(stderr, "Could not allocate memory for termList * newNode.\n");
 		exit(-1);
 	}
-
+        //allocating for space for the term in newNode
 	newNode->term = malloc(strlen(term) * sizeof(char));
+	//copies term, into newNode->term
 	strcpy(newNode->term, term);
 	/*
 	newFileCount = malloc(sizeof(fileCountList));
@@ -154,6 +170,7 @@ void insertTerm(termList ** head, char * term, fileCountList * filesAndCounts){
 	strcpy(newFileCount->file, tempFileName);
 	newFileCount->count = 1;
 	*/
+	//fileAndCounts is the head node of every major list
 	newNode->filesAndCounts = filesAndCounts;
 
 	printf("File: \"%s\" ; Term: \"%s\" ; Count %d.\n", filesAndCounts->file, newNode->term, filesAndCounts->count);
@@ -161,7 +178,7 @@ void insertTerm(termList ** head, char * term, fileCountList * filesAndCounts){
 	//Head is equal to null, assign it new node
 	if (*head == NULL) {
 
-		printf("\t\t\t...inserted at head\n"); fflush(stdout);
+		printf("\t\t\t...inserted at head\n"); fflush(stdout);//flush 
 		*head = newNode;
 		newNode->next = NULL;
 		return;
@@ -171,10 +188,9 @@ void insertTerm(termList ** head, char * term, fileCountList * filesAndCounts){
 	if (strcmp(term, (*head)->term) <= 0) {
 		//The new term is equal to the head
 		if (strcmp(term, (*head)->term) == 0) {
-			//DO INCREMENT
-			//printf("INCREMENTING %s on term %s\n", (*head)->term, term);
-			printf("\t\t\t...incremented at head\n"); fflush(stdout);
-			fileCountList * current;
+			
+			printf("\t\t\t...incremented at head\n"); fflush(stdout);//flush
+			fileCountList * current;//current is a pointer to the struct fileCountList
 			current = (*head)->filesAndCounts;
 			
 			//Increment count in head if contains same file
@@ -182,15 +198,15 @@ void insertTerm(termList ** head, char * term, fileCountList * filesAndCounts){
 				if (strcmp(current->file, filesAndCounts->file) == 0) {
 					current->count++;
 					
-					printf("\t\t\t...Finished Incremented\n"); fflush(stdout);
+					printf("\t\t\t...Finished Incremented\n"); fflush(stdout);//flush
 					
 					return;
 				}
 				current = current->next;
 			}
-			insertFileAndCount(&(*head)->filesAndCounts, filesAndCounts);
+			insertFileAndCount(&(*head)->filesAndCounts, filesAndCounts);//inserts a filesAndCount node into the head, merging the given sublist
 			
-			printf("\t\t\t...Finished Incremented\n"); fflush(stdout);
+			printf("\t\t\t...Finished Incremented\n"); fflush(stdout);//flush
 			
 			return;
 			
@@ -198,19 +214,23 @@ void insertTerm(termList ** head, char * term, fileCountList * filesAndCounts){
 		} 
 		//The term is inserted before the head
 		else {
-			printf("\t\t\t...inserted before head\n"); fflush(stdout);
-			newNode->next = *head;
-			*head = newNode;
+			printf("\t\t\t...inserted before head\n"); fflush(stdout);/flush
+			newNode->next = *head;// the pointer to head is equal to a pointer to next of newNode
+			*head = newNode;// newNode is equal to a pointer to the head
 		}
 		return;
 		
 	}
 
 	//Inserting or incrementing in body
-	current = (*head);
+	current = (*head);// current node is a pointer to head
+	// when current is not equal to NULL, compare the term in current, and term to see if current->term is less than term, alphanumerically
 	while (current != NULL) {
 		if (strcmp(term, (current)->term) <= 0) {
-		
+		        
+			/*if the term in current, and term are equal, currentFile is a pointer to the struct fileCountLists and it is equal
+			filesAndCounts in current
+			*/
 			if (strcmp(term, (current)->term) == 0) {
 				//DO INCREMENT
 				//printf("INCREMENTING (In Loop) %s on term %s\n", (current->term), term);
@@ -218,41 +238,46 @@ void insertTerm(termList ** head, char * term, fileCountList * filesAndCounts){
 				fileCountList * currentFile;
 				currentFile = current->filesAndCounts;
 				
-				
+				/* when the currentfile is null, checks if currentFile->file and filesAndCounts->file are equal
+				 if they are the count in currentfile is incremented */
 				while(currentFile != NULL) {
 					if (strcmp(currentFile->file, filesAndCounts->file) == 0) {
 						currentFile->count++;
-						printf("\t\t\t...Finished Incremented\n"); fflush(stdout);
+						printf("\t\t\t...Finished Incremented\n"); fflush(stdout);//flush
 						return;
 					}
 					currentFile = currentFile->next;
 				}
+				//inserts a filesAndCount node into the head, merging the given sublist
 				insertFileAndCount(&current->filesAndCounts, filesAndCounts);
 				
-				printf("\t\t\t...Finished Incremented\n"); fflush(stdout);
+				printf("\t\t\t...Finished Incremented\n"); fflush(stdout);//flush
 				
 				return;
 				
 			} 
 			else {
 				printf("\t\t\t...inserted in body\n");
-				newNode->next = current;
-				prev->next = newNode;
+				newNode->next = current;// current is equal to a pointer to next of newNode
+				prev->next = newNode;// newNode is equal to a pointer to the next of prev
 				return;
 			}
 
 		}
-		
+		//current is equal to the previous
 		prev = current;
+		//current is equal to a pointer next of current
 		current = current->next;
 	}
 
 	current = (*head);
 	while(current->next != NULL){
+		//current is equal to a pointer next of current
 		current = current->next;
 	}
-	
+	//newNode is equal to a pointer next of current
 	current->next = newNode;
+	// the pointer to next of newNode is NULL
 	newNode->next = NULL;
 	printf("\t\t\t...added on end.\n");
 }
@@ -268,7 +293,7 @@ int isEmpty(const char *s) {
 
 /*
 	The function readFromFile returns a pointer to the head of a linked list of termList 
-	structs. It accepts one parameter, the input file's absolute path. readFromFile reads through 
+	structs. It accepts two parameters, the input file's absolute path, and a char pointer named currentFile, readFromFile reads through 
 	the supplied file, adding the terms to the linked list, the file their from, and the correct count
 	(incremented) when required.
 */
@@ -276,24 +301,30 @@ termList * readFromFile(char * inputFilePath, char * currentFile) {
 
 	printf("\t\tAttempting to read from file \"%s\".\n", inputFilePath);
 	printf("\t\tFile contents: \n");
-
+        
+	// opens the inputFilePath, for readding
 	FILE * inputFile = fopen(inputFilePath, "r");
+	// if inputFile is equal to null, prints an error and terminates
 	if(inputFile == NULL){
 		fprintf(stderr, "Could not allocate space for: %s.\n", inputFilePath);
 		exit(-1);	
 	}
-	char line[1024]; char * token;
-	int i; 
+	// size of the line
+	char line[1024]; 
+	char * token;// token for tokenizing
+	int i;// count for the loop
 	
+	// head is a pointer to the termList struct, has a value of NULL
 	termList * head = NULL;
-
+	
+	// fgets, get the next line from inputfile, checks if it is not equal to NULL, and if it is, prints the line.
 	while(fgets(line, 1024, inputFile) != NULL){
 		printf("\t\t\t%s", line);
 	}
 
 	printf("\n");
 	
-	rewind(inputFile);
+	rewind(inputFile);// returns the file positions to the beginning of the inputFile
 	/*
 	char * currentFile;
 	int x = 0, count = 0;
@@ -316,10 +347,13 @@ termList * readFromFile(char * inputFilePath, char * currentFile) {
 	printf("\t\tCurrent file: \"%s\".\n", currentFile);
 
 	printf("\t\tFormatted file contents: \n");
-
+        
+	// fgets, get the next line from inputfile, checks if it is not equal to NULL, and if it is, prints the line.
 	while(fgets(line, 1024, inputFile) != NULL){
+		// if the line is empty, continue
 		if (isEmpty(line)) continue;
-
+                
+		//for loop for char line, if it hits an non alphanumeric number, converts it to whitespace
 		for (i = 0; i < strlen(line); i++) {
 			
 			if (!isalnum(line[i])) {
@@ -330,21 +364,24 @@ termList * readFromFile(char * inputFilePath, char * currentFile) {
 
 		printf("\t\t%s\n", line);
 		
-		token = strdup(line);
-		token = strtok(token, " ");
+		token = strdup(line);// duplicates line into token
+		token = strtok(token, " ");// breaks line into token if there is white space
 		
-		fflush(stdout);
+		fflush(stdout);// flush
 		printf("\t\t\tTerms: \n");
 		
-		int j;
+		int j;// loop integer for for loop
+		// while the token is not null, it gets the file and count and inserts them into a sublist
 		while(token) {
 
+			
+			//standardizes the terms
 			for(j = 0; token[j]; j++){
 				token[j] = tolower(token[j]);  
 			}
 
 			printf("\t\t\t\"%s\" ", token);
-			
+			//allocates memory to newFileCount
 			fileCountList * newFileCount = malloc(sizeof(fileCountList));
 			if(newFileCount == NULL){
 				fprintf(stderr, "Could not allocate memory for fileCountList * newFileCount.\n");
@@ -354,7 +391,7 @@ termList * readFromFile(char * inputFilePath, char * currentFile) {
 			newFileCount->file = malloc(strlen(currentFile) * sizeof(char));
 			strcpy(newFileCount->file, currentFile);
 			newFileCount->count = 1;
-			
+			//inserts new file and fileCount into the temp head
 			insertTerm(&head, token, newFileCount);
 			token = strtok(NULL, " ");
 			

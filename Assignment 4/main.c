@@ -6,6 +6,8 @@
 
 //included headers
 #include "other.h"
+#include "BSTheaders.h"
+#include "hashHeaders.h"
 
 //main method
 int main( int argc, char *argv[] )  {

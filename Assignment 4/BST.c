@@ -59,16 +59,21 @@ void insertBST(instructionSet ** head, instructionSet * newNode) {
 	
 }
 
+//function to print the BST(binary search tree) inorder, takes a parameter named currentNode of the struct instructionSet
+
 void printInOrder(instructionSet * currentNode) {
 	
+	//if current node is NULL
 	if (currentNode == NULL) {
 		return;
 	}
 	
+	//checks the left child node
 	printInOrder(currentNode->left);
 	
+	//prints the data of that node
 	printf("%s\n", currentNode->instruction);
-	
+	 //check the right child node
 	printInOrder(currentNode->right);
 	
 }

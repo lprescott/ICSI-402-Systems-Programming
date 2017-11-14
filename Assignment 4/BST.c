@@ -113,9 +113,9 @@ unsigned char searchFormatBST(instructionSet * currentNode, char instruction[6])
 	
 	//checks the left child node
 	if (strcmp(currentNode->instruction, instruction) < 0) {
-		return searchOpcodeBST(currentNode->right, instruction);
+		return searchFormatBST(currentNode->right, instruction);
 	} else {
-		return searchOpcodeBST(currentNode->left, instruction);
+		return searchFormatBST(currentNode->left, instruction);
 	}
 	
 }

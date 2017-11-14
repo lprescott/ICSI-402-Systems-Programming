@@ -79,15 +79,21 @@ void printInOrder(instructionSet * currentNode) {
 	
 }
 
+/*this function checks the max height of BST(binary search tree),
+ takes a parameter named currentNode that is a pointer to the struct instructionSet
+ */
 int maxHeight(instructionSet * currentNode) {
 	
 	if (currentNode == NULL) {
 		return 0;
 	}
 	
+	// computes the height of each sub
 	int leftHeight = maxHeight(currentNode->left);
 	int rightHeight = maxHeight(currentNode->right);
 	
+	/* if the left height is greater than right height return the height of the left increased by one
+	else return the height of the right increased by 1*/
 	if (leftHeight > rightHeight) {
 		return (leftHeight + 1);
 	} else {

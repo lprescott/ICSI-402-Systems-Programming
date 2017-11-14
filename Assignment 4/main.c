@@ -121,6 +121,9 @@ int main( int argc, char *argv[] )  {
 	printInOrder(head);
 	printf("\b\b \n");
 	
+	//Print the max height
+	printf("Max Height : \"%d\"\n", maxHeight(head));
+	
 	//Close opened files and print done
 	fclose(instructionSetFile);
 	printf("\nDone.\n");

@@ -78,3 +78,20 @@ void printInOrder(instructionSet * currentNode) {
 	printInOrder(currentNode->right);
 	
 }
+
+int maxHeight(instructionSet * currentNode) {
+	
+	if (currentNode == NULL) {
+		return 0;
+	}
+	
+	int leftHeight = maxHeight(currentNode->left);
+	int rightHeight = maxHeight(currentNode->right);
+	
+	if (leftHeight > rightHeight) {
+		return (leftHeight + 1);
+	} else {
+		return (rightHeight + 1);
+	}
+	
+}

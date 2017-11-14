@@ -18,5 +18,6 @@ typedef struct instructionSet{
 
 //Prototypes
 instructionSet * newInstructionSet(char * instruction, unsigned char opcode, unsigned char format);
+int maxHeight(instructionSet * currentNode);
 void insertBST(instructionSet ** head, instructionSet * newNode);
 void printInOrder(instructionSet * currentNode);

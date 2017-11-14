@@ -124,9 +124,6 @@ int main( int argc, char *argv[] )  {
 	//Print the max height
 	printf("Max Height : \"%d\"\n", maxHeight(head));
 	
-	printf("Format of 'ldb' : %u\n", searchFormatBST(head, "ldb")); fflush(stdout);
-	printf("Format of 'sta' : %u\n", searchFormatBST(head, "sta"));
-	
 	//Close opened files and print done
 	fclose(instructionSetFile);
 	printf("\nDone.\n");

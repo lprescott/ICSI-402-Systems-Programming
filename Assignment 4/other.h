@@ -1,0 +1,1 @@
+int fileExistsAndReadable(char * filename);

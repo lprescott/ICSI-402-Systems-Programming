@@ -28,7 +28,7 @@ int main( int argc, char *argv[] )  {
 		printf("\nfirstpass has been called.\n");
 		printf("The supplied instructionset filename: \"%s\".\n", argv[1]);
 		printf("The supplied programfile filename: \"%s\".\n", argv[2]);
-		printf("The supplied hashtablesize: \"%s\".\n", argv[3]);
+		printf("The supplied hashtablesize: %s.\n", argv[3]);
 	}
 	
 	//Check if the supplied hashtablesize is not a number
@@ -57,4 +57,6 @@ int main( int argc, char *argv[] )  {
 		fprintf(stderr, "\nThe supplied hashtablesize is not atleast 2.\nExiting...\n");
 		exit(-1);
 	}
+
+	printf("\nDone.\n");
 }

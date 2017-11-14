@@ -36,3 +36,25 @@ instructionSet * newInstructionSet(char * instruction, unsigned char opcode, uns
     //Return the new struct
     return newInstructionSet;
 }
+
+void insertBST(instructionSet ** head, instructionSet * newNode) {
+	
+	//if head == null, set head = to newNode and then return;
+	if ((*head) == NULL) {
+		*head = newNode;
+		return;
+	}
+	/*
+		If the heads instruction is less that newNodes instruction, then
+		insert newNode into the heads LEFT node, else insert it into the 
+		heads RIGHT node.
+	*/
+	if (strcmp((*head)->instruction, newNode->instruction) <= 0) {
+		insertBST(&(*head)->left, newNode);
+		return;
+	} else {
+		insertBST(&(*head)->right, newNode);
+		return;
+	}
+	
+}

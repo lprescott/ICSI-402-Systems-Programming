@@ -18,3 +18,4 @@ typedef struct instructionSet{
 
 //Prototypes
 instructionSet * newInstructionSet(char * instruction, unsigned char opcode, unsigned char format);
+void insertBST(instructionSet ** head, instructionSet * newNode);

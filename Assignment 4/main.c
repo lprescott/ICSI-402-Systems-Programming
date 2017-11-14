@@ -12,6 +12,7 @@ int main( int argc, char *argv[] )  {
 	//variables
 	int hashTableSize = 0; //an integer to hold the hash table size supplied
 	
+	//Check number of arguments
 	if(argc < 4){
 		fprintf(stderr, "There were only %d arguments supplied. Expected 4.\nExiting...\n", argc);
 		exit(-1);

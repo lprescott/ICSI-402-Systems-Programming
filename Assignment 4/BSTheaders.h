@@ -6,3 +6,14 @@
 	instruction format given the instruction name, and printing the contents of the tree to
 	stdout.
 */
+
+typedef struct instructionSet{
+	char instruction [6];
+	unsigned char opcode;
+	unsigned char format;
+	struct instructionSet * left;
+	struct instructionSet * right;
+}instructionSet;
+
+//Prototypes
+instructionSet * newInstructionSet(char * instruction, unsigned char opcode, unsigned char format);

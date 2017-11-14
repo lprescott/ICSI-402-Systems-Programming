@@ -49,7 +49,7 @@ void insertBST(instructionSet ** head, instructionSet * newNode) {
 		insert newNode into the heads LEFT node, else insert it into the 
 		heads RIGHT node.
 	*/
-	if (strcmp((*head)->instruction, newNode->instruction) <= 0) {
+	if (strcmp((*head)->instruction, newNode->instruction) >= 0) {
 		insertBST(&(*head)->left, newNode);
 		return;
 	} else {
@@ -72,7 +72,8 @@ void printInOrder(instructionSet * currentNode) {
 	printInOrder(currentNode->left);
 	
 	//prints the data of that node
-	printf("%s\n", currentNode->instruction);
+	printf("%s, ", currentNode->instruction);
+	
 	 //check the right child node
 	printInOrder(currentNode->right);
 	

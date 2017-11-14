@@ -109,13 +109,18 @@ int main( int argc, char *argv[] )  {
 		printf("%s ", tempNode->instruction);
 		printf("%d ", tempNode->opcode);
 		printf("%d\n", tempNode->format);
-
+		
+		//Insert tempNode into head
+		insertBST(&head, tempNode);
 		
 		
 	}
 
 	//Print the BST (in-order)
-
+	printf("\n");
+	printInOrder(head);
+	printf("\b\b \n");
+	
 	//Close opened files and print done
 	fclose(instructionSetFile);
 	printf("\nDone.\n");

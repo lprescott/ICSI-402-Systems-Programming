@@ -58,3 +58,17 @@ void insertBST(instructionSet ** head, instructionSet * newNode) {
 	}
 	
 }
+
+void printInOrder(instructionSet * currentNode) {
+	
+	if (currentNode == NULL) {
+		return;
+	}
+	
+	printInOrder(currentNode->left);
+	
+	printf("%s\n", currentNode->instruction);
+	
+	printInOrder(currentNode->right);
+	
+}

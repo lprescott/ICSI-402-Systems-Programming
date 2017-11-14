@@ -79,6 +79,47 @@ void printInOrder(instructionSet * currentNode) {
 	
 }
 
+
+unsigned char searchOpcodeBST(instructionSet * currentNode, char instruction[6]) {
+	
+	//if current node is NULL
+	if (currentNode == NULL) {
+		return NULL;
+	}
+	
+	if (strcmp(currentNode->instruction, instruction) == 0) {
+		return currentNode->opcode;
+	}
+	
+	//checks the left child node
+	if (strcmp(currentNode->instruction, instruction) < 0) {
+		return searchOpcodeBST(currentNode->right, instruction);
+	} else {
+		return searchOpcodeBST(currentNode->left, instruction);
+	}
+	
+}
+
+unsigned char searchFormatBST(instructionSet * currentNode, char instruction[6]) {
+	
+	//if current node is NULL
+	if (currentNode == NULL) {
+		return NULL;
+	}
+	
+	if (strcmp(currentNode->instruction, instruction) == 0) {
+		return currentNode->format;
+	}
+	
+	//checks the left child node
+	if (strcmp(currentNode->instruction, instruction) < 0) {
+		return searchOpcodeBST(currentNode->right, instruction);
+	} else {
+		return searchOpcodeBST(currentNode->left, instruction);
+	}
+	
+}
+
 int maxHeight(instructionSet * currentNode) {
 	
 	if (currentNode == NULL) {

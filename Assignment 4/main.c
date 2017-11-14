@@ -58,5 +58,11 @@ int main( int argc, char *argv[] )  {
 		exit(-1);
 	}
 
+	//Open and check the instructionset filename
+
+	//Parse line by line, inserting into BST
+
+	//Print the BST (in-order)
+
 	printf("\nDone.\n");
 }

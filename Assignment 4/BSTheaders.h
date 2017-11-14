@@ -7,12 +7,13 @@
 	stdout.
 */
 
+//This is the structure of a node contained in the BST
 typedef struct instructionSet{
-	char instruction [6];
-	unsigned char opcode;
-	unsigned char format;
-	struct instructionSet * left;
-	struct instructionSet * right;
+	char instruction [6]; //The five character long instruction
+	unsigned char opcode; //The unsigned char to hold the opcode integer 
+	unsigned char format; //The unsigned char to hold the format integer
+	struct instructionSet * left; //A pointer to its left child
+	struct instructionSet * right; //A pointer to its right child
 }instructionSet;
 
 //Prototypes

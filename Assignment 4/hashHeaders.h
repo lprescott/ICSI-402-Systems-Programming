@@ -9,7 +9,7 @@
 typedef struct hashNode {
 	char symbol[11];
 	int address;
-	hashNode next;
+	struct hashNode * next;
 } hashNode;
 
 int  hashFunction(char *s,  int T);

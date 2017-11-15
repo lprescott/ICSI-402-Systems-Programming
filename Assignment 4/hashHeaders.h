@@ -13,3 +13,4 @@ typedef struct hashNode {
 } hashNode;
 
 int  hashFunction(char *s,  int T);
+void insertHash(hashNode ** head, hashNode * newNode);

@@ -29,6 +29,7 @@ int main( int argc, char *argv[] )  {
 	instructionSet * tempNode; //A instructionSet pointer to the head node of the temp BST node
 	char hashInstruction[6]; //The buffer for the Instruction to be used in the searchFunctionBST
 	char symbol[11]; //the symbol buffer to be inserted into the hash table.
+	hashNode * tempHashNode; //The node we assign the symbol and address to to add to the hash table.
 	
 	//Check number of arguments
 	if(argc < 4){
@@ -55,7 +56,13 @@ int main( int argc, char *argv[] )  {
 
 	//Assign int to converted command line arg.
 	hashTableSize = atoi(argv[3]);
-
+	hashNode * hashTable[hashTableSize];
+	
+	int i = 0;
+	for (i = 0; i < hashTableSize; i++) {
+		hashTable[i] = NULL;
+	}
+	
 	//Check if the instructionset file doesn't exists or is unreadable
 	if(fileExistsAndReadable(argv[1])==0){
 		fprintf(stderr, "\nThe supplied instructionset filename, \"%s\", cannot be opened or cannot be read.\nExiting...\n", argv[1]);
@@ -171,7 +178,7 @@ int main( int argc, char *argv[] )  {
 				strcpy(hashInstruction, token);
 			}
 			
-			printf("\"%s\" ", token);
+			//printf("\"%s\" ", token);
 			counter++;
 			//next token
 			token = strtok(NULL, " ");
@@ -180,9 +187,12 @@ int main( int argc, char *argv[] )  {
 		//if the symbol is NOT empty, then we can insert it and the address into the hashtable.
 		if (symbol[0] != '\0') {
 			//create new node here
-			
+			tempHashNode = newHashNode(symbol, address);
+			printf("Symbol : \"%s\", Address : %d\n", tempHashNode->symbol, tempHashNode->address); fflush(stdout);
 			//insert into the hash function here
-			
+			int hashIndex = hashFunction(tempHashNode->symbol, hashTableSize);
+			printf("Has index = %d\n", hashIndex);
+			insertHash(&hashTable[hashIndex], tempHashNode);
 		}
 		
 		if ((int) searchFormatBST(head, hashInstruction) == 0) {

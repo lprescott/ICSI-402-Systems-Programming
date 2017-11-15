@@ -82,7 +82,7 @@ void printInOrder(instructionSet * currentNode) {
 	
 	//checks if currentNode is NULL
 	if (currentNode == NULL) {
-		exit(-1);
+		return;
 	}
 	
 	//checks the left child node
@@ -103,7 +103,7 @@ unsigned char searchOpcodeBST(instructionSet * currentNode, char instruction[6])
 	
 	//if current node is NULL
 	if (currentNode == NULL) {
-		exit(-1);
+		return NULL;
 	}
 	//compares the instruction contained in the currentNode with the specified instruction, if they are equal return the opcode of currentNode
 	if (strcmp(currentNode->instruction, instruction) == 0) {
@@ -132,7 +132,7 @@ unsigned char searchFormatBST(instructionSet * currentNode, char instruction[6])
 	
 	//checks current node is NULL
 	if (currentNode == NULL) {
-		return 0;
+		return NULL;
 	}
 	
 	//compares the instruction contained in the currentNode with the specified instruction, if they are equal return the format of currentNode

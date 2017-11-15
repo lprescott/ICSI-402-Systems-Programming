@@ -61,3 +61,33 @@ void insertHash(hashNode ** head, hashNode * newNode) {
 	prev->next = newNode;
 	
 }
+
+/*
+This function takes a array of linked lists (hashTable) and its array size as parameter and returns nothing. It prints each inner 
+linked list in the form:
+    index: listNode1 → listNode2 → · · · → listNodeN → NULL.
+*/
+void printHashTable(int size, hashNode * hashTable[]){
+    int i = 0; //Index needed for the loop
+    
+    //Loop through every element in the array
+    for(i; i < size; i++){
+        
+        //if the head of the linked list is null
+        if(hashTable[i] == NULL){
+            printf("\n%d:\n", i);
+        }
+        //else the linked list has values
+        else{
+            printf("\n%d: ", i);
+            hashNode * tempNode; //a tempNode used for traversal
+            tempNode = hashTable[i]; //assign the tempNode to the current head of the linked list at index i
+            //loop through and print the enture linked list
+            while(tempNode != NULL){
+                printf("%s - %d → ", tempNode->symbol, tempNode->address);
+                tempNode = tempNode->next;
+            }
+            printf("NULL");
+        }
+    }
+}

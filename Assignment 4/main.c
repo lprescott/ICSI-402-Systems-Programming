@@ -27,7 +27,8 @@ int main( int argc, char *argv[] )  {
 	char * token; //A char pointer used when tokenizing a line in the instructionSetFile
 	instructionSet * head = NULL; //A instructionSet pointer to the head node of the used BST
 	instructionSet * tempNode; //A instructionSet pointer to the head node of the temp BST node
-	char hashInstruction[6];
+	char hashInstruction[6]; //The buffer for the Instruction to be used in the searchFunctionBST
+	char symbol[11]; //the symbol buffer to be inserted into the hash table.
 	
 	//Check number of arguments
 	if(argc < 4){
@@ -149,11 +150,21 @@ int main( int argc, char *argv[] )  {
 		
 		//first split of the line
 		token = strtok(token, " ");
+		
+		//If the first character of the first token is equal to tab, then
+		//the token MUST be the symbol.
+		if (token[0] != '\t') {
+			strcpy(symbol, token);
+		}
+		
+		//counter to help determine where the instruction is.
 		int counter = 1;
 		while(token) {
-			//if the token is equal to a tab, increment the pointer up to eliminate it
+			//if the token is equal to a tab, increment the pointer up to eliminate it, and this
+			//tells us the instruction is in this token
+			//else, if the counter is equal to two then we know the hash instruction is in this token.
 			if (token[0] == '\t') {
-				printf("\nThere's a tab\n");
+				//printf("\nThere's a tab\n");
 				token++;
 				strcpy(hashInstruction, token);
 			} else if ((counter % 2 == 0) && hashInstruction[0] == '\0') {
@@ -166,13 +177,21 @@ int main( int argc, char *argv[] )  {
 			token = strtok(NULL, " ");
 		}
 		
-		printf("%s\n", hashInstruction);
+		//if the symbol is NOT empty, then we can insert it and the address into the hashtable.
+		if (symbol[0] != '\0') {
+			//create new node here
+			
+			//insert into the hash function here
+			
+		}
+		
 		if ((int) searchFormatBST(head, hashInstruction) == 0) {
 			address++;
 		} else {
 			address += (int) searchFormatBST(head, hashInstruction);
 		}
 		hashInstruction[0] = '\0';
+		symbol[0] = '\0';
 		printf("\n\n");
 		
 	}

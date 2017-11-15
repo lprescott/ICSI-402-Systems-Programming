@@ -6,4 +6,10 @@
 	the hash table to stdout.
 */
 
+typedef struct hashNode {
+	char symbol[11];
+	int address;
+	hashNode next;
+} hashNode;
+
 int  hashFunction(char *s,  int T);

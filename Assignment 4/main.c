@@ -27,7 +27,8 @@ int main( int argc, char *argv[] )  {
 	char * token; //A char pointer used when tokenizing a line in the instructionSetFile
 	instructionSet * head = NULL; //A instructionSet pointer to the head node of the used BST
 	instructionSet * tempNode; //A instructionSet pointer to the head node of the temp BST node
-
+	char hashInstruction[6];
+	
 	//Check number of arguments
 	if(argc < 4){
 		fprintf(stderr, "There were only %d arguments supplied. Expected 4.\nExiting...\n", argc);
@@ -146,17 +147,27 @@ int main( int argc, char *argv[] )  {
 		
 		//first split of the line
 		token = strtok(token, " ");
-		
+		int counter = 1;
 		while(token) {
 			//if the token is equal to a tab, increment the pointer up to eliminate it
-			if (token[0] == '\t') token++;
-			printf("\"%s\" ", token);
+			if (token[0] == '\t') {
+				printf("\nThere's a tab\n");
+				token++;
+				strcpy(hashInstruction, token);
+			} else if ((counter % 2 == 0) && hashInstruction[0] == '\0') {
+				strcpy(hashInstruction, token);
+			}
 			
+			printf("\"%s\" ", token);
+			counter++;
 			//next token
 			token = strtok(NULL, " ");
 		}
 		
-		address++;
+		printf("%s\n", hashInstruction);
+		
+		address += (int) searchFormatBST(head, hashInstruction);
+		hashInstruction[0] = '\0';
 		printf("\n\n");
 		
 	}

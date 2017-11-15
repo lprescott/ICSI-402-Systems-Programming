@@ -61,14 +61,15 @@ void insertBST(instructionSet ** head, instructionSet * newNode) {
 		return;
 	}
 	/*
-		compares the opcode, contained in the head node and newNode, if the head's instruction is less than that of newNode's instruction, then
-		newNode is inserted into the left head's node, else insert it into the 
-		right of head's node.
+	compares the opcode, contained in the head node and newNode, if the head's instruction is less than that of newNode's instruction, then
+	newNode is inserted into the left head's node, else insert it into the 
+	right of head's node.
 	*/
 	if (strcmp((*head)->instruction, newNode->instruction) >= 0) {
 		insertBST(&(*head)->left, newNode);
 		return;
-	} else {
+	} 
+	else {
 		insertBST(&(*head)->right, newNode);
 		return;
 	}
@@ -76,14 +77,12 @@ void insertBST(instructionSet ** head, instructionSet * newNode) {
 }
 
 
- // the printInOrder function, prints the BST(binary search tree) in inorder traversal, takes a parameter named currentNode of the struct instructionSet
-
-
+// the printInOrder function, prints the BST(binary search tree) in inorder traversal, takes a parameter named currentNode of the struct instructionSet
 void printInOrder(instructionSet * currentNode) {
 	
 	//checks if currentNode is NULL
 	if (currentNode == NULL) {
-		return;
+		exit(-1);
 	}
 	
 	//checks the left child node
@@ -118,7 +117,8 @@ unsigned char searchOpcodeBST(instructionSet * currentNode, char instruction[6])
 
 	if (strcmp(currentNode->instruction, instruction) < 0) {
 		return searchOpcodeBST(currentNode->right, instruction);
-	} else {
+	} 
+	else {
 		return searchOpcodeBST(currentNode->left, instruction);
 	}
 	
@@ -132,7 +132,7 @@ unsigned char searchFormatBST(instructionSet * currentNode, char instruction[6])
 	
 	//checks current node is NULL
 	if (currentNode == NULL) {
-		exit(-1);
+		return 0;
 	}
 	
 	//compares the instruction contained in the currentNode with the specified instruction, if they are equal return the format of currentNode
@@ -146,7 +146,8 @@ unsigned char searchFormatBST(instructionSet * currentNode, char instruction[6])
 	*/
 	if (strcmp(currentNode->instruction, instruction) < 0) {
 		return searchFormatBST(currentNode->right, instruction);
-	} else {
+	} 
+	else {
 		return searchFormatBST(currentNode->left, instruction);
 	}
 	
@@ -162,18 +163,19 @@ int maxHeight(instructionSet * currentNode) {
 	if (currentNode == NULL) {
 		return 0;
 	}
-	/*
-	computes the height of the left and right subtrees
-	*/
+	
+	//computes the height of the left and right subtrees
 	int leftHeight = maxHeight(currentNode->left);
 	int rightHeight = maxHeight(currentNode->right);
 	
-	/*compares the height of the left subtree, with the right, if the left is greater than the right return the height of the left increased by one, 
+	/*
+	compares the height of the left subtree, with the right, if the left is greater than the right return the height of the left increased by one, 
 	otherwise the height of the right increased by 1.
 	*/
 	if (leftHeight > rightHeight) {
 		return (leftHeight + 1);
-	} else {
+	} 
+	else {
 		return (rightHeight + 1);
 	}
 	

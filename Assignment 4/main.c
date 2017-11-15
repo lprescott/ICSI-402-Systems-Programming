@@ -122,8 +122,6 @@ int main( int argc, char *argv[] )  {
 		
 		//Insert tempNode into head
 		insertBST(&head, tempNode);
-		
-		
 	}
 
 	//Print the BST (in-order)
@@ -202,9 +200,10 @@ int main( int argc, char *argv[] )  {
 		}
 		hashInstruction[0] = '\0';
 		symbol[0] = '\0';
-		printf("\n\n");
-		
+		printf("\n\n");		
 	}
+
+	printHashTable(hashTableSize, hashTable);
 	
 	//Close opened files and print done
 	fclose(instructionSetFile);

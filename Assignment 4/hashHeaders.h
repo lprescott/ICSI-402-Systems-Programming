@@ -15,3 +15,4 @@ typedef struct hashNode {
 int  hashFunction(char *s,  int T);
 void insertHash(hashNode ** head, hashNode * newNode);
 void printHashTable(int size, hashNode * hashTable[]);
+hashNode * newHashNode(char symbol[11], int address);

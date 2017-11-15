@@ -75,7 +75,7 @@ void printHashTable(int size, hashNode * hashTable[]){
         
         //if the head of the linked list is null
         if(hashTable[i] == NULL){
-            printf("\n%d:\n", i);
+            //printf("\n%d:\n", i);
         }
         //else the linked list has values
         else{

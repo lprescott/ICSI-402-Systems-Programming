@@ -135,6 +135,8 @@ int main( int argc, char *argv[] )  {
 	
 	printf("\n");
 
+	hashInstruction[0] = '\0';
+	
 	//Start parsing
 	while(fgets(line, LINESIZE, programFile)) {
 		
@@ -165,8 +167,11 @@ int main( int argc, char *argv[] )  {
 		}
 		
 		printf("%s\n", hashInstruction);
-		
-		address += (int) searchFormatBST(head, hashInstruction);
+		if ((int) searchFormatBST(head, hashInstruction) == 0) {
+			address++;
+		} else {
+			address += (int) searchFormatBST(head, hashInstruction);
+		}
 		hashInstruction[0] = '\0';
 		printf("\n\n");
 		

@@ -17,6 +17,7 @@
 int main( int argc, char *argv[] )  {
 	//variables
 	int hashTableSize = 0; //an integer to hold the hash table size supplied
+	int address = 0; //an integer to help figure out the address of each variable
 	FILE * instructionSetFile; //A FILE type for the instructionSet input file
 	FILE * programFile; //A FILE type for the program input file
 	char line [LINESIZE]; //A char pointer that will store each line in the instructionSet input file
@@ -124,8 +125,41 @@ int main( int argc, char *argv[] )  {
 	//Print the max height
 	printf("Max Height : \"%d\"\n", maxHeight(head));
 	
-	printf("Opcode of 'ldb' : %u\n", searchOpcodeBST(head, "ldb")); fflush(stdout);
-	printf("Format of 'sta' : %u\n", searchFormatBST(head, "sta"));
+	//Open program file
+	programFile = fopen(argv[2], "r");
+	if(programFile == NULL){
+    	fprintf(stderr, "Could not allocate memory for programFile.\nExiting...\n");
+    	exit(1);
+	}
+	
+	printf("\n");
+
+	//Start parsing
+	while(fgets(line, LINESIZE, programFile)) {
+		
+		//deletes the \n character from the line
+		line[strlen(line) - 2] = '\0';
+		
+		//set token equal to line, so that we can modify it
+		token = strdup(line);
+		printf("ADDRESS #%d : %s\n", address, token);
+		
+		//first split of the line
+		token = strtok(token, " ");
+		
+		while(token) {
+			//if the token is equal to a tab, increment the pointer up to eliminate it
+			if (token[0] == '\t') token++;
+			printf("\"%s\" ", token);
+			
+			//next token
+			token = strtok(NULL, " ");
+		}
+		
+		address++;
+		printf("\n\n");
+		
+	}
 	
 	//Close opened files and print done
 	fclose(instructionSetFile);

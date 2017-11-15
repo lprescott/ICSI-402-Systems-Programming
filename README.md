@@ -1,9 +1,5 @@
 # ICSI-402-Systems-Programming
 
-##### In class on Sep. 26th, our professor stated that extra credit can be given if we time our programs execution.
-
-#https://hangouts.google.com/call/OS9LileLObM-UWqJR3H4AAEE
-
 #### Programming Assignments: 
 There will be five (5) programming assignments. These assignments
 must be done using the machines provided by the Information Technology Services (ITS)
@@ -53,8 +49,6 @@ thoroughly (e.g., by preparing additional input data sets) before the program is
 possible for the Instructor to identify or fix the bugs in the submitted version of your program.
 
 ### Assignment 1:
-[Assignment Here](https://github.com/lprescott/ICSI-402-Systems-Programming/blob/master/Assignment%201/prog1.pdf)
-
 ### Assignment 2:
 #### TODO:
 - [x] Verify does not have complete functionality (specifically, # of bytes missing)
@@ -66,14 +60,19 @@ possible for the Instructor to identify or fix the bugs in the submitted version
 
 ### Assignment 3:
 #### TODO:
-- [ ] Delete "invid.txt" or related output text file (This is rob saying this, it messes up the program)
-- [ ] Complete case for same file name in subdirectory
-- [ ] Complete comments
-- [ ] Testing
-- [ ] Refactoring
+- [x ] Delete "invid.txt" or related output text file (This is rob saying this, it messes up the program)
+- [x] Complete case for same file name in subdirectory
+- [x] Complete comments
+- [x] Testing
+- [x] Refactoring
 
 ### Assignment 4:
-TBD
+#### TODO:
+- [] ask professor whether output for hash table needs to be in sorted order
+- [] making sure every file is properly commented
+- [] Refactoring
+- [] testing with addditional examples of SIC/XE code
+
 
 ### Assignment 5:
 TBD

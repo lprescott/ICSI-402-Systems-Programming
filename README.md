@@ -60,7 +60,7 @@ possible for the Instructor to identify or fix the bugs in the submitted version
 
 ### Assignment 3:
 #### TODO:
-- [x ] Delete "invid.txt" or related output text file (This is rob saying this, it messes up the program)
+- [x] Delete "invid.txt" or related output text file (This is rob saying this, it messes up the program)
 - [x] Complete case for same file name in subdirectory
 - [x] Complete comments
 - [x] Testing
@@ -68,10 +68,11 @@ possible for the Instructor to identify or fix the bugs in the submitted version
 
 ### Assignment 4:
 #### TODO:
-- [] ask professor whether output for hash table needs to be in sorted order
-- [] making sure every file is properly commented
-- [] Refactoring
-- [] testing with addditional examples of SIC/XE code
+- [x] ask professor whether output for hash table needs to be in sorted order
+- [x] making sure every file is properly commented
+- [x] Refactoring
+- [x] testing with addditional examples of SIC/XE code
+- [x] delete functiosn for BST and Hash Table (freeing memory at the end)
 
 
 ### Assignment 5:

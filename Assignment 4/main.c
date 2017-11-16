@@ -46,10 +46,10 @@ int main( int argc, char *argv[] )  {
 	}
 	else{
 		//Print out supplied arguments
-		printf("\nfirstpass has been called.\n");
-		printf("The supplied instructionset filename: \"%s\".\n", argv[1]);
-		printf("The supplied programfile filename: \"%s\".\n", argv[2]);
-		printf("The supplied hashtablesize: %s.\n", argv[3]);
+		//printf("\nfirstpass has been called.\n");
+		//printf("The supplied instructionset filename: \"%s\".\n", argv[1]);
+		//printf("The supplied programfile filename: \"%s\".\n", argv[2]);
+		//printf("The supplied hashtablesize: %s.\n", argv[3]);
 	}
 	
 	//Check if the supplied hashtablesize is not a number
@@ -101,7 +101,7 @@ int main( int argc, char *argv[] )  {
         	exit(1);
 	}
 
-	printf("\n");
+	//printf("\n");
 	//Parse line by line, inserting into BST
  	while (fgets(line, LINESIZE, instructionSetFile)) {
 		tempNode = NULL; //Set the tempNode to NULL at every loop
@@ -138,7 +138,7 @@ int main( int argc, char *argv[] )  {
 	}
 
 	//Print the BST (in-order)
-	printf("\n");
+	//printf("\n");
 	printInOrder(head);
 	printf("\b\b \n");
 	
@@ -152,7 +152,7 @@ int main( int argc, char *argv[] )  {
     		exit(1);
 	}
 	
-	printf("\n"); //newline
+	//printf("\n"); //newline
 	hashInstruction[0] = '\0'; //makes sure this instruction is empty
 	
 	//Start parsing
@@ -239,13 +239,14 @@ int main( int argc, char *argv[] )  {
 				//printf("Reserving n WORD bytes\n");
 			}
 				
-		} else {
+		} 
+		else {
 			address += (int) searchFormatBST(head, hashInstruction);
 		}
 		//Erase the hashInstruction and symbol
 		hashInstruction[0] = '\0';
 		symbol[0] = '\0';
-		printf("\n\n");		
+		//printf("\n\n");		
 	}
 
 	//print the hashtable
@@ -260,5 +261,5 @@ int main( int argc, char *argv[] )  {
 	deleteHashTable(hashTableSize, hashTable);
 
 	//print Done
-	printf("\nDone.\n");
+	//printf("\nDone.\n");
 }

@@ -178,5 +178,19 @@ int maxHeight(instructionSet * currentNode) {
 	else {
 		return (rightHeight + 1);
 	}
-	
 }
+
+/*
+	The deleteBST function returns nothing. It takes a pointer to the head node of a binary search tree as its only
+	parameter. It recursively traverses the tree, freeing the allocated memory.
+*/
+void deleteBST(instructionSet * headNode){
+	//Check if the supplied node is NULL
+	if(headNode != NULL){
+		//Recursively call deleteBST on the supplied node's left and right subtree
+		deleteBST(headNode->left);
+		deleteBST(headNode->right);
+		//printf("\nDeleted: %s from BST.\n", headNode->instruction);
+		free(headNode); //call free on the current node
+	}
+} //end deleteBST

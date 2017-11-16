@@ -58,20 +58,29 @@ int main( int argc, char *argv[] )  {
 	hashTableSize = atoi(argv[3]);
 	hashNode * hashTable[hashTableSize];
 	
-	int i = 0;
+	//Initialize every index in the hashTable to NULL
+	int i = 0; //counter for the initialization loop
 	for (i = 0; i < hashTableSize; i++) {
 		hashTable[i] = NULL;
 	}
 	
 	//Check if the instructionset file doesn't exists or is unreadable
-	if(fileExistsAndReadable(argv[1])==0){
-		fprintf(stderr, "\nThe supplied instructionset filename, \"%s\", cannot be opened or cannot be read.\nExiting...\n", argv[1]);
+	if(fileExists(argv[1])==0){
+		fprintf(stderr, "\nThe supplied instructionset filename, \"%s\", does not exist.\nExiting...\n", argv[1]);
+		exit(-1);
+	}
+	if(fileReadable(argv[1])==0){
+		fprintf(stderr, "\nThe supplied instructionset filename, \"%s\", cannot be read.\nExiting...\n", argv[1]);
 		exit(-1);
 	}
 
 	//Check if the programfile file doesn't exists or is unreadable
-	if(fileExistsAndReadable(argv[2])==0){
-		fprintf(stderr, "\nThe supplied programfile filename, \"%s\", cannot be opened or cannot be read.\nExiting...\n", argv[2]);
+	if(fileExists(argv[2])==0){
+		fprintf(stderr, "\nThe supplied programfile filename, \"%s\", does not exist.\nExiting...\n", argv[2]);
+		exit(-1);
+	}
+	if(fileReadable(argv[2])==0){
+		fprintf(stderr, "\nThe supplied programfile filename, \"%s\", cannot be read.\nExiting...\n", argv[2]);
 		exit(-1);
 	}
 

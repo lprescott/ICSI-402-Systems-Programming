@@ -247,7 +247,14 @@ int main( int argc, char *argv[] )  {
 
 	printHashTable(hashTableSize, hashTable);
 	
-	//Close opened files and print done
+	//Close opened files
 	fclose(instructionSetFile);
+	fcloes(programFile);
+
+	//Delete the used BST and hashTable
+	deleteBST(head);
+	deleteHashTable(hashTableSize, hashTable);
+
+	//print Done
 	printf("\nDone.\n");
 }

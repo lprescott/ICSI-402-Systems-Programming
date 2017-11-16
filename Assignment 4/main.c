@@ -27,6 +27,8 @@ Each line is represented in the form: index: listNode1 → listNode2 →···�
 
 //Constants
 #define LINESIZE 100
+#define WORD 3
+#define BYTE 1
 
 //main method
 int main( int argc, char *argv[] )  {
@@ -45,6 +47,8 @@ int main( int argc, char *argv[] )  {
 	char hashInstruction[6]; //The buffer for the Instruction to be used in the searchFunctionBST
 	char symbol[11]; //the symbol buffer to be inserted into the hash table.
 	hashNode * tempHashNode; //The node we assign the symbol and address to to add to the hash table.
+	char * potentialReserveSize; //A char * to hold the potential size of the bytes/words reserved in the program file.
+	int reserveSize; //The reserve size (to be converted from potentialReserveSize)
 	
 	//Check number of arguments
 	if(argc < 4){
@@ -198,6 +202,11 @@ int main( int argc, char *argv[] )  {
 				strcpy(hashInstruction, token);
 			} else if ((counter % 2 == 0) && hashInstruction[0] == '\0') {
 				strcpy(hashInstruction, token);
+			} 
+			
+			//Saves a POTENTIAL reserve size
+			if ((counter % 3 == 0)) {
+				potentialReserveSize = strdup(token);
 			}
 			
 			//printf("\"%s\" ", token);
@@ -218,7 +227,31 @@ int main( int argc, char *argv[] )  {
 		}
 		
 		if ((int) searchFormatBST(head, hashInstruction) == 0) {
-			address++;
+			
+			//If it is word, then we increment the address by WORD
+			if (strcmp(hashInstruction, "word") == 0) {
+				address += WORD;
+				printf("\tReserving WORD bytes\n");
+			} 
+			//If it is resb, then we increment the address by reserveSize BYTEs
+			else if (strcmp(hashInstruction, "resb") == 0) {
+				if ((reserveSize = atoi(potentialReserveSize)) == 0) {
+					fprintf(stderr, "\nReserve size isn't a number.\n exiting...\n");
+					exit(-1);
+				}
+				address += reserveSize * BYTE;
+				printf("Reserving n BYTE bytes\n");
+			} 
+			//If it is resw, then we increment the address by reserveSize WORDSs
+			else if (strcmp(hashInstruction, "resw") == 0) {
+				if ((reserveSize = atoi(potentialReserveSize)) == 0) {
+					fprintf(stderr, "\nReserve size isn't a number.\n exiting...\n");
+					exit(-1);
+				}
+				address += reserveSize * WORD;
+				printf("Reserving n WORD bytes\n");
+			}
+				
 		} else {
 			address += (int) searchFormatBST(head, hashInstruction);
 		}

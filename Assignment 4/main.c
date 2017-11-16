@@ -148,13 +148,12 @@ int main( int argc, char *argv[] )  {
 	//Open program file
 	programFile = fopen(argv[2], "r");
 	if(programFile == NULL){
-    	fprintf(stderr, "Could not allocate memory for programFile.\nExiting...\n");
-    	exit(1);
+    		fprintf(stderr, "Could not allocate memory for programFile.\nExiting...\n");
+    		exit(1);
 	}
 	
-	printf("\n");
-
-	hashInstruction[0] = '\0';
+	printf("\n"); //newline
+	hashInstruction[0] = '\0'; //makes sure this instruction is empty
 	
 	//Start parsing
 	while(fgets(line, LINESIZE, programFile)) {
@@ -164,7 +163,7 @@ int main( int argc, char *argv[] )  {
 		
 		//set token equal to line, so that we can modify it
 		token = strdup(line);
-		printf("ADDRESS #%d : %s\n", address, token);
+		//printf("ADDRESS #%d : %s\n", address, token);
 		
 		//first split of the line
 		token = strtok(token, " ");
@@ -185,7 +184,8 @@ int main( int argc, char *argv[] )  {
 				//printf("\nThere's a tab\n");
 				token++;
 				strcpy(hashInstruction, token);
-			} else if ((counter % 2 == 0) && hashInstruction[0] == '\0') {
+			} 
+			else if ((counter % 2 == 0) && hashInstruction[0] == '\0') {
 				strcpy(hashInstruction, token);
 			} 
 			
@@ -204,19 +204,21 @@ int main( int argc, char *argv[] )  {
 		if (symbol[0] != '\0') {
 			//create new node here
 			tempHashNode = newHashNode(symbol, address);
-			printf("Symbol : \"%s\", Address : %d\n", tempHashNode->symbol, tempHashNode->address); fflush(stdout);
+			//printf("Symbol : \"%s\", Address : %d\n", tempHashNode->symbol, tempHashNode->address); fflush(stdout);
 			//insert into the hash function here
 			int hashIndex = hashFunction(tempHashNode->symbol, hashTableSize);
-			printf("Has index = %d\n", hashIndex);
+			//printf("Has index = %d\n", hashIndex);
+			//Insert into the hashTable at the calculated index
 			insertHash(&hashTable[hashIndex], tempHashNode);
 		}
 		
+		//If the BST does not contain the supplied hashInstruction
 		if ((int) searchFormatBST(head, hashInstruction) == 0) {
 			
 			//If it is word, then we increment the address by WORD
 			if (strcmp(hashInstruction, "word") == 0) {
 				address += WORD;
-				printf("\tReserving WORD bytes\n");
+				//printf("\tReserving WORD bytes\n");
 			} 
 			//If it is resb, then we increment the address by reserveSize BYTEs
 			else if (strcmp(hashInstruction, "resb") == 0) {
@@ -225,7 +227,7 @@ int main( int argc, char *argv[] )  {
 					exit(-1);
 				}
 				address += reserveSize * BYTE;
-				printf("Reserving n BYTE bytes\n");
+				//printf("Reserving n BYTE bytes\n");
 			} 
 			//If it is resw, then we increment the address by reserveSize WORDSs
 			else if (strcmp(hashInstruction, "resw") == 0) {
@@ -234,17 +236,19 @@ int main( int argc, char *argv[] )  {
 					exit(-1);
 				}
 				address += reserveSize * WORD;
-				printf("Reserving n WORD bytes\n");
+				//printf("Reserving n WORD bytes\n");
 			}
 				
 		} else {
 			address += (int) searchFormatBST(head, hashInstruction);
 		}
+		//Erase the hashInstruction and symbol
 		hashInstruction[0] = '\0';
 		symbol[0] = '\0';
 		printf("\n\n");		
 	}
 
+	//print the hashtable
 	printHashTable(hashTableSize, hashTable);
 	
 	//Close opened files

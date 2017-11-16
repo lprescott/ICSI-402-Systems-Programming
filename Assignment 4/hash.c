@@ -61,12 +61,12 @@ void insertHash(hashNode ** head, hashNode * newNode) {
 	
 	//if head == NULL set head = to new node
 	if ((*head) == NULL) {
-		printf("\t\tHead is null...\n"); fflush(stdout);
+		//printf("\t\tHead is null...\n"); fflush(stdout);
 		*head = newNode;
 		return;
 	}
 	
-	printf("\t\thead is not null...\n"); fflush(stdout);
+	//printf("\t\thead is not null...\n"); fflush(stdout);
 	//If head is not null, insert head at the end of the list
 	current = (*head);
 	while (current != NULL) {
@@ -76,7 +76,7 @@ void insertHash(hashNode ** head, hashNode * newNode) {
 		prev = current;
 		current = current->next;
 	}
-	printf("\t\tHit end...\n"); fflush(stdout);
+	//printf("\t\tHit end...\n"); fflush(stdout);
 	prev->next = newNode;
 	
 }

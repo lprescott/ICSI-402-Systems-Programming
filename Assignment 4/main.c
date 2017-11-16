@@ -1,26 +1,11 @@
-//Project: 	Prog4
-//Names:   	Luke Prescott, Rob Rose, Tommy Li (lprescott@albany.edu, rwrose@albany.edu, tli3@albany.edu)
-//			(001252879, 001247373, 001209184)
-//Roles:   	Leader, Monitor, Recorder Respectively
-//Date:    	11/15/2017
-//Course:  	ICSI 402
-/*Desc:    the main functions,contains basic error checking that checks if the correct number of arguments are supplied. It also checks if 
-any file names that are supplied whether the files exists and if it is readable. 
-*/
+//1. A C source file with just the main function.
 
-/*Output: the outputs for the main file include the in-order traversal of the BST. 
-In each node, the instruction names are outputted, for the example opcode. The height of the BST is also printed out, the height of the BST
-is considered to be the longest path starting from the root to the deepest node. 
-The last thing that is outputted is the contents of the hash table, that contains one array element per line. 
-Each element is a list of nodes at that specified index and each node displays the symbol and LC value. 
-Each line is represented in the form: index: listNode1 → listNode2 →···→ listNodeN → NULL.   
-*/
-//standard c libraries
+//included libraries
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-//included external header files containing prototypes for the corresponding function
+//included headers
 #include "other.h"
 #include "BSTheaders.h"
 #include "hashHeaders.h"
@@ -264,10 +249,5 @@ int main( int argc, char *argv[] )  {
 	
 	//Close opened files and print done
 	fclose(instructionSetFile);
-
-	//Delete the used BST and hashTable
-	deleteBST(head);
-	deleteHashTable(hashTableSize, hashTable);
-
 	printf("\nDone.\n");
 }

@@ -254,7 +254,7 @@ int main( int argc, char *argv[] )  {
 	
 	//Close opened files
 	fclose(instructionSetFile);
-	fcloes(programFile);
+	fclose(programFile);
 
 	//Delete the used BST and hashTable
 	deleteBST(head);

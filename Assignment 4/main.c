@@ -168,7 +168,7 @@ int main( int argc, char *argv[] )  {
 		} 
 		//else maxheight the returned value of maxHeight()
 		else {
-			maxheight = maxHeight(head) + 1;
+			maxheight = maxHeight(head);
 		}
 	}
 	printf("\nMax Height: \"%d\"\n", maxheight);

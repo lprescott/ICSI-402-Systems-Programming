@@ -1,9 +1,13 @@
-/*
-6. The C file hashFunction.c which is provided on Blackboard, and already contains a
-	hash function.
+//Project: 	Prog4
+//Names:   	Luke Prescott, Rob Rose, Tommy Li (lprescott@albany.edu, rwrose@albany.edu, tli3@albany.edu)
+//			(001252879, 001247373, 001209184)
+//Roles:   	Leader, Monitor, Recorder Respectively
+//Date:    	11/15/2017
+//Course:  	ICSI 402
+/*Desc:    this file contains the function hashFunction that corresponds with the hash table.
 */
-
 //included header
+
 #include "hashHeaders.h"
 
 /*Hash Function*/

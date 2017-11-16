@@ -1,5 +1,15 @@
 //1. A C source file with just the main function.
 
+//Project: 	Prog4
+//Names:   	Luke Prescott, Rob Rose, Tommy Li (lprescott@albany.edu, rwrose@albany.edu, tli3@albany.edu)
+//			(001252879, 001247373, 001209184)
+//Roles:   	Leader, Monitor, Recorder Respectively
+//Date:    	11/15/2017
+//Course:  	ICSI 402
+/*Desc:    the main functions,contains basic error checking that checks if the correct number of arguments are supplied. It also checks if 
+any file names that are supplied whether the files exists and if it is readable. 
+*/
+
 //included libraries
 #include <stdio.h>
 #include <stdlib.h>

@@ -110,3 +110,31 @@ void printHashTable(int size, hashNode * hashTable[]){
         }
     }
 }
+
+/*
+The deleteHashTable function returns nothing. It accepts the size of the hashNode array and supplied hashNode array.
+The function loops through the array and each index (linked list), freeing all allocated memory.
+*/
+void deleteHashTable(int size, hashNode * hashTable[]){
+    int i = 0; //A count for the loop on the array
+    for(i; i < size; i++){
+        if(hashTable[i] == NULL){
+            //The linked list is empty
+            continue;
+        }
+        else{
+            //The linked list is not empty
+            hashNode * tempNode; //a tempNode used for traversal
+            hashNode * previous; //a previous node used for freeing
+            tempNode = hashTable[i]; //assign the tempNode to the current head of the linked list at index i
+            //loop through and print the enture linked list
+            while(tempNode != NULL){
+                //Assign nodes (traverse)
+                previous = tempNode;
+                tempNode = tempNode->next;
+                //printf("\nDeleted: %s.\n", previous->symbol);
+                free(previous); //Free the previous node 
+            }
+        }
+    }
+}

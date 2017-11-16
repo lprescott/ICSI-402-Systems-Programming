@@ -129,21 +129,21 @@ int main( int argc, char *argv[] )  {
 		tempNode = newInstructionSet(tempInstruction, tempOpcode, tempFormat);
 
 		//print attributes of tempNode
-		printf("%s ", tempNode->instruction);
-		printf("%d ", tempNode->opcode);
-		printf("%d\n", tempNode->format);
+		///printf("%s ", tempNode->instruction);
+		///printf("%d ", tempNode->opcode);
+		///printf("%d\n", tempNode->format);
 		
 		//Insert tempNode into head
 		insertBST(&head, tempNode);
 	}
 
 	//Print the BST (in-order)
-	//printf("\n");
+	printf("In-order traversal of BST: \n");
 	printInOrder(head);
 	printf("\b\b \n");
 	
 	//Print the max height
-	printf("Max Height : \"%d\"\n", maxHeight(head));
+	printf("\nMax Height: \"%d\"\n", maxHeight(head));
 	
 	//Open program file
 	programFile = fopen(argv[2], "r");
@@ -250,7 +250,9 @@ int main( int argc, char *argv[] )  {
 	}
 
 	//print the hashtable
+	printf("\nHash Table:");
 	printHashTable(hashTableSize, hashTable);
+	printf("\n");
 	
 	//Close opened files
 	fclose(instructionSetFile);

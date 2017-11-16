@@ -153,7 +153,18 @@ int main( int argc, char *argv[] )  {
 	printf("\b\b \n");
 	
 	//Print the max height
-	printf("\nMax Height: \"%d\"\n", maxHeight(head));
+	int maxheight = 0; //The integer to store the max height of the tree
+	if (head != NULL) {
+		//if the left and right nodes of head are null, then max height is equal to null
+		if (head->left == NULL && head->right == NULL) {
+			maxheight = 0;
+		} 
+		//else maxheight the returned value of maxHeight()
+		else {
+			maxheight = maxHeight(head) + 1;
+		}
+	}
+	printf("\nMax Height: \"%d\"\n", maxheight);
 	
 	//Open program file
 	programFile = fopen(argv[2], "r");

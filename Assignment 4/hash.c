@@ -54,7 +54,7 @@ it inserts symbols into the array of linked lists.
 */
 void insertHash(hashNode ** head, hashNode * newNode) {
 	//prints the symbol that in being attempted to be inserted in newNode
-	printf("\tAttempting insert on symbol : \"%s\"\n", newNode->symbol); fflush(stdout);
+	//printf("\tAttempting insert on symbol : \"%s\"\n", newNode->symbol); fflush(stdout);
 	//pointers for current and previous
 	hashNode * current;
 	hashNode * prev;

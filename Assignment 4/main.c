@@ -264,5 +264,10 @@ int main( int argc, char *argv[] )  {
 	
 	//Close opened files and print done
 	fclose(instructionSetFile);
+
+	//Delete the used BST and hashTable
+	deleteBST(head);
+	deleteHashTable(hashTableSize, hashTable);
+
 	printf("\nDone.\n");
 }

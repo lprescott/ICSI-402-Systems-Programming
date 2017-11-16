@@ -1,11 +1,26 @@
-//5. A C source file containing implemented functions that correspond to the prototypes in hashHeaders.h.
+//Project: 	Prog4
+//Names:   	Luke Prescott, Rob Rose, Tommy Li (lprescott@albany.edu, rwrose@albany.edu, tli3@albany.edu)
+//			(001252879, 001247373, 001209184)
+//Roles:   	Leader, Monitor, Recorder Respectively
+//Date:    	11/15/2017
+//Course:  	ICSI 402
+/*Desc:    this file contains the implemented functions that correspond to the prototypes in hashHeaders
+it contains the following functions newHashNode, insertHash, printHashTable
+*/
+/*Output: the output for the functions associated with the hash table include 
+the contents of the hash table, in the form of one array element per line.
+Each array element is represented as a list of nodes at the specified index and each node displays the symbol and LC value.
+Each line specified in the form:  index: listNode1 → listNode2 → · · · → listNodeN → NULL.
+*/
 
-//included libaries
+
+
+//standard c libraries
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 
-//included headers
+//include external header files containing the prototypes for the corresponding functions in this file
 #include "hashHeaders.h"
 
 /*
@@ -34,7 +49,11 @@ hashNode * newHashNode(char symbol[11], int address){
     return newHashNode;
 }
 
+/* the insertHash function takes parameters of of head and newNode that are pointers to the hashNode struct
+it inserts symbols into the array of linked lists.
+*/
 void insertHash(hashNode ** head, hashNode * newNode) {
+	//prints the symbol that in being attempted to be inserted in newNode
 	printf("\tAttempting insert on symbol : \"%s\"\n", newNode->symbol); fflush(stdout);
 	//pointers for current and previous
 	hashNode * current;
@@ -82,10 +101,10 @@ void printHashTable(int size, hashNode * hashTable[]){
             printf("\n%d: ", i);
             hashNode * tempNode; //a tempNode used for traversal
             tempNode = hashTable[i]; //assign the tempNode to the current head of the linked list at index i
-            //loop through and print the enture linked list
+            //loop through and print the entire linked list
             while(tempNode != NULL){
                 printf("%s - %d → ", tempNode->symbol, tempNode->address);
-                tempNode = tempNode->next;
+                tempNode = tempNode->next;// assigns tempNode equal to a pointer to the next of tempNode
             }
             printf("NULL");
         }

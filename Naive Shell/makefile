@@ -7,4 +7,4 @@ shell: $(OBJECTS)
 %.o: %.c
 	$(CC) $(CFLAGS) -c $<
 clean:
--rm $(OBJECTS) shell
+	-rm $(OBJECTS) shell

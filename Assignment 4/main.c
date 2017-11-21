@@ -187,7 +187,7 @@ int main( int argc, char *argv[] )  {
 	while(fgets(line, LINESIZE, programFile)) {
 		
 		//deletes the \n character from the line
-		line[strlen(line) - 2] = '\0';
+		line[strlen(line) - 1] = '\0';
 		
 		//set token equal to line, so that we can modify it
 		token = strdup(line);

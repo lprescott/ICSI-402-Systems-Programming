@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <sys/types.h>
 #include <unistd.h>
 
@@ -10,13 +11,38 @@
 
 void main() {
 	
+	char inputBuffer[1024];
 	pid_t child;
 	pid_t c;
 	int cstatus;
 	
 	if ((child = fork()) == 0) {
 		//Child
-		printf("Correct Output: \"%s\"\n", inputBuffer);
+		printf("Shell~ ");
+		scanf("%[^\n]%*c", inputBuffer);
+		
+		char * token;
+		token = strdup(inputBuffer);
+		
+		token = strtok(token, " ");
+		int argument = 0;
+		
+		while (token) {
+			
+			if (argument == 0) {
+				argument++;
+				token = strtok(NULL, " ");
+				continue;
+			}
+			
+			argument++;
+			printf("Arg %d: \"%s\"\n", argument, token);
+			token = strtok(NULL, " ");
+			
+		}
+		
+		printf("Child Terminated...\n");
+		
 		exit(1);
 		
 	}
@@ -27,11 +53,8 @@ void main() {
 			exit(-1);
 		}
 		
-		char inputBuffer[1024];
 		c = wait(cstatus);
 		
-		printf("Shell~ ");
-		scanf("%[^\n]%*c", inputBuffer);
 	}
 		
 

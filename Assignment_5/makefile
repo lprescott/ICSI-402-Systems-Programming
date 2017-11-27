@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -g
-OBJECTS = simpleshell.o
+OBJECTS = simpleshell.o input.o
 
 simpleshell: $(OBJECTS)
 	$(CC) $(CFLAGS) $(OBJECTS) -o simpleshell

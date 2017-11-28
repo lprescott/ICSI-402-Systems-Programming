@@ -1,6 +1,7 @@
 //Libraries
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 //Headers
 #include "input.h"
@@ -11,7 +12,8 @@
 int main( int argc, char *argv[] )  {
 
     //Variables
-    FILE * script;
+    FILE * script; //This pointer to a file contained a script to be executed in-order
+    char * command; //This temporary string holds one command from the shell or script
 
     if( argc == 2 ) {
         //One command line argument
@@ -33,6 +35,14 @@ int main( int argc, char *argv[] )  {
             exit(-1);   
         }
 
+        //Print for script-file
+        printf("Script-file: (w/ added newlines)\n");
+
+        //Loop to read script-file line by line
+        while((command = getLine(script)) != NULL){
+            printf("\"%s\"\n", command);
+        }
+
         //Close the script-file
         fclose(script);
     }
@@ -44,6 +54,22 @@ int main( int argc, char *argv[] )  {
     else {
         //No command line arguments
         //Start shell on command line
+        
+        //Print shell name for first command
+        printf("simpleshell$ ");
+        //Loop to read cmd-line line by line
+        while((command = getLine(stdin)) != NULL){
+            //printf("\"%s\"\n", command);
+
+            //Check if commands should quit simpleshell, then exit with (1)
+            if(strcmp(command, "quit") == 0){
+                printf("goodbye\n");
+                exit(1);
+            }
+
+            //Print shell name for next command
+            printf("simpleshell$ ");
+        }
     }
 
 } //End int main( int argc, char *argv[] )

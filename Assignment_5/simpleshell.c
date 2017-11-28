@@ -13,7 +13,8 @@ int main( int argc, char *argv[] )  {
 
     //Variables
     FILE * script; //This pointer to a file contained a script to be executed in-order
-    char * command; //This temporary string holds one command from the shell or script
+    char * commandline; //This temporary string holds one commandline from the shell or script
+    char * command; //The first word in the commandline, the command.
 
     if( argc == 2 ) {
         //One command line argument
@@ -39,8 +40,8 @@ int main( int argc, char *argv[] )  {
         printf("Script-file: (w/ added newlines)\n");
 
         //Loop to read script-file line by line
-        while((command = getLine(script)) != NULL){
-            printf("\"%s\"\n", command);
+        while((commandline = getLine(script)) != NULL){
+            printf("\"%s\"\n", commandline);
         }
 
         //Close the script-file
@@ -56,19 +57,35 @@ int main( int argc, char *argv[] )  {
         //Start shell on command line
         
         //Print shell name for first command
-        printf("simpleshell$ ");
+        printf("simpleshell:~$ ");
         //Loop to read cmd-line line by line
-        while((command = getLine(stdin)) != NULL){
-            //printf("\"%s\"\n", command);
+        while((commandline = getLine(stdin)) != NULL){
 
-            //Check if commands should quit simpleshell, then exit with (1)
+            command = strtok(commandline, " ");
+
+            //Check if command should quit simpleshell, then exit with (1)
             if(strcmp(command, "quit") == 0){
                 printf("goodbye\n");
                 exit(1);
             }
+            else if(strcmp(command, "create") == 0){
+                
+            }
+            else if(strcmp(command, "wd") == 0){
+                
+            }
+            else if(strcmp(command, "chwd") == 0){
+                
+            }
+            else if(strcmp(command, "fileconverter") == 0){
+                
+            }
+            else{
+                fprintf(stderr, "ERROR: Invalid command.\n");
+            }
 
             //Print shell name for next command
-            printf("simpleshell$ ");
+            printf("simpleshell:~$ ");
         }
     }
 

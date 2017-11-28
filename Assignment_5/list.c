@@ -41,6 +41,7 @@ command.
 #include <string.h>
 #include <dirent.h>
 #include <stdlib.h>
+#include <sys/stat.h>
 
 /*
   This function finds file size by seeking all the way to the end on the file, then telling the long
@@ -73,12 +74,16 @@ main function, takes parameters of for the number of arguments
 */
 int main( int argc, char *argv[] )  {
 
+	FILE * inputFile; //A file that is used to find the size of each file
 	char * pathName; //THe path name for the directory directory
 	char * fileName; //THe file name we use for each file to be printed
 	char * filePath; //The path to the file, used for -i flag
 	DIR * directory; //Directory pointer
 	struct dirent * ent; //File info from the directory pointer
 	int i; //for for loops
+	int inode, fd; //The innode and file descriptor, respectively
+	struct stat file_stat; //The stat structure to hold onto the stat of the file
+	mode_t bits; //The permission bits for each file
 	
 	printf("\nIn List\n\n");
 	printf("\tArguments:\n");
@@ -87,8 +92,8 @@ int main( int argc, char *argv[] )  {
 	}
 	printf("\n");
 
-// if the number of command line arguments is equal to 1, prints the arguments that are supplied
-   //First Case : only the pathname is given
+	// if the number of command line arguments is equal to 1, prints the arguments that are supplied
+	//First Case : only the pathname is given
 	if( argc == 2 ) {
 	  
 		//Duplicates the path to Pathname
@@ -147,12 +152,29 @@ int main( int argc, char *argv[] )  {
 			strcat(filePath, fileName);
 			printf("\t\tfilePath : \"%s\"\n", filePath);
 			
-			FILE * inputFile = fopen(filePath, "r"); //A file that is used to find the size of each file
 			
 			//if the name is == to "." and "..", do not print because they aren't files
 			if ((strcmp(".", fileName) != 0) && (strcmp("..", fileName) != 0)) {
-				FILE * inputFile = fopen(filePath, "r"); //A file that is used to find the size of each file
-				printf("\t%s : %ld : PERMISION NUMBER \n", fileName, fileSize(inputFile));
+				
+				inputFile = fopen(filePath, "r");
+				if (inputFile == NULL) {
+					fprintf(stderr, "\tERROR in line: Trouble opening input file.\n");
+				}
+				
+				//This is the file descriptor being opened
+				fd = open(filePath, "r");
+				int ret = fstat(fd, &file_stat);
+				
+				if (ret < 0) {
+					//error
+					fprintf(stderr, "\tERROR in list: trouble opening stat\n");
+					exit(-1);
+				}
+				
+				inode = file_stat.st_ino;
+				bits = file_stat.st_mode;
+				
+				printf("\t%s : %ld : %04o : %d\n", fileName, fileSize(inputFile), bits, inode);
 			}
 			
 			fclose(inputFile);
@@ -163,19 +185,27 @@ int main( int argc, char *argv[] )  {
 	  }
 	  //Case 3: flag is -h
 	  else if (strcmp(argv[1], "-h") == 0) {
+		//Duplicates the path name
 		pathName = strdup(argv[2]);
 	  
 		printf("\tThe Pathname \"%s\"\n", pathName); 
+		
+		//Opens Directory and checks to see if the directory is null
 		directory = opendir(pathName);
 		if (directory == NULL) {
 			fprintf(stderr, "\tERROR in list: Directory can't be opened.\n Exiting...\n");
 			exit(-1);
 		}
 		
+		//While ent != null get the name and then print
 		while ((ent = readdir(directory)) != NULL) {
 			fileName = strdup(ent->d_name);
+			//If the fileName == . or .., do not print
 			if ((strcmp(".", fileName) != 0) && (strcmp("..", fileName) != 0)) {
-				printf("\t%s\n", fileName);
+				//print only if the first character of filename is a .
+				if (fileName[0] == '.') {
+					printf("\t%s\n", fileName);
+				}
 			}
 		}
 		

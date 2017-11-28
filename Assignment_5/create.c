@@ -43,7 +43,7 @@ main function, takes parameters of for the number of arguments
 */
 int main( int argc, char *argv[] )  {
 
-   // if the number of command line arguments is equal to 1, prints the argumented that is supplied
+   // if the number of command line arguments is equal to 1, prints the arguments that are supplied
    if( argc == 2 ) {
       printf("The argument supplied is %s\n", argv[1]);
    }

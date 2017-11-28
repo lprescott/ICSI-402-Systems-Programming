@@ -30,12 +30,14 @@ int main( int argc, char *argv[] )  {
 	    	exit(-1);
         }
         
+		addNewLine(argv[1]);
+		
         //Open the script-file (and check if fopen returns NULL)
         if ((script = fopen(argv[1], "r")) == NULL){
             fprintf(stderr, "Could not allocate memory for \"%s\".\nExiting...\n", argv[1]);
             exit(-1);   
         }
-
+		
         //Loop to read script-file line by line
 		while((commandline = getLine(script)) != NULL){
             printf("\tCommandLine : \"%s\"\n", commandline);

@@ -79,7 +79,7 @@ void callCommands(int file, char * commandline) {
     char * command; //The first word in the commandline, the command.
     char ** arguments; //A list of string arguments passed to the shell
 
-    if ((commandline[0] == '\0') || (commandline[0] == ' ')){   
+    if (commandline[0] == '\0'){   
 
         fprintf(stderr, "ERROR: Empty command.\n");
 
@@ -224,3 +224,20 @@ void executeFile(char * command, char * commandline){
 
     }
 } //End void executeFile(char * command, char * commandline)
+
+//Adds New Line character '\n' to the end of a file if it is not there.
+void addNewLine(char * fileName) {
+	
+	FILE * newFile = fopen(fileName, "a+");
+	char test;
+	
+	fseek(newFile, -1, SEEK_END);
+	
+	if ((test = fgetc(newFile)) != '\n') {
+		printf("\t\tNo NewLine, %c\n", test);
+		fseek(newFile, 0, SEEK_END);
+		fputc('\n', newFile);
+	}
+	fclose(newFile);
+	
+}

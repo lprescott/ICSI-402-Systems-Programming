@@ -38,23 +38,157 @@ command.
 
 //standard c libraries
 #include <stdio.h>
+#include <string.h>
+#include <dirent.h>
+#include <stdlib.h>
+
+/*
+  This function finds file size by seeking all the way to the end on the file, then telling the long
+  position the position of the end character. This position is the size of the file in bytes. It only takes,
+  one argument, which is the FILE type needed to point to.
+  
+  Trouble with makefile, put here until we can resolve it.
+*/
+long fileSize(FILE * file) {
+    //Position: the variable to be returned, and the position of the end character.S
+    long position;
+
+	// if it is null, and error is printed and terminates
+    if (file == NULL){
+        fprintf(stderr, "Error opening file.\n");
+        return(-1);
+    }
+
+    fseek(file, 0, SEEK_END);// sets the file position of the stream to the given offset
+
+    position = ftell(file);// ftell returns the current file postion of the given stream, and that is the value of position.
+
+    rewind(file);// returns to the beginning of the file
+
+    return position;// returns the position of the file offset
+}
 
 /*
 main function, takes parameters of for the number of arguments
 */
 int main( int argc, char *argv[] )  {
+
+	char * pathName; //THe path name for the directory directory
+	char * fileName; //THe file name we use for each file to be printed
+	char * filePath; //The path to the file, used for -i flag
+	DIR * directory; //Directory pointer
+	struct dirent * ent; //File info from the directory pointer
+	int i; //for for loops
 	
+	printf("\nIn List\n\n");
+	printf("\tArguments:\n");
+	for (i = 0; i < argc; i++) {
+		printf("\t\tArg %d : \"%s\"\n", i, argv[i]); fflush(stdout);
+	}
+	printf("\n");
+
 // if the number of command line arguments is equal to 1, prints the arguments that are supplied
-   if( argc == 2 ) {
-      printf("The argument supplied is %s\n", argv[1]);
-   }
+   //First Case : only the pathname is given
+	if( argc == 2 ) {
+	  
+		//Duplicates the path to Pathname
+		pathName = strdup(argv[1]);
+		
+		
+		printf("\tThe Pathname \"%s\"\n", pathName); 
+		
+		//Opens directory, and checks if valid
+		directory = opendir(pathName);
+		if (directory == NULL) {
+			fprintf(stderr, "\tERROR in list: Directory can't be opened.\n Exiting...\n");
+			exit(-1);
+		}
+		
+		//While each dirent struct read from directory != null, it prints the name
+		while ((ent = readdir(directory)) != NULL) {
+			fileName = strdup(ent->d_name);
+			//if the name is == to "." and "..", do not print because they aren't files
+			if ((strcmp(".", fileName) != 0) && (strcmp("..", fileName) != 0)) {
+				printf("\t%s\n", fileName);
+			}
+		}
+		
+		//Close
+		closedir(directory);
+		
+	}
    
    // if the number of command line arguments is greater than 1, prints to many arguments are supplied
-   else if( argc > 2 ) {
-      printf("Too many arguments supplied.\n");
+   else if( argc = 3 ) {
+      //Case 2: flag is -i
+	  if (strcmp(argv[1], "-i") == 0) {
+		//Duplicate Pathname
+		pathName = strdup(argv[2]);
+		
+		
+		printf("\tThe Pathname \"%s\"\n", pathName); 
+		
+		//Open Directory and checks if it can be read
+		directory = opendir(pathName);
+		if (directory == NULL) {
+			fprintf(stderr, "\tERROR in list: Directory can't be opened.\n Exiting...\n");
+			exit(-1);
+		}
+		
+		//While each dirent struct read from directory != null, it prints the name
+		while ((ent = readdir(directory)) != NULL) {
+			
+			//Duplicates ent->name into FileName
+			fileName = strdup(ent->d_name);
+			
+			//The next four lines create the file path so that inputFile can be opened
+			filePath = strdup(pathName);
+			strcat(filePath, "/");
+			strcat(filePath, fileName);
+			printf("\t\tfilePath : \"%s\"\n", filePath);
+			
+			FILE * inputFile = fopen(filePath, "r"); //A file that is used to find the size of each file
+			
+			//if the name is == to "." and "..", do not print because they aren't files
+			if ((strcmp(".", fileName) != 0) && (strcmp("..", fileName) != 0)) {
+				FILE * inputFile = fopen(filePath, "r"); //A file that is used to find the size of each file
+				printf("\t%s : %ld : PERMISION NUMBER \n", fileName, fileSize(inputFile));
+			}
+			
+			fclose(inputFile);
+			
+		}
+		
+		closedir(directory);
+	  }
+	  //Case 3: flag is -h
+	  else if (strcmp(argv[1], "-h") == 0) {
+		pathName = strdup(argv[2]);
+	  
+		printf("\tThe Pathname \"%s\"\n", pathName); 
+		directory = opendir(pathName);
+		if (directory == NULL) {
+			fprintf(stderr, "\tERROR in list: Directory can't be opened.\n Exiting...\n");
+			exit(-1);
+		}
+		
+		while ((ent = readdir(directory)) != NULL) {
+			fileName = strdup(ent->d_name);
+			if ((strcmp(".", fileName) != 0) && (strcmp("..", fileName) != 0)) {
+				printf("\t%s\n", fileName);
+			}
+		}
+		
+		closedir(directory);
+	  
+	  }
+	  
+	  
    }
    // if the no arguments are supplied, it will print out that is expects an argument.
    else {
-      printf("One argument expected.\n");
+      printf("\t\tOne argument expected.\n");
    }
+
+   printf("\n");
 }

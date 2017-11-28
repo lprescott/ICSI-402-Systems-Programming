@@ -5,6 +5,7 @@
 
 //Headers
 #include "input.h"
+#include "shellFunctions.h"
 
 /*
 

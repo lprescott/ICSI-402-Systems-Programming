@@ -139,9 +139,10 @@ char ** createArgList(int numArgs, char * command, char * commandline){
     const char s[2] = " ";
     char * token; int pos = 0;
     char ** argList = malloc((numArgs + 1) * sizeof(char *));
-   
-    token = strtok(commandline, s);
-   
+	
+	token = strtok(commandline, s);
+	
+	
     while( token != NULL ) {
 
         argList[pos] = malloc(strlen(token) + 1 * sizeof(char));
@@ -149,9 +150,11 @@ char ** createArgList(int numArgs, char * command, char * commandline){
    
         pos ++;
         token = strtok(NULL, s);  
-    }
-    argList[pos] = "\0";
-
+    
+	}
+    
+	argList[pos] = NULL;
+	
     return argList;
 
 } //End char ** createArgList(char * commandline)
@@ -198,7 +201,7 @@ void executeFile(char * command, char * commandline){
 
         //Loop to free the mem of the list of args (and print)
         int i = 0;
-        for(i = 0; i < (numArgs + 1); i++)
+        for(i = 0; i < numArgs; i++)
         {
             //(print) the free
             printf("%d \"%s\"\n", i, argList[i]);

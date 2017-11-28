@@ -47,6 +47,8 @@ char * getLine(FILE * stream){
 
 } //End char* getLine(FILE * stream)
 
+//Helper functions below this point
+
 /*
 	This function returns a 1 if the supplied file name exists  by using the access function. 
 	If the supplied file name does not exist, the function returns 0.
@@ -131,6 +133,23 @@ void callCommands(int file, char * commandline) {
 */
 char ** createArgList(int numArgs, char * command, char * commandline){
 
+    const char s[2] = " ";
+    char * token; int pos = 0;
+    char ** argList = malloc(numArgs * sizeof(char *));
+   
+    token = strtok(commandline, s);
+   
+    while( token != NULL ) {
+
+        argList[pos] = malloc(strlen(token) + 1 * sizeof(char));
+        strcpy(argList[pos], token);
+   
+        pos ++;
+        token = strtok(NULL, s);  
+    }
+    
+    return argList;
+
 } //End char ** createArgList(char * commandline)
 
 /*
@@ -172,6 +191,15 @@ void executeFile(char * command, char * commandline){
 
         //Call list program
         //execvp(argList[0], argList);
+
+        //Loop to free the mem of the list of args
+        int i = 0;
+        for(i = 0; i < numArgs; i++)
+        {
+            //(print) the free
+            printf("%d \"%s\"\n", i, argList[i]);
+            free(argList[i]);
+        }
 
         //If the child process reaches this point, execvp failed
         fprintf(stderr, "Child process could not execute execvp.\n");

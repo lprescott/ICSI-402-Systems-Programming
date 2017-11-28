@@ -72,11 +72,13 @@ possible for the Instructor to identify or fix the bugs in the submitted version
 - [x] making sure every file is properly commented
 - [x] Refactoring
 - [x] testing with addditional examples of SIC/XE code
-- [x] delete functiosn for BST and Hash Table (freeing memory at the end)
+- [x] delete function for BST and Hash Table (freeing memory at the end)
 
 
 ### Assignment 5:
-TBD
+#### TODO:
+- [] fix issue about about new line character at end of file.
+- [] 
 
 #### Programming Style Guide:
 https://www.cs.siue.edu/programming-style-guide

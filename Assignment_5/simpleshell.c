@@ -37,8 +37,10 @@ int main( int argc, char *argv[] )  {
         }
 
         //Loop to read script-file line by line
-        while((commandline = getLine(script)) != NULL){
-            callCommands(1, commandline);
+		while((commandline = getLine(script)) != NULL){
+            printf("\tCommandLine : \"%s\"\n", commandline);
+			
+			callCommands(1, commandline);
         }
 
         //Close the script-file

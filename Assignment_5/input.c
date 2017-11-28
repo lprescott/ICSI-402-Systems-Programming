@@ -26,6 +26,8 @@ char * getLine(FILE * stream){
             line[strlen(line)-1] = '\0';
 
             //Free and return
+			printf("1. Line \"%s\"\n", line);
+			
             newLine = strdup(line);
             free(line);
             return newLine;
@@ -33,6 +35,7 @@ char * getLine(FILE * stream){
         //Otherwise, just leave it be
         else{
             //Free and return
+			printf("2. Line \"%s\"\n", line);
             newLine = strdup(line);
             free(line);
             return newLine;
@@ -190,7 +193,7 @@ void executeFile(char * command, char * commandline){
         argList = createArgList(numArgs, command, commandline);
 
         //Call program
-        //execvp(argList[0], argList);
+        execvp(argList[0], argList);
 
         //Loop to free the mem of the list of args (and print)
         int i = 0;

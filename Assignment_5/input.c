@@ -189,17 +189,20 @@ void executeFile(char * command, char * commandline){
         char ** argList;
         argList = createArgList(numArgs, command, commandline);
 
-        //Call list program
+        //Call program
         //execvp(argList[0], argList);
 
-        //Loop to free the mem of the list of args
+        //Loop to free the mem of the list of args (and print)
         int i = 0;
         for(i = 0; i < numArgs; i++)
         {
             //(print) the free
             printf("%d \"%s\"\n", i, argList[i]);
             free(argList[i]);
-        }
+        } 
+
+        //Free the list pointer
+        free(argList);
 
         //If the child process reaches this point, execvp failed
         fprintf(stderr, "Child process could not execute execvp.\n");

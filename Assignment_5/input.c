@@ -76,7 +76,7 @@ void callCommands(int file, char * commandline) {
     char * command; //The first word in the commandline, the command.
     char ** arguments; //A list of string arguments passed to the shell
 
-    if (commandline[0] == '\0'){   
+    if ((commandline[0] == '\0') || (commandline[0] == ' ')){   
 
         fprintf(stderr, "ERROR: Empty command.\n");
 

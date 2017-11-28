@@ -1,5 +1,7 @@
 #include <unistd.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #include "input.h"
 
@@ -18,8 +20,8 @@ char* getLine(FILE * stream){
     //Gets one line from stream, returning NULL if empty
     if (fgets(line, lineSize, stream)!= NULL){
         //Check if it ends with a newline, then replaces it with a terminator
-        if(line[strlen(line) - 1] = '\n'){
-            line[strlen(line) - 1] = '\0';
+        if(line[strlen(line)-1] == '\n'){
+            line[strlen(line)-1] = '\0';
 
             //Free and return
             newLine = strdup(line);

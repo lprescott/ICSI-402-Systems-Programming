@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 
 #include "input.h"
 
@@ -68,8 +70,9 @@ int fileReadable(char * filename){
 /*
 
 */
-void callCommands(int file, char * commandline){
+void callCommands(int file, char * commandline) {
     char * command; //The first word in the commandline, the command.
+    char ** arguments; //A list of string arguments passed to the shell
 
     if (commandline[0] == '\0'){   
 
@@ -91,10 +94,14 @@ void callCommands(int file, char * commandline){
         exit(1);
     }
     else if(strcmp(command, "list") == 0){
-        
+
+        //Call executeFile (which creates a child process)
+        executeFile(command, commandline);
     }
     else if(strcmp(command, "create") == 0){
-        
+                
+        //Call executeFile (which creates a child process)
+        executeFile(command, commandline);
     }
     else if(strcmp(command, "wd") == 0){
         
@@ -103,7 +110,9 @@ void callCommands(int file, char * commandline){
         
     }
     else if(strcmp(command, "fileconverter") == 0){
-        
+                
+        //Call executeFile (which creates a child process)
+        executeFile(command, commandline);
     }
     else{
         fprintf(stderr, "ERROR: Invalid command.\n");
@@ -113,4 +122,59 @@ void callCommands(int file, char * commandline){
         //Print shell name for next command
         printf("simpleshell:~$ ");
     }
-}
+
+} //End void callCommands(int file, char * commandline)
+
+/*
+
+*/
+char ** createArgList(char * command, char * commandline){
+
+} //End char ** createArgList(char * commandline)
+
+/*
+
+*/
+void executeFile(char * command, char * commandline){
+    //Variables
+    pid_t  pid;
+    pid_t c;
+    int cstatus;
+
+    //The string list to hold all arguments including program name
+    char ** argList;
+    argList = createArgList(command, commandline);
+
+    pid = fork();
+    if (pid < 0) {
+        fprintf(stderr, "ERROR: fork failed.\nExiting...\n");
+        exit(-1);
+    }
+    if (pid == 0) {
+        //Child process
+
+        //Child details
+        printf("Child - PID: %d and PPID: %d.\n", getpid(), getppid());
+
+        //Call list program
+        execvp(argList[0], argList);
+
+        //If the child process reaches this point, execvp failed
+        fprintf(stderr, "Child process could not execute execvp.\n");
+        exit(-1);
+
+    }
+    else {
+        //Parent process
+		if (pid == (pid_t)(-1)) {
+			fprintf(stderr, "ERROR: fork failed\n exiting...\n");
+		    exit(-1);
+        }
+
+        //Wait for the child process to finish
+        c = wait(&cstatus);
+
+        //Parent details
+        printf("Parent - PID: %d and PPID: %d.\n", getpid(), pid);
+    }
+} //End void executeFile(char * command, char * commandline)

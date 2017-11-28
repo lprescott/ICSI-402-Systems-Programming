@@ -84,9 +84,10 @@ void callCommands(int file, char * commandline) {
         }
         return;
     }
-
+    
     //Determine command then check
-    command = strtok(commandline, " ");
+    command = strdup(commandline);
+    command = strtok(command, " ");
 
     //if command should quit simpleshell, then exit with (1)
     if(strcmp(command, "quit") == 0){
@@ -128,7 +129,7 @@ void callCommands(int file, char * commandline) {
 /*
 
 */
-char ** createArgList(char * command, char * commandline){
+char ** createArgList(int numArgs, char * command, char * commandline){
 
 } //End char ** createArgList(char * commandline)
 
@@ -136,14 +137,12 @@ char ** createArgList(char * command, char * commandline){
 
 */
 void executeFile(char * command, char * commandline){
+
     //Variables
     pid_t  pid;
     pid_t c;
     int cstatus;
-
-    //The string list to hold all arguments including program name
-    char ** argList;
-    argList = createArgList(command, commandline);
+    int numArgs = 0, i = 0;
 
     pid = fork();
     if (pid < 0) {
@@ -156,8 +155,23 @@ void executeFile(char * command, char * commandline){
         //Child details
         printf("Child - PID: %d and PPID: %d.\n", getpid(), getppid());
 
+        //For loop to determine number of arguments
+        while (commandline[i] != '\0'){
+            if (commandline[i] == ' '){
+                numArgs++;    
+            }
+            i++;
+        } 
+
+        //Increment by one because of word after last space
+        numArgs++;
+        
+        //The string list to hold all arguments including program name
+        char ** argList;
+        argList = createArgList(numArgs, command, commandline);
+
         //Call list program
-        execvp(argList[0], argList);
+        //execvp(argList[0], argList);
 
         //If the child process reaches this point, execvp failed
         fprintf(stderr, "Child process could not execute execvp.\n");
@@ -165,16 +179,14 @@ void executeFile(char * command, char * commandline){
 
     }
     else {
-        //Parent process
-		if (pid == (pid_t)(-1)) {
-			fprintf(stderr, "ERROR: fork failed\n exiting...\n");
-		    exit(-1);
-        }
-
         //Wait for the child process to finish
         c = wait(&cstatus);
 
         //Parent details
         printf("Parent - PID: %d and PPID: %d.\n", getpid(), pid);
+
+        //Child status
+        printf("Parent - Child %ld exited with status: %d.\n", (long) c, cstatus);
+
     }
 } //End void executeFile(char * command, char * commandline)

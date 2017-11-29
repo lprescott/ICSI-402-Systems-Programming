@@ -41,7 +41,9 @@ command.
 #include <string.h>
 #include <dirent.h>
 #include <stdlib.h>
+#include <sys/types.h>
 #include <sys/stat.h>
+#include <fcntl.h>
 
 /*
   This function finds file size by seeking all the way to the end on the file, then telling the long
@@ -123,7 +125,6 @@ int main( int argc, char *argv[] )  {
 		
 	}
    
-   // if the number of command line arguments is greater than 1, prints to many arguments are supplied
    else if( argc = 3 ) {
       //Case 2: flag is -i
 	  if (strcmp(argv[1], "-i") == 0) {
@@ -162,7 +163,7 @@ int main( int argc, char *argv[] )  {
 				}
 				
 				//This is the file descriptor being opened
-				fd = open(filePath, "r");
+				fd = open(filePath, O_RDONLY);
 				int ret = fstat(fd, &file_stat);
 				
 				if (ret < 0) {

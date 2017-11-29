@@ -1,0 +1,1 @@
+char *getcwd(char *directory, size_t size);

@@ -86,7 +86,7 @@ int main( int argc, char *argv[] )  {
 				exit(-1);
 			}
 			
-			//call createFile function
+			//call createDirectory function
 			//createDirectory(argv[2]);
 		
 		}
@@ -111,7 +111,7 @@ int main( int argc, char *argv[] )  {
 			}
 			
 			
-			//call createFile function
+			//call createHardLink function
 			//createSoftLink(argv[2], arg[3]);
 		
 		}
@@ -136,8 +136,8 @@ int main( int argc, char *argv[] )  {
 			}
 			
 			
-			//call createFile function
-			//createSoftLink(argv[2], arg[3]);
+			//call createSoftLink function
+			//createHardLink(argv[2], arg[3]);
 			
 		}
 	

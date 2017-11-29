@@ -47,13 +47,12 @@ command.
 //main function, takes parameters of for the number of arguments
 
 int main( int argc, char *argv[] )  {
-
+	
 	//Variables
 	char dirPath[255]; //THe path name for the directory directory
 
 	if(argc < 2){
 		strcpy(dirPath, ".");
-		printf("\tThe dirPath \"%s\"\n", dirPath); 
 		printNames(dirPath);
 	}
 	// if the number of command line arguments is equal to 1
@@ -61,17 +60,14 @@ int main( int argc, char *argv[] )  {
 	  
 		if (strcmp(argv[1], "-i") == 0){
 			strcpy(dirPath, ".");
-			printf("\tThe dirPath \"%s\"\n", dirPath); 
 			printDetails(dirPath);
 		}
 		else if (strcmp(argv[1], "-h") == 0){
 			strcpy(dirPath, ".");
-			printf("\tThe dirPath \"%s\"\n", dirPath);
 			printHidden(dirPath);
 		}
 		else{
 			strcpy(dirPath, argv[1]);
-			printf("\tThe dirPath \"%s\"\n", dirPath); 
 			printNames(dirPath);
 		}
 	}
@@ -80,14 +76,12 @@ int main( int argc, char *argv[] )  {
 	  	if (strcmp(argv[1], "-i") == 0) {
 			//Duplicate dirPath
 			strcpy(dirPath, argv[2]);
-			printf("\tThe dirPath \"%s\"\n", dirPath); 
 			printDetails(dirPath);
 		}
 	 	//Case 3: flag is -h
 	  	else if (strcmp(argv[1], "-h") == 0) {
 			//Duplicate dirPath
 			strcpy(dirPath, argv[2]);
-			printf("\tThe dirPath \"%s\"\n", dirPath); 
 			printHidden(dirPath);
 		}
    	}

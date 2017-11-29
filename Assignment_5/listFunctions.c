@@ -42,7 +42,7 @@ void printNames(char * path){
     //Opens directory, and checks if valid
     directory = opendir(path);
     if (directory == NULL) {
-        fprintf(stderr, "ERROR in list.c: Directory can't be opened.\nExiting...\n");
+        fprintf(stderr, "ERROR in listFunctions.c: Directory can't be opened.\nExiting...\n");
         exit(-1);
     }
     
@@ -71,16 +71,16 @@ void printDetails(char * path){
 	struct stat file_stat; //The stat structure to hold onto the stat of the file
 	mode_t bits; //The permission bits for each file
 
-    //Open Directory and checks if it can be read
+    //Opens directory, and checks if valid
     directory = opendir(path);
     if (directory == NULL) {
-        fprintf(stderr, "\tERROR in list: Directory can't be opened.\n Exiting...\n");
+        fprintf(stderr, "ERROR in listFunctions.c: Directory can't be opened.\nExiting...\n");
         exit(-1);
     }
     
     //While each dirent struct read from directory != null, it prints the name
     while ((ent = readdir(directory)) != NULL) {
-    
+
         //Duplicates ent->name into FileName
         fileName = strdup(ent->d_name);
         
@@ -90,9 +90,9 @@ void printDetails(char * path){
         strcat(filePath, fileName);
         printf("\t\tfilePath : \"%s\"\n", filePath);
         
-        
-        //if the name is == to "." and "..", do not print because they aren't files
-        if ((strcmp(".", fileName) != 0) && (strcmp("..", fileName) != 0)) {
+
+        //if the name is == to "." and "..", do not print because they are hidden
+        if (fileName[0] != '.') {
 
             inputFile = fopen(filePath, "r");
             if (inputFile == NULL) {
@@ -112,11 +112,15 @@ void printDetails(char * path){
             inode = file_stat.st_ino;
             bits = file_stat.st_mode;
             
-            printf("\t%s : %ld : %04o : %d\n", fileName, fileSize(inputFile), bits, inode);
+            printf("\t%s : %ld : %o : %d\n", fileName, fileSize(inputFile), bits, inode);
+            fclose(inputFile);
         }
-    
-        fclose(inputFile);
+
+        free(fileName);
+        free(filePath);
     }
+    
+    //Close
     closedir(directory);
 }
 

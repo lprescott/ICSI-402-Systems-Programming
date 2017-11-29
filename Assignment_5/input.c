@@ -142,7 +142,6 @@ char ** createArgList(int numArgs, char * command, char * commandline){
 	
 	token = strtok(commandline, s);
 	
-	
     while( token != NULL ) {
 
         argList[pos] = malloc(strlen(token) + 1 * sizeof(char));
@@ -153,8 +152,8 @@ char ** createArgList(int numArgs, char * command, char * commandline){
     
 	}
     
+    //End the argList with NULL
 	argList[pos] = NULL;
-	
     return argList;
 
 } //End char ** createArgList(char * commandline)

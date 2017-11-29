@@ -118,7 +118,12 @@ void parseCommandLine(int isFile, char * commandline) {
         executeChildProcess(numArgs, argList);
     }
     else if(strcmp(argList[0], "wd") == 0){
-        
+        if(argList[1] != NULL){
+            //err
+        }
+        else{
+            //call functions
+        }
     }
     else if(strcmp(argList[0], "chwd") == 0){
         

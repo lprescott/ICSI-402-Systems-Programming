@@ -121,15 +121,26 @@ void parseCommandLine(int isFile, char * commandline) {
     else if(strcmp(argList[0], "wd") == 0){
         if(argList[1] != NULL){
             fprintf(stderr, "There were to many arguments for command: wd.\n");
-            return;
         }
         else{
-            //call functions
-            printDirectory();
+            //call function printCWDirectory
+            printCWDirectory();
         }
     }
     else if(strcmp(argList[0], "chwd") == 0){
-        
+        if(argList[2] != NULL){
+            fprintf(stderr, "There were to many arguments for command: wd.\n");
+        }
+        else if(argList[1] == NULL){
+            fprintf(stderr, "There were to few arguments for command: wd.\n");
+        }
+        else{
+            //Call changeCWDirectory()
+            char * pathname; //A string to hold the passed path argument
+            pathname = strdup(argList[1]);
+            changeCWDirectory(pathname);
+            free(pathname);
+        }
     }
     else if(strcmp(argList[0], "fileconverter") == 0){
                 

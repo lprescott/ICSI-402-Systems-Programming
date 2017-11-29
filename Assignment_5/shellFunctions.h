@@ -1,1 +1,2 @@
-void printDirectory ();
+void printCWDirectory (void);
+void changeCWDirectory(char * pathname);

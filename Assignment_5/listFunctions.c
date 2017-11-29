@@ -65,12 +65,63 @@ void printDetails(char * path){
     char * fileName; //THe file name we use for each file to be printed
     DIR * directory; //Directory pointer
     struct dirent * ent; //File info from the directory pointer
-    char * filePath; //The path to the file, used for -i flag
+    char filePath[255]; //The path to the file, used for -i flag
     FILE * inputFile; //A file that is used to find the size of each file
     int inode, fd; //The innode and file descriptor, respectively
 	struct stat file_stat; //The stat structure to hold onto the stat of the file
 	mode_t bits; //The permission bits for each file
 
+    //Opens directory, and checks if valid
+    directory = opendir(path);
+    if (directory == NULL) {
+        fprintf(stderr, "ERROR in listFunctions.c: Directory can't be opened.\nExiting...\n");
+        exit(-1);
+    }
+    
+    //While each dirent struct read from directory != null, it prints the name
+    while ((ent = readdir(directory)) != NULL) {
+
+        //Duplicates ent->name into FileName
+        fileName = strdup(ent->d_name);
+        
+        //The next four lines create the file path so that inputFile can be opened
+        strcpy(filePath, path);
+
+        //Checks if the supplied path already ends in a /
+        //If not, adds one
+        char * ptr;
+        ptr = strstr(filePath, "\0");
+        printf("*%s*\n", ptr);
+        if(ptr[strlen(ptr) - 1] != '/'){
+            strcat(filePath, "/");
+        }
+        strcat(filePath, fileName);
+
+        
+        printf("\t\tfilePath : \"%s\"\n", filePath);
+        
+        /*
+        //if the name is == to "." and "..", do not print because they are hidden
+        if (fileName[0] != '.') {
+            inputFile = fopen(filePath, "r");
+            if (inputFile == NULL) {
+                fprintf(stderr, "\tERROR in line: Trouble opening input file.\n");
+                exit(-1);
+            }
+            printf("%s\n", fileName);
+            fclose(inputFile);
+        }
+        
+        free(filePath);
+        */
+        free(fileName);
+        
+    }
+    
+    //Close
+    closedir(directory);
+
+    /*
     //Opens directory, and checks if valid
     directory = opendir(path);
     if (directory == NULL) {
@@ -112,7 +163,8 @@ void printDetails(char * path){
             inode = file_stat.st_ino;
             bits = file_stat.st_mode;
             
-            printf("\t%s : %ld : %o : %d\n", fileName, fileSize(inputFile), bits, inode);
+            //printf("\t%s : %ld : %o : %d\n", fileName, fileSize(inputFile), bits, inode);
+            printf("%s", fileName);
             fclose(inputFile);
         }
 
@@ -122,6 +174,7 @@ void printDetails(char * path){
     
     //Close
     closedir(directory);
+    */
 }
 
 void printHidden(char * path){

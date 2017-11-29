@@ -26,8 +26,6 @@ char * getLine(FILE * stream){
             line[strlen(line)-1] = '\0';
 
             //Free and return
-			printf("1. Line \"%s\"\n", line);
-			
             newLine = strdup(line);
             free(line);
             return newLine;
@@ -35,7 +33,6 @@ char * getLine(FILE * stream){
         //Otherwise, just leave it be
         else{
             //Free and return
-			printf("2. Line \"%s\"\n", line);
             newLine = strdup(line);
             free(line);
             return newLine;
@@ -79,9 +76,11 @@ void callCommands(int file, char * commandline) {
     char * command; //The first word in the commandline, the command.
     char ** arguments; //A list of string arguments passed to the shell
 
+    printf("commandline: \"%s\".\n", commandline);
+
     if (commandline[0] == '\0'){   
 
-        fprintf(stderr, "ERROR: Empty command.\n");
+        fprintf(stderr, "ERROR. command not found.\n");
 
         if(file == 0){
             //Print shell name for next command
@@ -121,7 +120,7 @@ void callCommands(int file, char * commandline) {
         executeFile(command, commandline);
     }
     else{
-        fprintf(stderr, "ERROR: Invalid command.\n");
+        fprintf(stderr, "ERROR: command not found.\n");
     }
 
     if(file == 0){
@@ -146,10 +145,9 @@ char ** createArgList(int numArgs, char * command, char * commandline){
 
         argList[pos] = malloc(strlen(token) + 1 * sizeof(char));
         strcpy(argList[pos], token);
-   
+
         pos ++;
         token = strtok(NULL, s);  
-    
 	}
     
     //End the argList with NULL
@@ -227,20 +225,3 @@ void executeFile(char * command, char * commandline){
 
     }
 } //End void executeFile(char * command, char * commandline)
-
-//Adds New Line character '\n' to the end of a file if it is not there.
-void addNewLine(char * fileName) {
-	
-	FILE * newFile = fopen(fileName, "a+");
-	char test;
-	
-	fseek(newFile, -1, SEEK_END);
-	
-	if ((test = fgetc(newFile)) != '\n') {
-		printf("\t\tNo NewLine, %c\n", test);
-		fseek(newFile, 0, SEEK_END);
-		fputc('\n', newFile);
-	}
-	fclose(newFile);
-	
-}

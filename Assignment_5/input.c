@@ -73,7 +73,7 @@ int fileReadable(char * filename){
 /*
 
 */
-void parseCommandLine(int isFile, char * commandline) {
+void parseCommandLine(int isFile, char * commandline, char * homePath) {
     char ** arguments; //A list of string arguments passed to the shell
 
     //printf("commandline: \"%s\".\n", commandline);
@@ -98,22 +98,35 @@ void parseCommandLine(int isFile, char * commandline) {
 
     //Increment by one because of word after last space
     numArgs++;
+
+    char * temp;
+    temp = strdup(commandline);
+    const char s[2] = " ";
+    char * command; 
+	
+    command = strtok(temp, s);
     
     //The string list to hold all arguments including program name
     char ** argList;
-    argList = createArgList(numArgs, commandline);
+    argList = createArgList(numArgs, commandline, homePath);
+
+    i = 0;
+    while(argList[i] != NULL){
+        printf("%s\n", argList[i]);
+        i++;
+    }
 
     //if command should quit simpleshell, then exit with (1)
     if(strcmp(argList[0], "quit") == 0){
         printf("goodbye\n");
         exit(1);
     }
-    else if(strcmp(argList[0], "list") == 0){
+    else if(strcmp(command, "list") == 0){
 
         //Call executeChildProcess (which creates a child process)
         executeChildProcess(numArgs, argList);
     }
-    else if(strcmp(argList[0], "create") == 0){
+    else if(strcmp(command, "create") == 0){
                 
         //Call executeChildProcess (which creates a child process)
         executeChildProcess(numArgs, argList);
@@ -142,7 +155,7 @@ void parseCommandLine(int isFile, char * commandline) {
             free(pathname);
         }
     }
-    else if(strcmp(argList[0], "fileconverter") == 0){
+    else if(strcmp(command, "fileconverter") == 0){
                 
         //Call executeChildProcess (which creates a child process)
         executeChildProcess(numArgs, argList);
@@ -165,7 +178,7 @@ void parseCommandLine(int isFile, char * commandline) {
     } 
 
     //Free the list pointer
-    free(argList);
+    free(argList); free(temp);
 
 
 } //End void parseCommandLine(int file, char * commandline)
@@ -173,7 +186,7 @@ void parseCommandLine(int isFile, char * commandline) {
 /*
 
 */
-char ** createArgList(int numArgs, char * commandline){
+char ** createArgList(int numArgs, char * commandline, char * homePath){
 
     const char s[2] = " ";
     char * token; int pos = 0;
@@ -183,11 +196,27 @@ char ** createArgList(int numArgs, char * commandline){
 	
     while( token != NULL ) {
 
-        argList[pos] = malloc(strlen(token) + 1 * sizeof(char));
-        strcpy(argList[pos], token);
+        if((pos == 0) && (strcmp(token, "quit")!=0) && (strcmp(token, "wd")!=0) && (strcmp(token, "chwd")!=0)){
+            argList[pos] = malloc(strlen(token) + strlen(homePath) + 2); //+2 becuase of added '/'
+            strcpy(argList[pos], homePath);
+            strcat(argList[pos], "/");
+            strcat(argList[pos], token);
 
-        pos ++;
-        token = strtok(NULL, s);  
+            printf("Path to executable: \"%s\"\n", argList[0]);
+        
+            pos ++;
+            token = strtok(NULL, s);
+        }
+
+        else{
+            argList[pos] = malloc((strlen(token) + 1) * sizeof(char));
+            strcpy(argList[pos], token);
+
+            pos ++;
+            token = strtok(NULL, s); 
+        }
+
+ 
 	}
     
     //End the argList with NULL

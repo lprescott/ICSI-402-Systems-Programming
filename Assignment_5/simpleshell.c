@@ -14,6 +14,8 @@ int main( int argc, char *argv[] )  {
     //Variables
     FILE * script; //This pointer to a file contained a script to be executed in-order
     char * commandline; //This temporary string holds one commandline from the shell or script
+    char homePath[255]; //A string to hold the location of the executables
+    getcwd(homePath, sizeof(homePath)); //Get the locations of the executables and store.
 
     if( argc == 2 ) {
         //One command line argument
@@ -37,7 +39,7 @@ int main( int argc, char *argv[] )  {
 		
         //Loop to read script-file line by line
 		while((commandline = getLine(script)) != NULL){
-            parseCommandLine(1, commandline); 
+            parseCommandLine(1, commandline, homePath); 
         }
 
         //Close the script-file
@@ -56,7 +58,7 @@ int main( int argc, char *argv[] )  {
         printf("simpleshell:~$ ");
         //Loop to read cmd-line line by line
         while(((commandline = getLine(stdin)) != NULL)){
-            parseCommandLine(0, commandline);
+            parseCommandLine(0, commandline, homePath);
         }
     }
 

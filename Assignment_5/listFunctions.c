@@ -68,7 +68,7 @@ void printDetails(char * path){
     char filePath[255]; //The path to the file, used for -i flag
     FILE * inputFile; //A file that is used to find the size of each file
     int inode, fd; //The innode and file descriptor, respectively
-	struct stat file_stat; //The stat structure to hold onto the stat of the file
+	struct stat buf; //The stat structure to hold onto the stat of the file
 	mode_t bits; //The permission bits for each file
 
     //Opens directory, and checks if valid
@@ -77,7 +77,7 @@ void printDetails(char * path){
         fprintf(stderr, "ERROR in listFunctions.c: Directory can't be opened.\nExiting...\n");
         exit(-1);
     }
-    
+
     //While each dirent struct read from directory != null, it prints the name
     while ((ent = readdir(directory)) != NULL) {
 
@@ -95,9 +95,6 @@ void printDetails(char * path){
             strcat(filePath, "/");
         }
         strcat(filePath, fileName);
-
-        
-        //printf("\t\tfilePath : \"%s\"\n", filePath);
         
         //if the name is == to "." and "..", do not print because they are hidden
         if (fileName[0] != '.') {
@@ -109,7 +106,7 @@ void printDetails(char * path){
             
             //This is the file descriptor being opened
             fd = open(filePath, O_RDONLY);
-            int ret = fstat(fd, &file_stat);
+            int ret = fstat(fd, &buf);
             
             if (ret < 0) {
                 //error
@@ -117,10 +114,10 @@ void printDetails(char * path){
                 exit(-1);
             }
             
-            inode = file_stat.st_ino;
-            bits = file_stat.st_mode;
+            inode = buf.st_ino;
+            bits = buf.st_mode & (S_IRWXU | S_IRWXG | S_IRWXO);
             
-            printf("\t%s : %ld : %o : %d\n", fileName, fileSize(inputFile), bits, inode);
+            printf("%20s%10ld%10o%10d\n", fileName, fileSize(inputFile), bits, inode);
             fclose(inputFile);
         }
 

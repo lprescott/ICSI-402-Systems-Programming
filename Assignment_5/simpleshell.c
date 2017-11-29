@@ -29,8 +29,6 @@ int main( int argc, char *argv[] )  {
 	    	fprintf(stderr, "\nThe supplied instructionset filename, \"%s\", cannot be read.\nExiting...\n", argv[1]);
 	    	exit(-1);
         }
-        
-		//addNewLine(argv[1]);
 		
         //Open the script-file (and check if fopen returns NULL)
         if ((script = fopen(argv[1], "r")) == NULL){
@@ -40,7 +38,7 @@ int main( int argc, char *argv[] )  {
 		
         //Loop to read script-file line by line
 		while((commandline = getLine(script)) != NULL){
-            callCommands(1, commandline); 
+            parseCommandLine(1, commandline); 
         }
 
         //Close the script-file
@@ -59,7 +57,7 @@ int main( int argc, char *argv[] )  {
         printf("simpleshell:~$ ");
         //Loop to read cmd-line line by line
         while(((commandline = getLine(stdin)) != NULL)){
-            callCommands(0, commandline);
+            parseCommandLine(0, commandline);
         }
     }
 

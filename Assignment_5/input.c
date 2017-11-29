@@ -72,68 +72,89 @@ int fileReadable(char * filename){
 /*
 
 */
-void callCommands(int file, char * commandline) {
-    char * command; //The first word in the commandline, the command.
+void parseCommandLine(int isFile, char * commandline) {
     char ** arguments; //A list of string arguments passed to the shell
 
     printf("commandline: \"%s\".\n", commandline);
 
-    if (commandline[0] == '\0'){   
+    if ((commandline[0] == '\0') || (commandline[0] == ' ')){   
 
-        fprintf(stderr, "ERROR. command not found.\n");
-
-        if(file == 0){
+        if(isFile == 0){
             //Print shell name for next command
             printf("simpleshell:~$ ");
         }
         return;
     }
     
-    //Determine command then check
-    command = strdup(commandline);
-    command = strtok(command, " ");
+    int i=0, numArgs=0;
+    //For loop to determine number of arguments
+    while (commandline[i] != '\0'){
+        if (commandline[i] == ' '){
+            numArgs++;    
+        }
+        i++;
+    } 
+
+    //Increment by one because of word after last space
+    numArgs++;
+    
+    //The string list to hold all arguments including program name
+    char ** argList;
+    argList = createArgList(numArgs, commandline);
 
     //if command should quit simpleshell, then exit with (1)
-    if(strcmp(command, "quit") == 0){
+    if(strcmp(argList[0], "quit") == 0){
         printf("goodbye\n");
         exit(1);
     }
-    else if(strcmp(command, "list") == 0){
+    else if(strcmp(argList[0], "list") == 0){
 
         //Call executeFile (which creates a child process)
-        executeFile(command, commandline);
+        executeFile(numArgs, argList);
     }
-    else if(strcmp(command, "create") == 0){
+    else if(strcmp(argList[0], "create") == 0){
                 
         //Call executeFile (which creates a child process)
-        executeFile(command, commandline);
+        executeFile(numArgs, argList);
     }
-    else if(strcmp(command, "wd") == 0){
+    else if(strcmp(argList[0], "wd") == 0){
         
     }
-    else if(strcmp(command, "chwd") == 0){
+    else if(strcmp(argList[0], "chwd") == 0){
         
     }
-    else if(strcmp(command, "fileconverter") == 0){
+    else if(strcmp(argList[0], "fileconverter") == 0){
                 
         //Call executeFile (which creates a child process)
-        executeFile(command, commandline);
+        executeFile(numArgs, argList);
     }
     else{
         fprintf(stderr, "ERROR: command not found.\n");
     }
 
-    if(file == 0){
+    if(isFile == 0){
         //Print shell name for next command
         printf("simpleshell:~$ ");
     }
 
-} //End void callCommands(int file, char * commandline)
+    //Loop to free the mem of the list of args (and print)
+    for(i = 0; i < numArgs; i++)
+    {
+        //(print) the free
+        //printf("%d \"%s\"\n", i, argList[i]);
+        free(argList[i]);
+    } 
+
+    //Free the list pointer
+    free(argList);
+
+
+} //End void parseCommandLine(int file, char * commandline)
 
 /*
 
 */
-char ** createArgList(int numArgs, char * command, char * commandline){
+char ** createArgList(int numArgs, char * commandline){
 
     const char s[2] = " ";
     char * token; int pos = 0;
@@ -159,13 +180,13 @@ char ** createArgList(int numArgs, char * command, char * commandline){
 /*
 
 */
-void executeFile(char * command, char * commandline){
+void executeFile(int numArgs, char ** argList){
 
     //Variables
     pid_t  pid;
     pid_t c;
     int cstatus;
-    int numArgs = 0, i = 0;
+    int i = 0;
 
     pid = fork();
     if (pid < 0) {
@@ -178,35 +199,8 @@ void executeFile(char * command, char * commandline){
         //Child details
         printf("Child - PID: %d and PPID: %d.\n", getpid(), getppid());
 
-        //For loop to determine number of arguments
-        while (commandline[i] != '\0'){
-            if (commandline[i] == ' '){
-                numArgs++;    
-            }
-            i++;
-        } 
-
-        //Increment by one because of word after last space
-        numArgs++;
-        
-        //The string list to hold all arguments including program name
-        char ** argList;
-        argList = createArgList(numArgs, command, commandline);
-
         //Call program
         execvp(argList[0], argList);
-
-        //Loop to free the mem of the list of args (and print)
-        int i = 0;
-        for(i = 0; i < numArgs; i++)
-        {
-            //(print) the free
-            printf("%d \"%s\"\n", i, argList[i]);
-            free(argList[i]);
-        } 
-
-        //Free the list pointer
-        free(argList);
 
         //If the child process reaches this point, execvp failed
         fprintf(stderr, "Child process could not execute execvp.\n");

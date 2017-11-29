@@ -91,31 +91,40 @@ void printDetails(char * path){
         //If not, adds one
         char * ptr;
         ptr = strstr(filePath, "\0");
-        printf("*%s*\n", ptr);
         if(ptr[strlen(ptr) - 1] != '/'){
             strcat(filePath, "/");
         }
         strcat(filePath, fileName);
 
         
-        printf("\t\tfilePath : \"%s\"\n", filePath);
+        //printf("\t\tfilePath : \"%s\"\n", filePath);
         
-        /*
         //if the name is == to "." and "..", do not print because they are hidden
         if (fileName[0] != '.') {
+
             inputFile = fopen(filePath, "r");
             if (inputFile == NULL) {
                 fprintf(stderr, "\tERROR in line: Trouble opening input file.\n");
+            }
+            
+            //This is the file descriptor being opened
+            fd = open(filePath, O_RDONLY);
+            int ret = fstat(fd, &file_stat);
+            
+            if (ret < 0) {
+                //error
+                fprintf(stderr, "\tERROR in list: trouble opening stat\n");
                 exit(-1);
             }
-            printf("%s\n", fileName);
+            
+            inode = file_stat.st_ino;
+            bits = file_stat.st_mode;
+            
+            printf("\t%s : %ld : %o : %d\n", fileName, fileSize(inputFile), bits, inode);
             fclose(inputFile);
         }
-        
-        free(filePath);
-        */
-        free(fileName);
-        
+
+        free(fileName);        
     }
     
     //Close

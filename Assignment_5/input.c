@@ -109,13 +109,13 @@ void parseCommandLine(int isFile, char * commandline) {
     }
     else if(strcmp(argList[0], "list") == 0){
 
-        //Call executeFile (which creates a child process)
-        executeFile(numArgs, argList);
+        //Call executeChildProcess (which creates a child process)
+        executeChildProcess(numArgs, argList);
     }
     else if(strcmp(argList[0], "create") == 0){
                 
-        //Call executeFile (which creates a child process)
-        executeFile(numArgs, argList);
+        //Call executeChildProcess (which creates a child process)
+        executeChildProcess(numArgs, argList);
     }
     else if(strcmp(argList[0], "wd") == 0){
         
@@ -125,8 +125,8 @@ void parseCommandLine(int isFile, char * commandline) {
     }
     else if(strcmp(argList[0], "fileconverter") == 0){
                 
-        //Call executeFile (which creates a child process)
-        executeFile(numArgs, argList);
+        //Call executeChildProcess (which creates a child process)
+        executeChildProcess(numArgs, argList);
     }
     else{
         fprintf(stderr, "ERROR: command not found.\n");
@@ -180,7 +180,7 @@ char ** createArgList(int numArgs, char * commandline){
 /*
 
 */
-void executeFile(int numArgs, char ** argList){
+void executeChildProcess(int numArgs, char ** argList){
 
     //Variables
     pid_t  pid;
@@ -205,7 +205,6 @@ void executeFile(int numArgs, char ** argList){
         //If the child process reaches this point, execvp failed
         fprintf(stderr, "Child process could not execute execvp.\n");
         exit(-1);
-
     }
     else {
         //Wait for the child process to finish
@@ -216,6 +215,6 @@ void executeFile(int numArgs, char ** argList){
 
         //Child status
         printf("Parent - Child %ld exited with status: %d.\n", (long) c, cstatus);
-
     }
-} //End void executeFile(char * command, char * commandline)
+    
+} //End void executeChildProcess(char * command, char * commandline)

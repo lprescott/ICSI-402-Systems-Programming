@@ -5,7 +5,7 @@ EXECS = simpleshell list create fileconverter
 
 #Objects
 SIMPLESHELL = simpleshell.o input.o shellFunctions.o
-LIST = list.o
+LIST = list.o listFunctions.o
 CREATE = create.o 
 FILECONVERTER = fileconverter.o 
 

@@ -1,11 +1,19 @@
-#include <unistd.h>
+#include <stdlib.h>
+#include <stdio.h>
 
-
-void printDirectory(char *directory, size_t size){
-	char directory[1024]
-	if(getcwd(cwd, sizeof(cwd)) !=NULL)
-		fprintf(stdout, " The Current Working directory is: %s\n", cwd);
-	else
-		 perror("Could not get current working directory")
-		return 0;
-}
+/*
+	The function takes no parameters, and returns nothings. printDirectory calls getcwd()
+	and prints its return value to stdin.
+*/
+void printDirectory(){
+	//the directory string holds the return value
+	char directory[255];
+	if(getcwd(directory, sizeof(directory)) != NULL){
+		printf("%s\n", directory);
+	}
+	else{
+		//return is NULL, so exit with err.
+		fprintf(stderr, "Could not get current working directory.\n");
+		exit(-1);
+	}
+} //End void printDirectory()

@@ -6,6 +6,7 @@
 #include <sys/wait.h>
 
 #include "input.h"
+#include "shellFunctions.h"
 
 /*
     This function reads one line from the specified file and returns the result as a null terminated string.
@@ -119,10 +120,12 @@ void parseCommandLine(int isFile, char * commandline) {
     }
     else if(strcmp(argList[0], "wd") == 0){
         if(argList[1] != NULL){
-            //err
+            fprintf(stderr, "There were to many arguments for command: wd.\n");
+            return;
         }
         else{
             //call functions
+            printDirectory();
         }
     }
     else if(strcmp(argList[0], "chwd") == 0){

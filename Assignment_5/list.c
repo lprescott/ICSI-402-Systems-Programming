@@ -103,4 +103,6 @@ int main( int argc, char *argv[] )  {
 		exit(-1);
     }
 
+	//Exit with 0, program was succesfully completed
+	exit(0);
 }

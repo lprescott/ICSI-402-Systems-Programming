@@ -299,7 +299,17 @@ void executeChildProcess(int numArgs, char ** argList){
         printf("\n\tParent - PID: %d and PPID: %d.\n", getpid(), pid);
 
         //Child status
-        printf("\tParent - Child %ld exited with status: %d.\n\n", (long) c, cstatus);
+        printf("\tParent - Child %ld exited with status: %d.\n", (long) c, cstatus);
+
+        char * status;
+        if(cstatus == 0){
+            status = strdup("success!");
+        }
+        else{
+            status = strdup("ERROR (!= 0).");
+        }
+
+        printf("\tExit status: %d implies %s\n\n", cstatus, status);
     }
     
 } //End void executeChildProcess(char * command, char * commandline)

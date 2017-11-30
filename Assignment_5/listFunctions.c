@@ -107,7 +107,8 @@ void printDetails(char * path){
 
             inputFile = fopen(filePath, "r");
             if (inputFile == NULL) {
-                fprintf(stderr, "\tERROR in line: Trouble opening input file.\n");
+                fprintf(stderr, "%20s %29s\n", fileName, "permission ERROR");
+                continue;
             }
             
             //This is the file descriptor being opened
@@ -116,8 +117,8 @@ void printDetails(char * path){
             
             if (ret < 0) {
                 //error
-                fprintf(stderr, "\tERROR in list: trouble opening stat\n");
-                exit(-1);
+                fprintf(stderr, "%20s %29s\n", fileName, "stat ERROR");
+                continue;
             }
             
             inode = buf.st_ino;

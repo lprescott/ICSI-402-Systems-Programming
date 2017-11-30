@@ -37,19 +37,111 @@ The pathname that is supplied is either be an absolute or relative path, or just
 
 //standard c libraries
 #include <stdio.h>
+#include <stdlib.h>
+
+#include "createFunctions.h"
 
 /*
 main function, takes parameters of for the number of arguments
 */
 int main( int argc, char *argv[] )  {
 
+	printf("\n\nIn create...\n");
+
    // if the number of command line arguments is equal to 1, prints the arguments that are supplied
-   if( argc == 2 ) {
-      printf("The argument supplied is %s\n", argv[1]);
-   }
+	if( argc == 2 ) {
+		printf("The argument supplied is %s\n", argv[1]);
+	}
    // if the number of command line arguments is greater than 1, prints to many arguments are supplied
    else if( argc > 2 ) {
-      printf("Too many arguments supplied.\n");
+	  
+		//Case 1: flag is -f, create a file
+		if( strcmp(argv[1], "-f") == 0 ) {
+			
+			printf("\tFlag \"%s\" Specified\n", argv[1]);
+			
+			//Error Checks
+			
+			//Too many arguments
+			if ( argc > 3 ) {
+				fprintf(stderr, "\tERROR in create: too many arguments.\nExiting...\n");
+				exit(-1);
+			}
+			
+			//call createFile function
+			createFile(argv[2]);
+			
+		}
+		
+		//Case 2: flag is -d, create a directory
+		if( strcmp(argv[1], "-d") == 0 ) {
+			
+			printf("\tFlag \"%s\" Specified\n", argv[1]);
+			
+			//Error Checks
+			
+			//Too many arguments
+			if ( argc > 3 ) {
+				fprintf(stderr, "\tERROR in create: too many arguments.\nExiting...\n");
+				exit(-1);
+			}
+			
+			//call createDirectory function
+			createDirectory(argv[2]);
+		
+		}
+		
+		//Case 3: flag is -h, create a hardlink between argv[2] and argv[3]
+		if( strcmp(argv[1], "-h") == 0 ) {
+			
+			printf("\tFlag \"%s\" Specified\n", argv[1]);
+			
+			//Error Checks
+			
+			//Too many arguments
+			if ( argc > 4 ) {
+				fprintf(stderr, "\tERROR in create: too many arguments.\n\tExiting...\n");
+				exit(-1);
+			}
+			
+			//Too little arguments
+			if ( argc != 4) {
+				fprintf(stderr, "\tERROR in create: Not enough arguments.\nExiting...\n");
+				exit(-1);
+			}
+			
+			
+			//call createHardLink function
+			//createSoftLink(argv[2], arg[3]);
+		
+		}
+		
+		//Case 4: flag is -s, create a softlink between argv[2] and argv[3]
+		if( strcmp(argv[1], "-s") == 0 ) {
+			
+			printf("\tFlag \"%s\" Specified\n", argv[1]);
+		
+			//Error Checks
+			
+			//Too many arguments
+			if ( argc > 4 ) {
+				fprintf(stderr, "\tERROR in create: too many arguments.\nExiting...\n");
+				exit(-1);
+			}
+			
+			//Too little arguments
+			if ( argc != 4) {
+				fprintf(stderr, "\tERROR in create: Not enough arguments.\nExiting...\n");
+				exit(-1);
+			}
+			
+			
+			//call createSoftLink function
+			//createHardLink(argv[2], arg[3]);
+			
+		}
+	
+	  
    }
    // if the no arguments are supplied, it will print out that is expects an argument.
    else {

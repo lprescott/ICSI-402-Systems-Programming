@@ -1,3 +1,21 @@
+//Project: 	Prog5
+//Names:   	Luke Prescott, Rob Rose, Tommy Li (lprescott@albany.edu, rwrose@albany.edu, tli3@albany.edu)
+//			(001252879, 001247373, 001209184)
+//Roles:   	Leader, Monitor, Recorder Respectively
+//Date:    	11/28/2017
+//Course:  	ICSI 402
+
+/*Desc: this file contains the functions that check supplied arguments with corresponding commands associated
+with the program. If they arguments supplied match with a particular command, that command is executed.
+
+It contains the following functions fileExists, fileReadable, parseCommandLine,getLine, createArgList, executeChildProcess
+
+ /*
+ Output: the output depends on the arguments being supplied by the user 
+ command.
+*/
+
+//standard libraries
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -5,16 +23,18 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
+//included external header files, containing prototypes
 #include "input.h"
 #include "shellFunctions.h"
 
 /*
-    This function reads one line from the specified file and returns the result as a null terminated string.
+    The getLine function reads one line from the specified file and returns the result as a null terminated string.
 */
 char * getLine(FILE * stream){
     
     //lineSize is the maximum size of a line, and line is a pointer to the start of the read line
     const size_t lineSize = 1024;
+	//memory allocation
     char * line = malloc(lineSize);
     //newLine is a char * to the line without the '\n' character 
     char * newLine;
@@ -27,14 +47,14 @@ char * getLine(FILE * stream){
             line[strlen(line)-1] = '\0';
 
             //Free and return
-            newLine = strdup(line);
+            newLine = strdup(line);//duplicates line into newLine
             free(line);
             return newLine;
         }
         //Otherwise, just leave it be
         else{
             //Free and return
-            newLine = strdup(line);
+            newLine = strdup(line);//duplicates line into newLine
             free(line);
             return newLine;
         }
@@ -51,7 +71,7 @@ char * getLine(FILE * stream){
 //Helper functions below this point
 
 /*
-	This function returns a 1 if the supplied file name exists  by using the access function. 
+	The fileExists function returns a 1 if the supplied file name exists  by using the access function. 
 	If the supplied file name does not exist, the function returns 0.
 */
 int fileExists(char * filename){
@@ -61,7 +81,7 @@ int fileExists(char * filename){
 } //End int fileExists(char * filename)
 
 /*
-	This function returns a 1 if the supplied file name is readable by using the access function. 
+	The fileReadable function returns a 1 if the supplied file name is readable by using the access function. 
 	If the supplied file name is not readable, the function returns 0.
 */
 int fileReadable(char * filename){
@@ -71,7 +91,8 @@ int fileReadable(char * filename){
 } //End int fileReadable(char * filename)
 
 /*
-
+The parseCommandLine function take parameters of isFile, commandline, and homepath
+executes the user supplied arguments, with the corresponding commands for the program.
 */
 void parseCommandLine(int isFile, char * commandline, char * homePath) {
     char ** arguments; //A list of string arguments passed to the shell
@@ -121,17 +142,21 @@ void parseCommandLine(int isFile, char * commandline, char * homePath) {
         printf("goodbye\n");
         exit(1);
     }
+
     else if(strcmp(command, "list") == 0){
 
         //Call executeChildProcess (which creates a child process)
         executeChildProcess(numArgs, argList);
     }
+	
     else if(strcmp(command, "create") == 0){
                 
         //Call executeChildProcess (which creates a child process)
         executeChildProcess(numArgs, argList);
     }
-    else if(strcmp(argList[0], "wd") == 0){
+	//if "wd" is supplied, prints an errors if first argument is not "wd", otherwise prints path of the current working directory
+	
+	else if(strcmp(argList[0], "wd") == 0){
         if(argList[1] != NULL){
             fprintf(stderr, "There were to many arguments for command: wd.\n");
         }
@@ -140,6 +165,11 @@ void parseCommandLine(int isFile, char * commandline, char * homePath) {
             printCWDirectory();
         }
     }
+		/*
+		if "chwd" is supplied, prints an error if second argument is not null, if the first argument is equal to null, prints an error
+		otherwise changes the current current working directory and prints out the path of the new specified directory
+		*/
+
     else if(strcmp(argList[0], "chwd") == 0){
         if(argList[2] != NULL){
             fprintf(stderr, "There were to many arguments for command: wd.\n");
@@ -198,10 +228,9 @@ char ** createArgList(int numArgs, char * commandline, char * homePath){
 
         if((pos == 0) && (strcmp(token, "quit")!=0) && (strcmp(token, "wd")!=0) && (strcmp(token, "chwd")!=0)){
             argList[pos] = malloc(strlen(token) + strlen(homePath) + 2); //+2 becuase of added '/'
-            strcpy(argList[pos], homePath);
-            strcat(argList[pos], "/");
-            strcat(argList[pos], token);
-
+            strcpy(argList[pos], homePath);//copies homePath into index of argList
+            strcat(argList[pos], "/");//concatenates / into the index of argList
+            strcat(argList[pos], token);//concatenates token into the index of argList
             printf("Path to executable: \"%s\"\n", argList[0]);
         
             pos ++;
@@ -234,12 +263,15 @@ void executeChildProcess(int numArgs, char ** argList){
     pid_t  pid;
     pid_t c;
     int cstatus;
-
+    
+	//fork(), copies the child process from the parent, if pid is less than 0, print error
     pid = fork();
     if (pid < 0) {
         fprintf(stderr, "ERROR: fork failed.\nExiting...\n");
         exit(-1);
     }
+	
+	//if pid is equal to 0 print the id of the parent and child.
     if (pid == 0) {
         //Child process
 

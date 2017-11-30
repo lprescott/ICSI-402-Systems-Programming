@@ -177,10 +177,10 @@ void parseCommandLine(int isFile, char * commandline, char * homePath) {
 
     else if(strcmp(argList[0], "chwd") == 0){
         if(argList[2] != NULL){
-            fprintf(stderr, "There were to many arguments for command: wd.\n");
+            fprintf(stderr, "There were to many arguments for command: chwd.\n");
         }
         else if(argList[1] == NULL){
-            fprintf(stderr, "There were to few arguments for command: wd.\n");
+            fprintf(stderr, "There were to few arguments for command: chwd.\n");
         }
         else{
             //Call changeCWDirectory()

@@ -33,6 +33,9 @@ long fileSize(FILE * file) {
     return position;// returns the position of the file offset
 }
 
+/*
+
+*/
 void printNames(char * path){
 
     char * fileName; //THe file name we use for each file to be printed
@@ -58,8 +61,11 @@ void printNames(char * path){
     
     //Close
     closedir(directory);
-}
+} //End void printNames(char * path)
 
+/*
+
+*/
 void printDetails(char * path){
 
     char * fileName; //The file name we use for each file to be printed
@@ -126,8 +132,11 @@ void printDetails(char * path){
     
     //Close
     closedir(directory);
-}
+} //End void printDetails(char * path)
 
+/*
+
+*/
 void printHidden(char * path){
     
     char * fileName; //THe file name we use for each file to be printed
@@ -153,17 +162,16 @@ void printHidden(char * path){
     
     //Close
     closedir(directory);
-}
+} //End void printHidden(char * path)
 
+/*
+
+*/
 int checkDirectory(char * dirPath){
     DIR* dir = opendir("mydir");
-    if (dir)
-    {
+    if (dir) {
         return 1;
         closedir(dir);
     }
-    else
-    {
-        return 0;
-    }
-}
+    else return 0;
+} //End int checkDirectory(char * dirPath)

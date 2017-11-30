@@ -66,6 +66,10 @@ int main( int argc, char *argv[] )  {
 			strcpy(dirPath, ".");
 			printHidden(dirPath);
 		}
+		else if (checkDirectory(argv[1]) == 0){
+			fprintf(stderr, "ERROR: Supplied arg. to list is not a directory or known parameter.\nExiting...\n");
+			exit(-1);
+		}
 		else{
 			strcpy(dirPath, argv[1]);
 			printNames(dirPath);
@@ -75,12 +79,20 @@ int main( int argc, char *argv[] )  {
       	//Case 2: flag is -i
 	  	if (strcmp(argv[1], "-i") == 0) {
 			//Duplicate dirPath
+			if(checkDirectory(argv[2]) == 0){
+				fprintf(stderr, "ERROR: Supplied arg. to list is not a directory.\nExiting...\n");
+				exit(-1);
+			}
 			strcpy(dirPath, argv[2]);
 			printDetails(dirPath);
 		}
 	 	//Case 3: flag is -h
 	  	else if (strcmp(argv[1], "-h") == 0) {
 			//Duplicate dirPath
+			if(checkDirectory(argv[2]) == 0){
+				fprintf(stderr, "ERROR: Supplied arg. to list is not a directory.\nExiting...\n");
+				exit(-1);
+			}
 			strcpy(dirPath, argv[2]);
 			printHidden(dirPath);
 		}

@@ -165,13 +165,16 @@ void printHidden(char * path){
 } //End void printHidden(char * path)
 
 /*
-
+returns 0 if non existant
+returns 1 if it does
 */
 int checkDirectory(char * dirPath){
-    DIR* dir = opendir("mydir");
-    if (dir) {
-        return 1;
-        closedir(dir);
-    }
-    else return 0;
+    
+	struct stat directoryStat = {0};
+	
+	if (stat(dirPath, &directoryStat) != -1) {
+		return 1;
+	}
+	return 0;
+	
 } //End int checkDirectory(char * dirPath)

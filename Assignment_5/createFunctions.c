@@ -34,13 +34,13 @@ void createFile(char * fileName) {
 	
 	//Checks to see if open failed
 	if (fd < 0) {
-		fprintf(stderr, "ERROR: Trouble creating \"%s\"", fileName);
+		fprintf(stderr, "ERROR: Trouble creating \"%s\".\n", fileName);
 		exit(-1);
 	}
 	
 	//Modifys permissions of fileName to 640, on fail exit the process
 	if (chmod(fileName, S_IRUSR | S_IWUSR | S_IRGRP) == -1) {
-		fprinf(stderr, "ERROR: Trouble modifying permissions of \"%s\"", fileName);
+		fprintf(stderr, "ERROR: Trouble modifying permissions of \"%s\".\n", fileName);
 		exit(-1);
 	}
 	

@@ -60,10 +60,7 @@ void createDirectory(char * directoryName) {
 	//If directoryName doesn't exist, create the directory
 	if (stat(directoryName, &st) == -1) {
 		//creates the directory directoryName
-		if (mkdir(directoryName, 0750) == -1) {
-			fprintf("Failed to create directory\n");
-			exit(-1);
-		}
+		mkdir(directoryName, 0750);
 		
 		if (chmod(directoryName, S_IRWXU | S_IRGRP | S_IXGRP) == -1) {
 			fprintf(stderr, "ERROR: Unable to modify \"%s\"\n", directoryName);

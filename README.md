@@ -77,8 +77,11 @@ possible for the Instructor to identify or fix the bugs in the submitted version
 
 ### Assignment 5:
 #### TODO:
-- [] fix issue about about new line character at end of file.
-- [] 
+- [] attempt extra credit portion
+- [] additional comments
+- [] refactoring
+- [] additonal testing
+
 
 #### Programming Style Guide:
 https://www.cs.siue.edu/programming-style-guide

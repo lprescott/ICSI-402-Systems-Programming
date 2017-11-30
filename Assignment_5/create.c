@@ -112,7 +112,7 @@ int main( int argc, char *argv[] )  {
 			
 			
 			//call createHardLink function
-			//createSoftLink(argv[2], arg[3]);
+			createHardLink(argv[2], argv[3]);
 		
 		}
 		
@@ -137,7 +137,7 @@ int main( int argc, char *argv[] )  {
 			
 			
 			//call createSoftLink function
-			//createHardLink(argv[2], arg[3]);
+			createSoftLink(argv[2], argv[3]);
 			
 		}
 	

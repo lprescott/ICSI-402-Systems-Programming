@@ -10,5 +10,8 @@ int main( int argc, char *argv[] )  {
    }
    else {
       printf("One argument expected.\n");
-   }
+    }
+    
+    //Exit with 0, program was succesfully completed
+	exit(0);
 }

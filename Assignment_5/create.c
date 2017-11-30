@@ -138,5 +138,8 @@ int main( int argc, char *argv[] )  {
    	else {
 		fprintf(stderr, "One argument expected in create.c.\n");
 		exit(-1);
-   	}
+	}
+	
+	//Exit with 0, program was succesfully completed
+	exit(0);
 }

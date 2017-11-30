@@ -29,8 +29,23 @@ void createFile(char * fileName) {
 	
 	int fd; //The file descriptor
 	
-	//Opens a file that can be read, written too, and appended with permissions 0640
-	fd = open(fileName, O_RDWR | O_APPEND | O_CREAT, 0640);
+	//Creates the initial file with user permissions
+	fd = open(fileName, O_RDWR | O_CREAT, 0600);
+	
+	//Checks to see if open failed
+	if (fd < 0) {
+		fprintf(stderr, "ERROR: Trouble creating \"%s\"", fileName);
+		exit(-1);
+	}
+	
+	//Modifys permissions of fileName to 640, on fail exit the process
+	if (chmod(fileName, S_IRUSR | S_IWUSR | S_IRGRP) == -1) {
+		fprinf(stderr, "ERROR: Trouble modifying permissions of \"%s\"", fileName);
+		exit(-1);
+	}
+	
+	//Necessary closing
+	close(fd);
 	
 }
 

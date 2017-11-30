@@ -34,13 +34,13 @@ void createFile(char * fileName) {
 	
 	//Checks to see if open failed
 	if (fd < 0) {
-		fprintf(stderr, "ERROR: Trouble creating \"%s\".\n", fileName);
+		fprintf(stderr, "ERROR: Trouble creating \"%s\"", fileName);
 		exit(-1);
 	}
 	
 	//Modifys permissions of fileName to 640, on fail exit the process
 	if (chmod(fileName, S_IRUSR | S_IWUSR | S_IRGRP) == -1) {
-		fprintf(stderr, "ERROR: Trouble modifying permissions of \"%s\".\n", fileName);
+		fprintf(stderr, "ERROR: Trouble modifying permissions of \"%s\"", fileName);
 		exit(-1);
 	}
 	
@@ -61,6 +61,12 @@ void createDirectory(char * directoryName) {
 	if (stat(directoryName, &st) == -1) {
 		//creates the directory directoryName
 		mkdir(directoryName, 0750);
+		
+		if (chmod(directoryName, S_IRWXU | S_IRGRP | S_IXGRP) == -1) {
+			fprintf("ERROR: Unable to modify \"%s\"\n", directoryName);
+			exit(-1);
+		}
+		
 	} 
 	else {
 		printf("\tDirectory already exists\n");

@@ -136,7 +136,7 @@ int main( int argc, char *argv[] )  {
   	}
    	// if the no arguments are supplied, it will print out that is expects an argument.
    	else {
-		fprintf(stderr, "One argument expected in create.c.\n");
+		fprintf(stderr, "At least two argument expected in create.c.\n");
 		exit(-1);
 	}
 	

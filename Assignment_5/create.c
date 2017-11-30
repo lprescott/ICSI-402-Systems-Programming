@@ -48,20 +48,19 @@ int main( int argc, char *argv[] )  {
 
 	printf("\n\nIn create...\n");
 
-   // if the number of command line arguments is equal to 1, prints the arguments that are supplied
+	// if the number of command line arguments is equal to 1, prints the arguments that are supplied
 	if( argc == 2 ) {
 		printf("The argument supplied is %s\n", argv[1]);
 	}
-   // if the number of command line arguments is greater than 1, prints to many arguments are supplied
-   else if( argc > 2 ) {
+	// if the number of command line arguments is greater than 1, prints to many arguments are supplied
+	else if( argc > 2 ) {
 	  
 		//Case 1: flag is -f, create a file
 		if( strcmp(argv[1], "-f") == 0 ) {
-			
+		
 			printf("\tFlag \"%s\" Specified\n", argv[1]);
 			
-			//Error Checks
-			
+			//Error Checks	
 			//Too many arguments
 			if ( argc > 3 ) {
 				fprintf(stderr, "\tERROR in create: too many arguments.\nExiting...\n");
@@ -70,16 +69,14 @@ int main( int argc, char *argv[] )  {
 			
 			//call createFile function
 			createFile(argv[2]);
-			
 		}
-		
+			
 		//Case 2: flag is -d, create a directory
 		if( strcmp(argv[1], "-d") == 0 ) {
 			
 			printf("\tFlag \"%s\" Specified\n", argv[1]);
 			
 			//Error Checks
-			
 			//Too many arguments
 			if ( argc > 3 ) {
 				fprintf(stderr, "\tERROR in create: too many arguments.\nExiting...\n");
@@ -88,7 +85,6 @@ int main( int argc, char *argv[] )  {
 			
 			//call createDirectory function
 			createDirectory(argv[2]);
-		
 		}
 		
 		//Case 3: flag is -h, create a hardlink between argv[2] and argv[3]
@@ -97,7 +93,6 @@ int main( int argc, char *argv[] )  {
 			printf("\tFlag \"%s\" Specified\n", argv[1]);
 			
 			//Error Checks
-			
 			//Too many arguments
 			if ( argc > 4 ) {
 				fprintf(stderr, "\tERROR in create: too many arguments.\n\tExiting...\n");
@@ -110,10 +105,8 @@ int main( int argc, char *argv[] )  {
 				exit(-1);
 			}
 			
-			
 			//call createHardLink function
 			createHardLink(argv[2], argv[3]);
-		
 		}
 		
 		//Case 4: flag is -s, create a softlink between argv[2] and argv[3]
@@ -122,7 +115,6 @@ int main( int argc, char *argv[] )  {
 			printf("\tFlag \"%s\" Specified\n", argv[1]);
 		
 			//Error Checks
-			
 			//Too many arguments
 			if ( argc > 4 ) {
 				fprintf(stderr, "\tERROR in create: too many arguments.\nExiting...\n");
@@ -135,16 +127,14 @@ int main( int argc, char *argv[] )  {
 				exit(-1);
 			}
 			
-			
 			//call createSoftLink function
 			createSoftLink(argv[2], argv[3]);
-			
 		}
-	
+
 	  
-   }
-   // if the no arguments are supplied, it will print out that is expects an argument.
-   else {
-      printf("One argument expected.\n");
-   }
+  	}
+   	// if the no arguments are supplied, it will print out that is expects an argument.
+   	else {
+    	fprintf(stderr, "One argument expected.\n");
+   	}
 }

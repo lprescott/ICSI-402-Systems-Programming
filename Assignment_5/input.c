@@ -120,22 +120,27 @@ void parseCommandLine(int isFile, char * commandline, char * homePath) {
     //Increment by one because of word after last space
     numArgs++;
 
+    //The temp string here is a duplicate of the command line
+    //It is being used to strtok and find the exec name
     char * temp;
     temp = strdup(commandline);
     const char s[2] = " ";
     char * command; 
-	
+    
+    //Strtok here
     command = strtok(temp, s);
     
     //The string list to hold all arguments including program name
     char ** argList;
     argList = createArgList(numArgs, commandline, homePath);
 
+    /* 
     i = 0;
     while(argList[i] != NULL){
         printf("%s\n", argList[i]);
         i++;
     }
+    */
 
     //if command should quit simpleshell, then exit with (1)
     if(strcmp(argList[0], "quit") == 0){
@@ -207,7 +212,7 @@ void parseCommandLine(int isFile, char * commandline, char * homePath) {
         free(argList[i]);
     } 
 
-    //Free the list pointer
+    //Free the list pointer and temp string
     free(argList); free(temp);
 
 
@@ -231,7 +236,8 @@ char ** createArgList(int numArgs, char * commandline, char * homePath){
             strcpy(argList[pos], homePath);//copies homePath into index of argList
             strcat(argList[pos], "/");//concatenates / into the index of argList
             strcat(argList[pos], token);//concatenates token into the index of argList
-            printf("Path to executable: \"%s\"\n", argList[0]);
+            
+            //printf("Path to executable: \"%s\"\n", argList[0]);
         
             pos ++;
             token = strtok(NULL, s);
@@ -276,7 +282,7 @@ void executeChildProcess(int numArgs, char ** argList){
         //Child process
 
         //Child details
-        printf("\tChild - PID: %d and PPID: %d.\n", getpid(), getppid());
+        printf("\n\tChild - PID: %d and PPID: %d.\n\n", getpid(), getppid());
 
         //Call program
         execvp(argList[0], argList);
@@ -290,10 +296,10 @@ void executeChildProcess(int numArgs, char ** argList){
         c = wait(&cstatus);
 
         //Parent details
-        printf("\tParent - PID: %d and PPID: %d.\n", getpid(), pid);
+        printf("\n\tParent - PID: %d and PPID: %d.\n", getpid(), pid);
 
         //Child status
-        printf("\tParent - Child %ld exited with status: %d.\n", (long) c, cstatus);
+        printf("\tParent - Child %ld exited with status: %d.\n\n", (long) c, cstatus);
     }
     
 } //End void executeChildProcess(char * command, char * commandline)

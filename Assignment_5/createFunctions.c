@@ -1,3 +1,20 @@
+//Project: 	Prog5
+//Names:   	Luke Prescott, Rob Rose, Tommy Li (lprescott@albany.edu, rwrose@albany.edu, tli3@albany.edu)
+//			(001252879, 001247373, 001209184)
+//Roles:   	Leader, Monitor, Recorder Respectively
+//Date:    	11/28/2017
+//Course:  	ICSI 402
+
+/*Desc: this file contains the necessary functions associated with the create command.
+The functions contained include createFile, createDirectory, createHardLink, createSoftLink
+
+ /*
+ Output: the output depends on the arguments being supplied by the user when using the create
+ command.
+*/
+
+
+//standard c libraries
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/stat.h>

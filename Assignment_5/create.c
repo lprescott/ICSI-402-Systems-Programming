@@ -46,11 +46,12 @@ main function, takes parameters of for the number of arguments
 */
 int main( int argc, char *argv[] )  {
 
-	printf("\n\nIn create...\n");
+	//printf("\n\nIn create...\n");
 
 	// if the number of command line arguments is equal to 1, prints the arguments that are supplied
 	if( argc == 2 ) {
-		printf("The argument supplied is %s\n", argv[1]);
+		fprintf(stderr, "ERROR: Not enough arguments supplied to create.c.\nExiting...\n");
+		exit(-1);
 	}
 	// if the number of command line arguments is greater than 1, prints to many arguments are supplied
 	else if( argc > 2 ) {
@@ -58,7 +59,7 @@ int main( int argc, char *argv[] )  {
 		//Case 1: flag is -f, create a file
 		if( strcmp(argv[1], "-f") == 0 ) {
 		
-			printf("\tFlag \"%s\" Specified\n", argv[1]);
+			//printf("\tFlag \"%s\" Specified\n", argv[1]);
 			
 			//Error Checks	
 			//Too many arguments
@@ -74,7 +75,7 @@ int main( int argc, char *argv[] )  {
 		//Case 2: flag is -d, create a directory
 		if( strcmp(argv[1], "-d") == 0 ) {
 			
-			printf("\tFlag \"%s\" Specified\n", argv[1]);
+			//printf("\tFlag \"%s\" Specified\n", argv[1]);
 			
 			//Error Checks
 			//Too many arguments
@@ -90,7 +91,7 @@ int main( int argc, char *argv[] )  {
 		//Case 3: flag is -h, create a hardlink between argv[2] and argv[3]
 		if( strcmp(argv[1], "-h") == 0 ) {
 			
-			printf("\tFlag \"%s\" Specified\n", argv[1]);
+			//printf("\tFlag \"%s\" Specified\n", argv[1]);
 			
 			//Error Checks
 			//Too many arguments
@@ -112,7 +113,7 @@ int main( int argc, char *argv[] )  {
 		//Case 4: flag is -s, create a softlink between argv[2] and argv[3]
 		if( strcmp(argv[1], "-s") == 0 ) {
 			
-			printf("\tFlag \"%s\" Specified\n", argv[1]);
+			//printf("\tFlag \"%s\" Specified\n", argv[1]);
 		
 			//Error Checks
 			//Too many arguments
@@ -135,6 +136,7 @@ int main( int argc, char *argv[] )  {
   	}
    	// if the no arguments are supplied, it will print out that is expects an argument.
    	else {
-    	fprintf(stderr, "One argument expected.\n");
+		fprintf(stderr, "One argument expected in create.c.\n");
+		exit(-1);
    	}
 }

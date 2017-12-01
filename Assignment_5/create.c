@@ -50,7 +50,7 @@ int main( int argc, char *argv[] )  {
 
 	// if the number of command line arguments is equal to 1, prints the arguments that are supplied
 	if( argc == 2 ) {
-		fprintf(stderr, "ERROR: Not enough arguments supplied to create.c.\nExiting...\n");
+		fprintf(stderr, "ERROR: Not enough arguments supplied to create.c.\n");
 		exit(-1);
 	}
 	// if the number of command line arguments is greater than 1, prints to many arguments are supplied
@@ -64,7 +64,7 @@ int main( int argc, char *argv[] )  {
 			//Error Checks	
 			//Too many arguments
 			if ( argc > 3 ) {
-				fprintf(stderr, "\tERROR in create: too many arguments.\nExiting...\n");
+				fprintf(stderr, "ERROR in create.c: too many arguments.\n");
 				exit(-1);
 			}
 			
@@ -80,7 +80,7 @@ int main( int argc, char *argv[] )  {
 			//Error Checks
 			//Too many arguments
 			if ( argc > 3 ) {
-				fprintf(stderr, "\tERROR in create: too many arguments.\nExiting...\n");
+				fprintf(stderr, "\tERROR in create.c: too many arguments.\n");
 				exit(-1);
 			}
 			
@@ -96,13 +96,13 @@ int main( int argc, char *argv[] )  {
 			//Error Checks
 			//Too many arguments
 			if ( argc > 4 ) {
-				fprintf(stderr, "\tERROR in create: too many arguments.\n\tExiting...\n");
+				fprintf(stderr, "ERROR in create.c: too many arguments.\n");
 				exit(-1);
 			}
 			
 			//Too little arguments
 			if ( argc != 4) {
-				fprintf(stderr, "\tERROR in create: Not enough arguments.\nExiting...\n");
+				fprintf(stderr, "ERROR in create.c: Not enough arguments.\n");
 				exit(-1);
 			}
 			
@@ -118,13 +118,13 @@ int main( int argc, char *argv[] )  {
 			//Error Checks
 			//Too many arguments
 			if ( argc > 4 ) {
-				fprintf(stderr, "\tERROR in create: too many arguments.\nExiting...\n");
+				fprintf(stderr, "ERROR in create: too many arguments.\n");
 				exit(-1);
 			}
 			
 			//Too little arguments
 			if ( argc != 4) {
-				fprintf(stderr, "\tERROR in create: Not enough arguments.\nExiting...\n");
+				fprintf(stderr, "ERROR in create: Not enough arguments.\n");
 				exit(-1);
 			}
 			
@@ -136,7 +136,7 @@ int main( int argc, char *argv[] )  {
   	}
    	// if the no arguments are supplied, it will print out that is expects an argument.
    	else {
-		fprintf(stderr, "At least two argument expected in create.c.\n");
+		fprintf(stderr, "ERRROR: At least two argument expected in create.c.\n");
 		exit(-1);
 	}
 	

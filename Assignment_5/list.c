@@ -67,7 +67,7 @@ int main( int argc, char *argv[] )  {
 			printHidden(dirPath);
 		}
 		else if (checkDirectory(argv[1]) == 0){
-			fprintf(stderr, "ERROR: Supplied arg. to list is not a directory or known parameter.\nExiting...\n");
+			fprintf(stderr, "ERROR: Supplied arg. to list is not a directory or known parameter.\n");
 			exit(-1);
 		}
 		else{
@@ -80,7 +80,7 @@ int main( int argc, char *argv[] )  {
 	  	if (strcmp(argv[1], "-i") == 0) {
 			//Duplicate dirPath
 			if(checkDirectory(argv[2]) == 0){
-				fprintf(stderr, "ERROR: Supplied arg. to list is not a directory.\nExiting...\n");
+				fprintf(stderr, "ERROR: Supplied arg. to list is not a directory.\n");
 				exit(-1);
 			}
 			strcpy(dirPath, argv[2]);
@@ -90,7 +90,7 @@ int main( int argc, char *argv[] )  {
 	  	else if (strcmp(argv[1], "-h") == 0) {
 			//Duplicate dirPath
 			if(checkDirectory(argv[2]) == 0){
-				fprintf(stderr, "ERROR: Supplied arg. to list is not a directory.\nExiting...\n");
+				fprintf(stderr, "ERROR: Supplied arg. to list is not a directory.\n");
 				exit(-1);
 			}
 			strcpy(dirPath, argv[2]);
@@ -99,7 +99,7 @@ int main( int argc, char *argv[] )  {
    	}
     // if the no arguments are supplied, it will print out that is expects an argument.
   	else {
-    	fprintf(stderr, "ERROR: Too many arguments supplied to list.c.\nExiting...\n");
+    	fprintf(stderr, "ERROR: Too many arguments supplied to list.c.\n");
 		exit(-1);
     }
 

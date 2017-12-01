@@ -170,11 +170,11 @@ void parseCommandLine(int isFile, char * commandline, char * homePath) {
             printCWDirectory();
         }
     }
-		/*
-		if "chwd" is supplied, prints an error if second argument is not null, if the first argument is equal to null, prints an error
-		otherwise changes the current current working directory and prints out the path of the new specified directory
-		*/
-
+    
+    /*
+    if "chwd" is supplied, prints an error if second argument is not null, if the first argument is equal to null, prints an error
+    otherwise changes the current current working directory and prints out the path of the new specified directory
+    */
     else if(strcmp(argList[0], "chwd") == 0){
         if(numArgs > 3){
             fprintf(stderr, "There were to many arguments for command: chwd.\n");
@@ -282,7 +282,7 @@ void executeChildProcess(int numArgs, char ** argList){
         //Child process
 
         //Child details
-        printf("\n\tChild - PID: %d and PPID: %d.\n\n", getpid(), getppid());
+        printf("\nChild - PID: %d and PPID: %d.\n\n", getpid(), getppid());
 
         //Call program
         execvp(argList[0], argList);
@@ -296,10 +296,10 @@ void executeChildProcess(int numArgs, char ** argList){
         c = wait(&cstatus);
 
         //Parent details
-        printf("\n\tParent - PID: %d and PPID: %d.\n", getpid(), pid);
+        printf("\nParent - PID: %d and PPID: %d.\n", getpid(), pid);
 
         //Child status
-        printf("\tParent - Child %ld exited with status: %d.\n", (long) c, cstatus);
+        printf("Parent - Child %ld exited with status: %d.\n", (long) c, cstatus);
 
         char * status;
         if(cstatus == 0){
@@ -309,7 +309,7 @@ void executeChildProcess(int numArgs, char ** argList){
             status = strdup("ERROR (!= 0).");
         }
 
-        printf("\tExit status: %d implies %s\n\n", cstatus, status);
+        printf("Exit status: %d implies %s\n\n", cstatus, status);
     }
     
 } //End void executeChildProcess(char * command, char * commandline)

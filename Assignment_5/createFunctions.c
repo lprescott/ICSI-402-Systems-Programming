@@ -34,19 +34,18 @@ void createFile(char * fileName) {
 	
 	//Checks to see if open failed
 	if (fd < 0) {
-		fprintf(stderr, "ERROR: Trouble creating \"%s\"", fileName);
+		fprintf(stderr, "ERROR creating \"%s\".\n", fileName);
 		exit(-1);
 	}
 	
 	//Modifys permissions of fileName to 640, on fail exit the process
 	if (chmod(fileName, S_IRUSR | S_IWUSR | S_IRGRP) == -1) {
-		fprintf(stderr, "ERROR: Trouble modifying permissions of \"%s\"", fileName);
+		fprintf(stderr, "ERROR modifying permissions of \"%s\".\n", fileName);
 		exit(-1);
 	}
 	
 	//Necessary closing
 	close(fd);
-	
 }
 
 /*
@@ -63,13 +62,13 @@ void createDirectory(char * directoryName) {
 		mkdir(directoryName, 0750);
 		
 		if (chmod(directoryName, S_IRWXU | S_IRGRP | S_IXGRP) == -1) {
-			fprintf(stderr, "ERROR: Unable to modify \"%s\"\n", directoryName);
+			fprintf(stderr, "ERROR: Unable to modify \"%s\".\n", directoryName);
 			exit(-1);
 		}
 		
 	} 
 	else {
-		printf("\tDirectory already exists\n");
+		printf("ERROR: Directory already exists.\n");
 		return;
 	}
 	
@@ -83,7 +82,7 @@ void createHardLink(char * oldName, char * linkName) {
 	
 	//if link() returns -1, a link cannot be created, else link creates a hard link between oldName and linkName
 	if (link(oldName, linkName) == -1) {
-		fprintf(stderr, "\tERROR in create: hard link can't be created. %s\n\tExiting...\n", strerror(errno));
+		fprintf(stderr, "ERROR in create: hard link can't be created. %s\n", strerror(errno));
 		exit(-1);
 	}
 	
@@ -97,7 +96,7 @@ void createSoftLink(char * oldName, char * linkName) {
 	
 	//if link() returns -1, a link cannot be created. Else, the link creates a soft link between oldName and linkName
 	if (symlink(oldName, linkName) == -1) {
-		fprintf(stderr, "\tERROR in create: soft link can't be created. %s\n\tExiting...\n", strerror(errno));
+		fprintf(stderr, "ERROR in create: soft link can't be created. %s\n", strerror(errno));
 		exit(-1);
 	}
 	

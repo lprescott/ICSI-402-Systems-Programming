@@ -1,3 +1,19 @@
+//Project: 	Prog5
+//Names:   	Luke Prescott, Rob Rose, Tommy Li (lprescott@albany.edu, rwrose@albany.edu, tli3@albany.edu)
+//			(001252879, 001247373, 001209184)
+//Roles:   	Leader, Monitor, Recorder Respectively
+//Date:    	11/28/2017
+//Course:  	ICSI 402
+
+/*Desc: this file contains the necessary functions associated with the list command.
+The functions contained include fileSize, printNames, printDetails, printHidden, checkDirectory
+*/
+
+/*
+Output: the output depends on the arguments being supplied by the user when using the create
+command.
+*/
+
 //standard c libraries
 #include <stdio.h>
 #include <stdlib.h>
@@ -8,11 +24,10 @@
 #include <fcntl.h>
 
 /*
-  This function finds file size by seeking all the way to the end on the file, then telling the long
-  position the position of the end character. This position is the size of the file in bytes. It only takes,
-  one argument, which is the FILE type needed to point to.
-  
-  Trouble with makefile, put here until we can resolve it.
+The fileSize function finds file size by seeking all the way to the end on the file, then telling the long
+position the position of the end character. This position is the size of the file in bytes. It only takes,
+one argument, which is the FILE type needed to point to.
+
 */
 long fileSize(FILE * file) {
     //Position: the variable to be returned, and the position of the end character.S
@@ -34,11 +49,12 @@ long fileSize(FILE * file) {
 }
 
 /*
-
+the printNames function, takes a char pointer named path, the role this function is to 
+print the name of files contained in a specified directory.
 */
 void printNames(char * path){
 
-    char * fileName; //THe file name we use for each file to be printed
+    char * fileName; //The file name we use for each file to be printed
     DIR * directory; //Directory pointer
     struct dirent * ent; //File info from the directory pointer
 
@@ -63,9 +79,10 @@ void printNames(char * path){
     closedir(directory);
 } //End void printNames(char * path)
 
-/*
-
-*/
+  /*
+  the printDetails function prints the the details about each file. The details for each file include the inode number, the permissions in
+  octal value, name of the file, and the size of the file.
+  */
 void printDetails(char * path){
 
     char * fileName; //The file name we use for each file to be printed
@@ -76,8 +93,8 @@ void printDetails(char * path){
     int inode, fd; //The innode and file descriptor, respectively
 	struct stat buf; //The stat structure to hold onto the stat of the file
 	mode_t bits; //The permission bits for each file
-
-    //Opens directory, and checks if valid
+	
+	//Opens directory, and checks if valid, if null print error and terminate
     directory = opendir(path);
     if (directory == NULL) {
         fprintf(stderr, "ERROR in listFunctions.c: Directory can't be opened.\nExiting...\n");
@@ -100,13 +117,14 @@ void printDetails(char * path){
         if(ptr[strlen(ptr) - 1] != '/'){
             strcat(filePath, "/");
         }
-        strcat(filePath, fileName);
+        strcat(filePath, fileName);// concatenates fileName with filePath
         
         //if the name is == to "." and "..", do not print because they are hidden
         if (fileName[0] != '.') {
 
-            inputFile = fopen(filePath, "r");
+            inputFile = fopen(filePath, "r");// open filePath for reading
             if (inputFile == NULL) {
+				//prints the name of the file, the size of each file
                 fprintf(stderr, "%20s %29s\n", fileName, "permission ERROR");
                 continue;
             }
@@ -135,16 +153,16 @@ void printDetails(char * path){
     closedir(directory);
 } //End void printDetails(char * path)
 
-/*
-
-*/
+  /*
+  the function printHidden take a char pointer named path, the role of this function is to print all of the hidden files contained in a directory
+  */
 void printHidden(char * path){
     
     char * fileName; //THe file name we use for each file to be printed
     DIR * directory; //Directory pointer
     struct dirent * ent; //File info from the directory pointer
 
-    //Opens directory, and checks if valid
+	//Opens directory, and checks if valid, if the directory is null, print error and terminate
     directory = opendir(path);
     if (directory == NULL) {
         fprintf(stderr, "ERROR in list.c: Directory can't be opened.\nExiting...\n");
@@ -165,10 +183,10 @@ void printHidden(char * path){
     closedir(directory);
 } //End void printHidden(char * path)
 
-/*
-returns 0 if non existant
-returns 1 if it does
-*/
+  /*
+  the checkDirectory function checks if a path is a directory or not
+  it returns 0 if it doesn't exists, and returns 1 if it does.
+  */
 int checkDirectory(char * dirPath){
     
 	struct stat directoryStat = {0};

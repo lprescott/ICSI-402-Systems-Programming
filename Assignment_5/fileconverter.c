@@ -39,30 +39,17 @@ produce an output file.
 
 int main( int argc, char *argv[] )  {
 	
-	printf("%d\n", argc);
+	printf("\n");
 
 	//NON INPUT REDIRECTION CASES
 	//Case 1: fileconverter flag infile outfile
 	
 	//if number of arguments is equal to 4 print case
 	if ( argc == 4 ) {
-		printf("CASE 1\n");
 		//Case 1 a) flag is -t
 		// if the second argument supplied is equal to -t, check if the file supplied is a text file
 		if ( strcmp(argv[1], "-t") == 0 ) {
-			
-			//Check if the second argument is a readable file
-			/*if ( !isReadableFile( argv[2] ) ) {
-				fprintf(stderr, "ERROR: first file given isn't readable");
-				exit(-1);
-			}*/
-			
-			//Check if the third argument is a binary file
-			/*if ( !isBinaryFile ( argv[3] ) ) {
-				fprintf(stderr, "ERROR: second file given isn't binary");
-				exit(-1);
-			}*/
-			
+
 			//Call file converter for binary
 			//convertToBinary( argv[2], argb[3] );
 			
@@ -70,19 +57,7 @@ int main( int argc, char *argv[] )  {
 		//Case 1 b) flag is -b
 		// if the second argument supplied is equal to -b, check if the file supplied is a binary file
 		if ( strcmp(argv[1], "-b") == 0 ) {
-			
-			//Check if the second argument is a binary file
-			/*if ( !isBinaryFile( argv[2] ) ) {
-				fprintf(stderr, "ERROR: first file given isn't binary");
-				exit(-1);
-			}*/
-			
-			//Check if the third argument is a readable file
-			/*if ( !isReadableFile ( argv[3] ) ) {
-				fprintf(stderr, "ERROR: second file given isn't readable");
-				exit(-1);
-			}*/
-			
+
 			//Call file converter for binary
 			//convertToReadable( argv[2], argb[3] );
 			
@@ -92,36 +67,20 @@ int main( int argc, char *argv[] )  {
 	//Case 2: flag is -s
 	//if the number of arguments supplied is equal to 3, print case 2
 	else if ( argc == 3 ) {
-		printf("CASE 2\n");
 		// if the 2nd argument supplied is equal to -s, check if supplied file is binary
 		if ( strcmp(argv[1], "-s") == 0 ) {
-			
-			//Check if the second argument is a binary file
-			/*if ( !isBinaryFile( argv[2] ) ) {
-				fprintf(stderr, "ERROR: first file given isn't binary");
-				exit(-1);
-			}*/
-			
+
 			//call printDetails()
 			//printDetails( argv[2] );
 			
 		}
 		
 	}
-	
-	//INPUT REDIRECTION CASES
-	
 	//Case 3: flag is -s AND with > file.txt
 	else if ( argc == 5 ) {
-		printf("CASE 3\n");
 		if ( strcmp(argv[1], "-s") == 0 ) {
-			
-			//Check if the second argument is a binary file
-			/*if ( !isBinaryFile( argv[2] ) ) {
-				fprintf(stderr, "ERROR: first file given isn't binary");
-				exit(-1);
-			}*/
-		        // if the 4th argument supplied contains a >, output will be redirected
+
+		    // if the 4th argument supplied contains a >, output will be redirected
 			if ( strcmp(argv[3], ">") == 0) {
 				
 				//saved is a stored file descriptor for stdout

@@ -98,7 +98,7 @@ executes the user supplied arguments, with the corresponding commands for the pr
 void parseCommandLine(int isFile, char * commandline, char * homePath) {
     char ** arguments; //A list of string arguments passed to the shell
 
-    printf("commandline: \"%s\".\n", commandline);
+    //printf("commandline: \"%s\".\n", commandline);
 
     if ((commandline[0] == '\0') || (commandline[0] == ' ')){   
 
@@ -325,10 +325,10 @@ void executeChildProcess(int numArgs, char ** argList){
         c = wait(&cstatus);
 
         //Parent details
-        printf("\nParent - PID: %d and PPID: %d.\n", getpid(), pid);
+        //printf("\nParent - PID: %d and PPID: %d.\n", getpid(), pid);
 
         //Child status
-        printf("Parent - Child %ld exited with status: %d.\n", (long) c, cstatus);
+        //printf("Parent - Child %ld exited with status: %d.\n", (long) c, cstatus);
 
         char * status;
         if(cstatus == 0){
@@ -338,7 +338,9 @@ void executeChildProcess(int numArgs, char ** argList){
             status = strdup("ERROR (!= 0).");
         }
 
-        printf("Exit status: %d implies %s\n\n", cstatus, status);
+        if(cstatus == 0){
+            printf("Exit status: %d implies %s\n\n", cstatus, status);
+        }
     }
     
 } //End void executeChildProcess(char * command, char * commandline)

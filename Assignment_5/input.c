@@ -22,6 +22,7 @@ It contains the following functions fileExists, fileReadable, parseCommandLine,g
 #include <string.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <fcntl.h>
 
 //included external header files, containing prototypes
 #include "input.h"
@@ -162,8 +163,28 @@ void parseCommandLine(int isFile, char * commandline, char * homePath) {
 	//if "wd" is supplied, prints an errors if first argument is not "wd", otherwise prints path of the current working directory
 	
 	else if(strcmp(argList[0], "wd") == 0){
-        if(numArgs > 2){
+        if(numArgs > 4){
             fprintf(stderr, "There were to many arguments for command: wd.\n");
+        }
+        else if(numArgs == 3){
+            //saved is a stored file descriptor for stdout
+            //tempOut is a store file descriptor for the supplied file
+            int saved; int tempOut; 
+
+            //Open (create) the supplied file
+            tempOut = open(argList[2], O_WRONLY | O_APPEND | O_CREAT, 0644);
+            
+            //store the file descriptor for stdout
+            saved = dup(stdout);
+
+            //redirect output
+            dup2(tempOut, stdout);
+            
+            //call function printCWDirectory
+            printCWDirectory();  
+           
+            //return output to normal
+            dup2(saved, stdout);
         }
         else{
             //call function printCWDirectory

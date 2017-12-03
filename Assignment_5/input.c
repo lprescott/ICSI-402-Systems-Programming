@@ -173,6 +173,10 @@ void parseCommandLine(int isFile, char * commandline, char * homePath) {
 
             //Open (create) the supplied file
             tempOut = open(argList[2], O_WRONLY | O_APPEND | O_CREAT, 0644);
+            if(tempOut < 0){
+				fprintf(stderr, "ERROR: unable to open supplied file.\n");
+                return;
+            }
             
             //store the file descriptor for stdout
             saved = dup(1);

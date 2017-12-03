@@ -40,6 +40,7 @@ command.
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <fcntl.h>
 
 
 #include "listFunctions.h"
@@ -50,7 +51,11 @@ int main( int argc, char *argv[] )  {
 	
 	//Variables
 	char dirPath[255]; //THe path name for the directory directory
-
+			
+	//saved is a stored file descriptor for stdout
+	//tempOut is a store file descriptor for the supplied file
+	int saved; int tempOut; 
+	
 	if(argc < 2){
 		strcpy(dirPath, ".");
 		printNames(dirPath);
@@ -96,7 +101,191 @@ int main( int argc, char *argv[] )  {
 			strcpy(dirPath, argv[2]);
 			printHidden(dirPath);
 		}
-   	}
+		else if (strcmp(argv[1], ">") == 0){
+
+            //Open (create) the supplied file
+            tempOut = open(argv[2], O_WRONLY | O_APPEND | O_CREAT, 0644);
+			if(tempOut < 0){
+				fprintf(stderr, "ERROR: unable to open supplied file.\n");
+				exit(-1);
+			}
+			
+            //store the file descriptor for stdout
+            saved = dup(1);
+
+            //redirect output
+            dup2(tempOut, 1);
+			
+			//Call printNames
+			strcpy(dirPath, ".");
+			printNames(dirPath); 
+           
+            //return output to normal
+			dup2(saved, 1);
+		}
+	}
+	else if(argc == 4){
+		if (strcmp(argv[1], "-h") == 0){
+
+			if (strcmp(argv[2], ">") == 0) {
+				//Open (create) the supplied file
+				tempOut = open(argv[3], O_WRONLY | O_APPEND | O_CREAT, 0644);
+				if(tempOut < 0){
+					fprintf(stderr, "ERROR: unable to open supplied file.\n");
+					exit(-1);
+				}
+				
+				//store the file descriptor for stdout
+				saved = dup(1);
+
+				//redirect output
+				dup2(tempOut, 1);
+				
+				//Call printNames
+				strcpy(dirPath, ".");
+				printHidden(dirPath); 
+			
+				//return output to normal
+				dup2(saved, 1);
+			} else {
+				fprintf(stderr, "ERROR unknown flag.\n");
+				exit(-1);
+			}
+		}
+		else if (strcmp(argv[1], "-i") == 0){
+            //Open (create) the supplied file
+		   
+			if (strcmp(argv[2], ">") == 0) {
+			
+				tempOut = open(argv[3], O_WRONLY | O_APPEND | O_CREAT, 0644);
+				if(tempOut < 0){
+					fprintf(stderr, "ERROR: unable to open supplied file.\n");
+					exit(-1);
+				}
+				
+				//store the file descriptor for stdout
+				saved = dup(1);
+
+				//redirect output
+				dup2(tempOut, 1);
+				
+				//Call printNames
+				strcpy(dirPath, ".");
+				printDetails(dirPath); 
+				
+				//return output to normal
+				dup2(saved, 1);
+
+			} else {
+				fprintf(stderr, "ERROR unknown flag.\n");
+				exit(-1);
+			}
+			
+		}
+		else{
+			
+			if(checkDirectory(argv[1]) == 0){
+				fprintf(stderr, "ERROR: Supplied arg. to list is not a directory.\n");
+				exit(-1);
+			}
+			if (strcmp(argv[2], ">") == 0) {
+				//Open (create) the supplied file
+				tempOut = open(argv[3], O_WRONLY | O_APPEND | O_CREAT, 0644);
+				if(tempOut < 0){
+					fprintf(stderr, "ERROR: unable to open supplied file.\n");
+					exit(-1);
+				}
+				
+				//store the file descriptor for stdout
+				saved = dup(1);
+
+				//redirect output
+				dup2(tempOut, 1);
+				
+				//Call printNames
+				strcpy(dirPath, argv[1]);
+				printNames(dirPath); 
+			
+				//return output to normal
+				dup2(saved, 1);
+			} else {
+				fprintf(stderr, "ERROR unknown flag.\n");
+				exit(-1);
+			}
+		}
+	}
+	else if (argc == 5){
+		if (strcmp(argv[1], "-h") == 0){
+
+			if(checkDirectory(argv[2]) == 0){
+				fprintf(stderr, "ERROR: Supplied arg. to list is not a directory.\n");
+				exit(-1);
+			}
+
+			if (strcmp(argv[3], ">") == 0) {
+
+				//Open (create) the supplied file
+				tempOut = open(argv[4], O_WRONLY | O_APPEND | O_CREAT, 0644);
+				if(tempOut < 0){
+					fprintf(stderr, "ERROR: unable to open supplied file.\n");
+					exit(-1);
+				}
+				
+				//store the file descriptor for stdout
+				saved = dup(1);
+
+				//redirect output
+				dup2(tempOut, 1);
+				
+				//Call printNames
+				strcpy(dirPath, argv[2]);
+				printNames(dirPath); 
+			
+				//return output to normal
+				dup2(saved, 1);
+
+			} else {
+				fprintf(stderr, "ERROR unknown flag.\n");
+				exit(-1);
+			}
+		}
+		else if (strcmp(argv[1], "-i") == 0){
+			
+			if(checkDirectory(argv[2]) == 0){
+				fprintf(stderr, "ERROR: Supplied arg. to list is not a directory.\n");
+				exit(-1);
+			}
+
+			if (strcmp(argv[3], ">") == 0) {
+				//Open (create) the supplied file
+				tempOut = open(argv[4], O_WRONLY | O_APPEND | O_CREAT, 0644);
+				if(tempOut < 0){
+					fprintf(stderr, "ERROR: unable to open supplied file.\n");
+					exit(-1);
+				}
+				
+				//store the file descriptor for stdout
+				saved = dup(1);
+
+				//redirect output
+				dup2(tempOut, 1);
+				
+				//Call printNames
+				strcpy(dirPath, argv[2]);
+				printNames(dirPath); 
+			
+				//return output to normal
+				dup2(saved, 1);
+			} else {
+				fprintf(stderr, "ERROR unknown flag.\n");
+				exit(-1);
+			}
+		}
+		else{
+			fprintf(stderr, "ERROR: unknown supplied flag.\n");
+			exit(-1);
+		}
+	}
     // if the no arguments are supplied, it will print out that is expects an argument.
   	else {
     	fprintf(stderr, "ERROR: Too many arguments supplied to list.c.\n");

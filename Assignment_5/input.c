@@ -175,16 +175,16 @@ void parseCommandLine(int isFile, char * commandline, char * homePath) {
             tempOut = open(argList[2], O_WRONLY | O_APPEND | O_CREAT, 0644);
             
             //store the file descriptor for stdout
-            saved = dup(stdout);
+            saved = dup(1);
 
             //redirect output
-            dup2(tempOut, stdout);
+            dup2(tempOut, 1);
             
             //call function printCWDirectory
             printCWDirectory();  
            
             //return output to normal
-            dup2(saved, stdout);
+            dup2(saved, 1);
         }
         else{
             //call function printCWDirectory

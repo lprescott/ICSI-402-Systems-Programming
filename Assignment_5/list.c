@@ -122,6 +122,10 @@ int main( int argc, char *argv[] )  {
            
             //return output to normal
 			dup2(saved, 1);
+
+			//close file descriptors
+            close(saved);
+            close(tempOut);
 		}
 	}
 	else if(argc == 4){
@@ -147,6 +151,11 @@ int main( int argc, char *argv[] )  {
 			
 				//return output to normal
 				dup2(saved, 1);
+
+				//close file descriptors
+				close(saved);
+				close(tempOut);
+			
 			} else {
 				fprintf(stderr, "ERROR unknown flag.\n");
 				exit(-1);
@@ -175,6 +184,10 @@ int main( int argc, char *argv[] )  {
 				
 				//return output to normal
 				dup2(saved, 1);
+
+				//close file descriptors
+            	close(saved);
+            	close(tempOut);
 
 			} else {
 				fprintf(stderr, "ERROR unknown flag.\n");
@@ -208,6 +221,11 @@ int main( int argc, char *argv[] )  {
 			
 				//return output to normal
 				dup2(saved, 1);
+
+				//close file descriptors
+            	close(saved);
+            	close(tempOut);
+			
 			} else {
 				fprintf(stderr, "ERROR unknown flag.\n");
 				exit(-1);
@@ -244,6 +262,10 @@ int main( int argc, char *argv[] )  {
 				//return output to normal
 				dup2(saved, 1);
 
+				//close file descriptors
+            	close(saved);
+            	close(tempOut);
+
 			} else {
 				fprintf(stderr, "ERROR unknown flag.\n");
 				exit(-1);
@@ -276,6 +298,11 @@ int main( int argc, char *argv[] )  {
 			
 				//return output to normal
 				dup2(saved, 1);
+
+				//close file descriptors
+            	close(saved);
+            	close(tempOut);
+			
 			} else {
 				fprintf(stderr, "ERROR unknown flag.\n");
 				exit(-1);

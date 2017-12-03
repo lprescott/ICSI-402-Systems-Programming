@@ -98,7 +98,7 @@ executes the user supplied arguments, with the corresponding commands for the pr
 void parseCommandLine(int isFile, char * commandline, char * homePath) {
     char ** arguments; //A list of string arguments passed to the shell
 
-    //printf("commandline: \"%s\".\n", commandline);
+    printf("commandline: \"%s\".\n", commandline);
 
     if ((commandline[0] == '\0') || (commandline[0] == ' ')){   
 
@@ -134,15 +134,15 @@ void parseCommandLine(int isFile, char * commandline, char * homePath) {
     //The string list to hold all arguments including program name
     char ** argList;
     argList = createArgList(numArgs, commandline, homePath);
-
-    /* 
+ 
+    /*
     i = 0;
     while(argList[i] != NULL){
         printf("%s\n", argList[i]);
         i++;
     }
     */
-
+    
     //if command should quit simpleshell, then exit with (1)
     if(strcmp(argList[0], "quit") == 0){
         printf("goodbye\n");
@@ -189,6 +189,10 @@ void parseCommandLine(int isFile, char * commandline, char * homePath) {
            
             //return output to normal
             dup2(saved, 1);
+
+            //close file descriptors
+            close(saved);
+            close(tempOut);
         }
         else{
             //call function printCWDirectory

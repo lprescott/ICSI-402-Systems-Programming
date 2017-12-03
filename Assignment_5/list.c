@@ -42,7 +42,7 @@ command.
 #include <stdlib.h>
 #include <fcntl.h>
 
-
+//included external header files containing prototypes
 #include "listFunctions.h"
 
 //main function, takes parameters of for the number of arguments
@@ -50,7 +50,7 @@ command.
 int main( int argc, char *argv[] )  {
 	
 	//Variables
-	char dirPath[255]; //THe path name for the directory directory
+	char dirPath[255]; //The path name for the directory.
 	
 	printf("\n");
 	
@@ -62,13 +62,14 @@ int main( int argc, char *argv[] )  {
 		strcpy(dirPath, ".");
 		printNames(dirPath);
 	}
-	// if the number of command line arguments is equal to 1
+	// if the number of command line arguments is equal to 2
 	else if(argc == 2) {
-	  
+	        //if the 2nd argument supplied is equal to -i, printDetails function is called
 		if (strcmp(argv[1], "-i") == 0){
 			strcpy(dirPath, ".");
 			printDetails(dirPath);
 		}
+		 //if the 2nd argument supplied is equal to -h, printHidden function is called
 		else if (strcmp(argv[1], "-h") == 0){
 			strcpy(dirPath, ".");
 			printHidden(dirPath);
@@ -82,6 +83,7 @@ int main( int argc, char *argv[] )  {
 			printNames(dirPath);
 		}
 	}
+    //if the number of arguments supplied is equal to 3 
     else if(argc == 3) {
       	//Case 2: flag is -i
 	  	if (strcmp(argv[1], "-i") == 0) {
@@ -234,18 +236,23 @@ int main( int argc, char *argv[] )  {
 			}
 		}
 	}
+	//if the number of arguments supplied is equal to 5
 	else if (argc == 5){
+		/*if the 2nd argument supplied is equal to -h, then the 3rd argument is checked to see if it is
+		a working directory*/
 		if (strcmp(argv[1], "-h") == 0){
 
 			if(checkDirectory(argv[2]) == 0){
 				fprintf(stderr, "ERROR: Supplied arg. to list is not a directory.\n");
 				exit(-1);
 			}
-
+			
+			//if the 4th argument supplied is >
 			if (strcmp(argv[3], ">") == 0) {
 
 				//Open (create) the supplied file
 				tempOut = open(argv[4], O_WRONLY | O_APPEND | O_CREAT, 0644);
+				//if tempOut is less than zero, print error and terminate
 				if(tempOut < 0){
 					fprintf(stderr, "ERROR: unable to open supplied file.\n");
 					exit(-1);
@@ -267,14 +274,14 @@ int main( int argc, char *argv[] )  {
 				//close file descriptors
             	close(saved);
             	close(tempOut);
-
+			//if the supplied flag didn't meet any of the previous condition, error is printed out stating unknown flag.
 			} else {
 				fprintf(stderr, "ERROR unknown flag.\n");
 				exit(-1);
 			}
 		}
 		else if (strcmp(argv[1], "-i") == 0){
-			
+			//checks if the 3rd argument supplied is a directory, while if the 2nd argument supplied is -i
 			if(checkDirectory(argv[2]) == 0){
 				fprintf(stderr, "ERROR: Supplied arg. to list is not a directory.\n");
 				exit(-1);

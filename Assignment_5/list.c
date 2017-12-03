@@ -51,7 +51,9 @@ int main( int argc, char *argv[] )  {
 	
 	//Variables
 	char dirPath[255]; //THe path name for the directory directory
-			
+	
+	printf("\n");
+	
 	//saved is a stored file descriptor for stdout
 	//tempOut is a store file descriptor for the supplied file
 	int saved; int tempOut; 

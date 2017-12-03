@@ -1,20 +1,20 @@
 #Variables
 CC = gcc
 CFLAGS = -g
-EXECS = simpleshell list create fileconverter
+EXECS = shell list create fileconverter
 
 #Objects
-SIMPLESHELL = simpleshell.o input.o shellFunctions.o
+SHELL = simpleshell.o input.o shellFunctions.o
 LIST = list.o listFunctions.o
 CREATE = create.o createFunctions.o
 FILECONVERTER = fileconverter.o fileconverterFunctions.o
 
 #Makes all executables
-all: $(EXECS)
+simpleshell: $(EXECS)
 
 #Makes individual executables
-simpleshell: $(SIMPLESHELL)
-	$(CC) $(CFLAGS) $(SIMPLESHELL) -o simpleshell
+shell: $(SHELL)
+	$(CC) $(CFLAGS) $(SHELL) -o shell
 %.o: %.c
 	$(CC) $(CFLAGS) -c $<
 
@@ -34,8 +34,8 @@ fileconverter: $(FILECONVERTER)
 	$(CC) $(CFLAGS) -c $<
 
 #Cleans individual executables objects
-cleanSimpleShell:
-	rm -f $(SIMPLESHELL) simpleshell
+cleanShell:
+	rm -f $(SHELL) shell
 cleanList:
 	rm -f $(LIST) list
 cleanCreate:

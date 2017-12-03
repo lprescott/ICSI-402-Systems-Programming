@@ -7,7 +7,7 @@ EXECS = simpleshell list create fileconverter
 SIMPLESHELL = simpleshell.o input.o shellFunctions.o
 LIST = list.o listFunctions.o
 CREATE = create.o createFunctions.o
-FILECONVERTER = fileconverter.o 
+FILECONVERTER = fileconverter.o fileconverterFunctions.o
 
 #Makes all executables
 all: $(EXECS)

@@ -338,7 +338,7 @@ void executeChildProcess(int numArgs, char ** argList){
             status = strdup("ERROR (!= 0).");
         }
 
-        if(cstatus == 0){
+        if(cstatus != 0){
             printf("Exit status: %d implies %s\n\n", cstatus, status);
         }
     }

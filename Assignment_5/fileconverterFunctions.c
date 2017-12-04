@@ -1,9 +1,26 @@
+
+//Project: 	Prog5
+//Names:   	Luke Prescott, Rob Rose, Tommy Li (lprescott@albany.edu, rwrose@albany.edu, tli3@albany.edu)
+//			(001252879, 001247373, 001209184)
+//Roles:   	Leader, Monitor, Recorder Respectively
+//Date:    	11/28/2017
+//Course:  	ICSI 402
+
+/*Desc: this file contains the necessary functions associated with the fileconverter command.
+ This file contains the following functions convertToReadable, and convertToBinary, and printDetails
+*/
+
+//standard c libraries
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
+//included external header files containing prototypes
 #include "fileconverterFunctions.h"
+
 /*
+the convertToReadable function takes parameters of two char pointers named inputFileName, and outputFileName
+the role of this function to is convert the inputted binary file to text file that is readable.
 
 */
 void convertToReadable(char * inputFileName, char * outputFileName) {
@@ -60,27 +77,28 @@ void convertToReadable(char * inputFileName, char * outputFileName) {
 }
 
 /*
-
+the convertToBinary function takes paramaters of two char pointers named inputFileName and outputFileName,
+the role of this function to convert any text files that are in readable format to a binary format.
 */
 void convertToBinary(char * inputFileName, char * outputFileName) {
 	
 	fflush(stdout);
-	FILE * inputFile, * outputFile;
-	char line[1024];
-	char * token;
-	char * firstName;
-	char * lastName;
-	char * id; int ID; 
-	char * gpa; int GPA;
+	FILE * inputFile, * outputFile;// file pointers for the input and output files that are supplied
+	char line[1024];// max size of the line
+	char * token;// string named token
+	char * firstName;// string that holds's the student's first name
+	char * lastName;// string that holds's the student's last name
+	char * id; int ID;// string that hold the students id number and a int that holds the value of the student id number
+	char * gpa; int GPA;// string that hold the students gpa and a int that holds the value of the student's gpa
 	unsigned char l1, l2;
 	
-	//checks if inputFile could be opened
+	//checks if inputFile could be opened, if it can open it for reading, otherwise print error, and terminates
 	if ((inputFile = fopen(inputFileName, "r")) == NULL) {
 		fprintf(stderr, "ERROR could not open input file.\n");
 		exit(-1);
 	}
 	
-	//checks if outputFile could be opened
+	//checks if outputFile could be opened, if it can open it for writing to binary, otherwise print error and terminates
 	if ((outputFile = fopen(outputFileName, "wb")) == NULL) {
 		fprintf(stderr, "ERROR could not open outputFile file.\n");
 		exit(-1);
@@ -115,15 +133,15 @@ void convertToBinary(char * inputFileName, char * outputFileName) {
 			
 			//gets id
 			id = strdup(token);
-			ID = atoi(id);
-			printf("%d\n", ID);
+			ID = atoi(id);// converts a string to an int
+			printf("%d\n", ID);// prints the value of the student's id
 			
 			token = strtok(NULL, " ");
 			
 			//gets GPA
 			gpa = strdup(token);
-			GPA = atoi(gpa);
-			printf("%d\n", GPA);
+			GPA = atoi(gpa);//converts a string to an int
+			printf("%d\n", GPA);// prints the value of the student's gpa
 			
 			token = strtok(NULL, " ");
 			

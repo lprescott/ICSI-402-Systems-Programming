@@ -223,31 +223,33 @@ void printDetails(char * inputFileName) {
 
 		//Print attributes to txt file
         //printf("%d %s %d %s %d %d\n", templ1, tempfirstName, templ2, templastName, tempid, tempGPA);
-        
+		
+		
+		//Control structures to determine required values
         if(templ1 + templ2 > maxNameLength){
             firstNameMAX = strdup(tempfirstName);
             lastNameMAX = strdup(templastName);
             maxNameLength = templ1 + templ2;
         }
-
+		//calculating the minimum name length
         if(templ1 + templ2 < minNameLength){
             firstNameMIN = strdup(tempfirstName);
             lastNameMIN = strdup(templastName);
             minNameLength = templ1 + templ2;
         }
-
+        //if tempGPA greater than maxGPA, the maxGPA is equal to the tempGPA
         if(tempGPA > maxGPA){
             maxGPA = tempGPA;
-        }
-
+		}
+		//calculates the min gpa
         if(tempGPA < minGPA){
             minGPA = tempGPA;
         }
-
+		//calculates the maxID number
         if(tempid > maxID){
             maxID = tempid;
         }
-
+		//calculates the minID number
         if(tempid < minID){
             minID = tempid;
         }
@@ -257,6 +259,7 @@ void printDetails(char * inputFileName) {
         free(templastName);
     }
 
+	//Printing requried values to stdout
     printf("Student with the greatest combined name length: %s %s.\n", firstNameMAX, lastNameMAX); fflush(stdout);
     printf("Student with the least combined name length: %s %s.\n", firstNameMIN, lastNameMIN);fflush(stdout);
     printf("The highest id number: %d.\n", maxID);fflush(stdout);

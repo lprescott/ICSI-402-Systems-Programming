@@ -42,8 +42,8 @@ void convertToReadable(char * inputFileName, char * outputFileName) {
         if (fread(&tempid, sizeof(tempid), 1, binFILE) == 0) return; //read tempid
         if (fread(&tempGPA, sizeof(tempGPA), 1, binFILE) == 0) return; //read tempGPA
 
-		tempfirstName[strlen(tempfirstName) ] = '\0';
-		templastName[strlen(templastName) ] = '\0';
+		tempfirstName[templ1] = '\0';
+		templastName[templ2] = '\0';
 
 		//Print attributes to txt file
 		printf("%d %s %d %s %d %d\n", templ1, tempfirstName, templ2, templastName, tempid, tempGPA);

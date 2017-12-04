@@ -51,16 +51,19 @@ int main( int argc, char *argv[] )  {
 		if ( strcmp(argv[1], "-t") == 0 ) {
 
 			//Call file converter for binary
-			//convertToBinary( argv[2], argb[3] );
+			convertToBinary( argv[2], argv[3] );
 			
 		}
 		//Case 1 b) flag is -b
 		// if the second argument supplied is equal to -b, check if the file supplied is a binary file
-		if ( strcmp(argv[1], "-b") == 0 ) {
+		else if ( strcmp(argv[1], "-b") == 0 ) {
 
 			//Call file converter for binary
-			//convertToReadable( argv[2], argb[3] );
+			convertToReadable( argv[2], argv[3] );
 			
+		} else {
+			fprintf(stderr, "ERROR: Invalid flag.\n");
+			exit(-1);
 		}
 		
 	} 
@@ -71,8 +74,11 @@ int main( int argc, char *argv[] )  {
 		if ( strcmp(argv[1], "-s") == 0 ) {
 
 			//call printDetails()
-			//printDetails( argv[2] );
+			printDetails( argv[2] );
 			
+		} else {
+			fprintf(stderr, "ERROR: Invalid flag.\n");
+			exit(-1);
 		}
 		
 	}
@@ -107,10 +113,22 @@ int main( int argc, char *argv[] )  {
 				//return output to normal
 				dup2(saved, 1);
 				
+				close(saved);
+				close(tempOut);
+				
+			} else {
+				fprintf(stderr, "ERROR invalid arguments.\n");
+				exit(-1);
 			}
 			
+		} else {
+			fprintf(stderr, "ERROR invalid flag.\n");
+			exit(-1);
 		}
 		
+	} else {
+		fprintf(stderr, "ERROR invalid number of args.\n");
+		exit(-1);
 	}
 	
     //Exit with 0, program was succesfully completed

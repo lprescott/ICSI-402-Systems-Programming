@@ -50,14 +50,14 @@ void convertToReadable(char * inputFileName, char * outputFileName) {
 
     //Loop to read through binary file
     while(1){
-		if (fread(&templ1, sizeof(templ1), 1, binFILE) == 0) return; //read l1
+		if (fread(&templ1, sizeof(templ1), 1, binFILE) == 0) break; //read l1
         tempfirstName = malloc(sizeof(char) * templ1 + 1); //Allocate mem for first name
-        if (fread(tempfirstName, sizeof(char), templ1, binFILE) == 0) return; //read tempfirstName
-        if (fread(&templ2, sizeof(templ2), 1, binFILE) == 0) return; //read l2
+        if (fread(tempfirstName, sizeof(char), templ1, binFILE) == 0) break; //read tempfirstName
+        if (fread(&templ2, sizeof(templ2), 1, binFILE) == 0) break; //read l2
         templastName = malloc(sizeof(char) * templ2 + 1); //Allocate mem for last name
-        if (fread(templastName, sizeof(char), templ2, binFILE) == 0) return; //read templastName
-        if (fread(&tempid, sizeof(tempid), 1, binFILE) == 0) return; //read tempid
-        if (fread(&tempGPA, sizeof(tempGPA), 1, binFILE) == 0) return; //read tempGPA
+        if (fread(templastName, sizeof(char), templ2, binFILE) == 0) break; //read templastName
+        if (fread(&tempid, sizeof(tempid), 1, binFILE) == 0) break; //read tempid
+        if (fread(&tempGPA, sizeof(tempGPA), 1, binFILE) == 0) break; //read tempGPA
 
 		tempfirstName[templ1] = '\0';
 		templastName[templ2] = '\0';
@@ -167,8 +167,108 @@ void convertToBinary(char * inputFileName, char * outputFileName) {
 }
 
 /*
+the printDetails function takes paramaters of one char pointer named inputFileName ,
+the role of this function to print the following details of the supplied binary file:
 
+    Student with the greatest combined name length
+    Student with the least combined name length
+    The highest id number
+    The lowest id number
+    The value of the highest GPA
+	The value of the lowest GPA
+	
 */
 void printDetails(char * inputFileName) {
-	
+	FILE * binFILE; //FILE pointer to hold binary file 
+    
+    //Temporary variables to hold student record attributes
+    unsigned char templ1; 
+	unsigned char templ2;
+	char * tempfirstName = malloc(sizeof(char *));
+	char * templastName = malloc(sizeof(char *));
+	int tempid;
+    int tempGPA;
+    
+    //Variables to hold max and min values in the bin file
+    int maxNameLength = 0; int minNameLength = 100000;
+    int maxID = 0; int minID = 100000; int maxGPA = 0; int minGPA = 100000;
+
+    //Strings to hold the names of the students with important values
+    char * firstNameMAX = malloc(sizeof(char *));
+    char * lastNameMAX = malloc(sizeof(char *));
+    
+    char * firstNameMIN = malloc(sizeof(char *));
+	char * lastNameMIN = malloc(sizeof(char *));
+    
+    //Check if files are openable
+    binFILE = fopen(inputFileName, "rb");
+    if(binFILE == NULL){
+        fprintf(stderr, "Could not allocate memory for the binFILE.\n");
+        exit(-1);
+    }
+
+    //Loop to read through binary file
+    while(1){
+		if (fread(&templ1, sizeof(templ1), 1, binFILE) == 0) break; //read l1
+        tempfirstName = malloc(sizeof(char) * templ1 + 1); //Allocate mem for first name
+        if (fread(tempfirstName, sizeof(char), templ1, binFILE) == 0) break; //read tempfirstName
+        if (fread(&templ2, sizeof(templ2), 1, binFILE) == 0) break; //read l2
+        templastName = malloc(sizeof(char) * templ2 + 1); //Allocate mem for last name
+        if (fread(templastName, sizeof(char), templ2, binFILE) == 0) break; //read templastName
+        if (fread(&tempid, sizeof(tempid), 1, binFILE) == 0) break; //read tempid
+        if (fread(&tempGPA, sizeof(tempGPA), 1, binFILE) == 0) break; //read tempGPA
+
+		tempfirstName[templ1] = '\0';
+		templastName[templ2] = '\0';
+
+		//Print attributes to txt file
+        //printf("%d %s %d %s %d %d\n", templ1, tempfirstName, templ2, templastName, tempid, tempGPA);
+        
+        if(templ1 + templ2 > maxNameLength){
+            firstNameMAX = strdup(tempfirstName);
+            lastNameMAX = strdup(templastName);
+            maxNameLength = templ1 + templ2;
+        }
+
+        if(templ1 + templ2 < minNameLength){
+            firstNameMIN = strdup(tempfirstName);
+            lastNameMIN = strdup(templastName);
+            minNameLength = templ1 + templ2;
+        }
+
+        if(tempGPA > maxGPA){
+            maxGPA = tempGPA;
+        }
+
+        if(tempGPA < minGPA){
+            minGPA = tempGPA;
+        }
+
+        if(tempid > maxID){
+            maxID = tempid;
+        }
+
+        if(tempid < minID){
+            minID = tempid;
+        }
+
+        //Free strings
+        free(tempfirstName);
+        free(templastName);
+    }
+
+    printf("Student with the greatest combined name length: %s %s.\n", firstNameMAX, lastNameMAX); fflush(stdout);
+    printf("Student with the least combined name length: %s %s.\n", firstNameMIN, lastNameMIN);fflush(stdout);
+    printf("The highest id number: %d.\n", maxID);fflush(stdout);
+    printf("The lowest id number: %d.\n", minID);fflush(stdout);
+    printf("The value of the highest GPA: %d.\n", maxGPA);fflush(stdout);
+    printf("The value of the lowest GPA: %d.\n", minGPA);fflush(stdout);
+
+
+    //Close files
+    fclose(binFILE);
+
+    //free used strings
+    free(firstNameMAX); free(firstNameMIN);
+    free(lastNameMAX); free(lastNameMIN);
 }

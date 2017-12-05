@@ -311,7 +311,7 @@ void executeChildProcess(int numArgs, char ** argList){
         //Child process
 
         //Child details
-        printf("\nChild - PID: %d and PPID: %d.\n\n", getpid(), getppid());
+        //printf("\nChild - PID: %d and PPID: %d.\n\n", getpid(), getppid());
 
         //Call program
         execvp(argList[0], argList);

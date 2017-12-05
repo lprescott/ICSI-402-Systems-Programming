@@ -63,7 +63,7 @@ void convertToReadable(char * inputFileName, char * outputFileName) {
 		templastName[templ2] = '\0';
 
 		//Print attributes to txt file
-		printf("%d %s %d %s %d %d\n", templ1, tempfirstName, templ2, templastName, tempid, tempGPA);
+		//printf("%d %s %d %s %d %d\n", templ1, tempfirstName, templ2, templastName, tempid, tempGPA);
         fprintf(txtFILE, "%s %s %d %d\n", tempfirstName, templastName, tempid, tempGPA);
 
         //Free strings
@@ -109,7 +109,7 @@ void convertToBinary(char * inputFileName, char * outputFileName) {
 		
 		//Gets rid of the newline character
 		if (line[strlen(line) - 1] == '\n') line[strlen(line) - 1] = '\0';
-		printf("%s\n", line);
+		//printf("%s\n", line);
 		
 		//duplicates token into line
 		token = strdup(line);
@@ -120,28 +120,28 @@ void convertToBinary(char * inputFileName, char * outputFileName) {
 			//gets firstName and parses l1
 			firstName = strdup(token);
 			l1 = (unsigned char)strlen(firstName);
-			printf("%s %u\n", firstName, l1);
+			//printf("%s %u\n", firstName, l1);
 			
 			token = strtok(NULL, " ");
 			
 			//gets lastName and parses l2
 			lastName = strdup(token);
 			l2 = (unsigned char)strlen(lastName);
-			printf("%s %u\n", lastName, l2);
+			//printf("%s %u\n", lastName, l2);
 			
 			token = strtok(NULL, " ");
 			
 			//gets id
 			id = strdup(token);
 			ID = atoi(id);// converts a string to an int
-			printf("%d\n", ID);// prints the value of the student's id
+			//printf("%d\n", ID);// prints the value of the student's id
 			
 			token = strtok(NULL, " ");
 			
 			//gets GPA
 			gpa = strdup(token);
 			GPA = atoi(gpa);//converts a string to an int
-			printf("%d\n", GPA);// prints the value of the student's gpa
+			//printf("%d\n", GPA);// prints the value of the student's gpa
 			
 			token = strtok(NULL, " ");
 			
@@ -160,7 +160,7 @@ void convertToBinary(char * inputFileName, char * outputFileName) {
 		fwrite(&ID, sizeof(ID), 1, outputFile);
 		fwrite(&GPA, sizeof(GPA), 1, outputFile);
 		
-		printf("\n");
+		//printf("\n");
 		
 	}
 	

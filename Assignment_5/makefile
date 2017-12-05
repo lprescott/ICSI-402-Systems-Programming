@@ -1,6 +1,7 @@
 #Variables
 CC = gcc
 CFLAGS = -g
+CMDS = shell list create fileconverter
 EXECS = simpleshell list create fileconverter
 
 #Objects
@@ -10,10 +11,10 @@ CREATE = create.o createFunctions.o
 FILECONVERTER = fileconverter.o fileconverterFunctions.o
 
 #Makes all executables
-all: $(EXECS)
+all: $(CMDS)
 
 #Makes individual executables
-simpleshell: $(SIMPLESHELL)
+shell: $(SIMPLESHELL)
 	$(CC) $(CFLAGS) $(SIMPLESHELL) -o simpleshell
 %.o: %.c
 	$(CC) $(CFLAGS) -c $<

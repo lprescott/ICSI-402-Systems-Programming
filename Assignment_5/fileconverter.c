@@ -108,7 +108,7 @@ int main( int argc, char *argv[] )  {
 				dup2(tempOut, 1);
 				
 				//call printDetails()
-				//printDetails( argv[2] );
+				printDetails( argv[2] );
 			   
 				//return output to normal
 				dup2(saved, 1);

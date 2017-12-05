@@ -11,7 +11,7 @@ CREATE = create.o createFunctions.o
 FILECONVERTER = fileconverter.o fileconverterFunctions.o
 
 #Makes all executables
-all: $(CMDS)
+simpleshell: $(CMDS)
 
 #Makes individual executables
 shell: $(SIMPLESHELL)

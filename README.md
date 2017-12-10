@@ -48,40 +48,6 @@ available to you, it may fail on the new data sets. It is your responsibility to
 thoroughly (e.g., by preparing additional input data sets) before the program is submitted. It is not
 possible for the Instructor to identify or fix the bugs in the submitted version of your program.
 
-### Assignment 1:
-### Assignment 2:
-#### TODO:
-- [x] Verify does not have complete functionality (specifically, # of bytes missing)
-- [x] Comments must be added to the new functions in other.c
-- [x] Many dynamic memory allocations must be free()d.
-- [x] By convention, the number of bytes for the length of the name is 4 bytes, it should be 1
-- [x] Constants as specified in constants.h should be used
-- [x] the supplied archive name may not include a .bin extension!
-
-### Assignment 3:
-#### TODO:
-- [x] Delete "invid.txt" or related output text file (This is rob saying this, it messes up the program)
-- [x] Complete case for same file name in subdirectory
-- [x] Complete comments
-- [x] Testing
-- [x] Refactoring
-
-### Assignment 4:
-#### TODO:
-- [x] ask professor whether output for hash table needs to be in sorted order
-- [x] making sure every file is properly commented
-- [x] Refactoring
-- [x] testing with addditional examples of SIC/XE code
-- [x] delete function for BST and Hash Table (freeing memory at the end)
-
-
-### Assignment 5:
-#### TODO:
-- [x] attempt extra credit portion
-- [x] additional comments
-- [x] refactoring
-- [x] additonal testing
-
 
 #### Programming Style Guide:
 https://www.cs.siue.edu/programming-style-guide

@@ -42,6 +42,7 @@ void indexer(char * inputFilePath, char * outputFileName){
             fprintf(stderr, "Could not allocate memory for outputList.");
         }
 
+        //readFromFile(inputFilePath);
 		// reads a supplied file, to the inputList
 		
 		char * currentFile;
@@ -60,6 +61,8 @@ void indexer(char * inputFilePath, char * outputFileName){
 			currentFile = strstr(currentFile, "/");
 			++currentFile;
 		}
+		
+		//printf("\n\n%s\n\n", currentFile);
 		
         inputList = readFromFile(inputFilePath, currentFile);
 
@@ -88,7 +91,7 @@ void indexer(char * inputFilePath, char * outputFileName){
         free(temp);// frees temp
 
         //Print sorted data to outputFile
-        //printSorted(inputList, outputFileName);
+        printSorted(inputList, outputFileName);
         
 		
         if (inputList != NULL) deleteTermList(inputList);

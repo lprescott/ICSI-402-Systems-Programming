@@ -41,13 +41,11 @@ int main(int argc, char * argv[]) {
 	char * defaultName = "invind.txt"; //The default name of the output file
 	
 	//Testing and printing all arguments, to be commented out later.
-	/*
 	printf("\nArguments given : \"%d\".\n", argc);
 	for(i = 0; i < argc; i++) {
 		printf("Argument %d : \"%s\".\n", (i + 1), argv[i]);
 	}
 	printf("\n");
-	*/
 	
 	/*If argc is greater than 3, the user entered too many arguments
 	program exits*/
@@ -64,20 +62,19 @@ int main(int argc, char * argv[]) {
 		char * tempName = strdup(argv[1]); //Duplicate the outputfile name for use
 
 		if (isFile(argv[2])) {// checks if the 2nd argument that is supplied is a file or not
-			//printf("\nSecond argument is a file, opening and indexing.\n");
+			printf("\nSecond argument is a file, opening and indexing.\n");
 
-			//Find absolute path
 			strcpy(tempPath, "");
 			strcat(tempPath, currentDir);
 			strcat(tempPath, "/");
 			strcat(tempPath, argv[2]);
 
-			//printf("\tIndexing path: \"%s\".\n", tempPath);
-			indexer(tempPath, tempName);
+			printf("\tIndexing path: \"%s\".\n", tempPath);
+			//indexer(tempPath, tempName);
 		} 
 		
 		else if (isDir(argv[2])) {// checks if the second argument supplied is a directory or not
-			//printf("\nSecond argument is a directory, browsing, opening and indexing.\n");
+			printf("\nSecond argument is a directory, browsing, opening and indexing.\n");
 			browse(argv[2], tempName);
 		} 
 		
@@ -88,7 +85,7 @@ int main(int argc, char * argv[]) {
 	}
 	//Case 2: User enters one argument, open DIR dr and FILE invind as "invind.txt"
 	if (argc == 2) {
-		//printf("User has entered one argument, open inverted index as \"invind.txt\".\n");
+		printf("User has entered one argument, open inverted index as \"invind.txt\".\n");
 
 		char currentDir [1024]; //declare a string for the current dir path
 		char tempPath [1024];
@@ -97,17 +94,16 @@ int main(int argc, char * argv[]) {
 		if (isFile(argv[1])) {// checks to see if the initial argument argument is a file or not using the isFile function
 			printf("\nArgument is a file, opening and indexing.\n");
 
-			//Find absolute path
 			strcpy(tempPath, "");
 			strcat(tempPath, currentDir);
 			strcat(tempPath, "/");
 			strcat(tempPath, argv[1]);
 
-			//printf("\tIndexing path: \"%s\".\n", tempPath);
+			printf("\tIndexing path: \"%s\".\n", tempPath);
 			indexer(tempPath, defaultName);
 			
 		} else if (isDir(argv[1])) {// checks to see if the initial argument is a directory or not
-			//printf("\nArgument is a directory, browsing, opening and indexing.\n");
+			printf("\nArgument is a directory, browsing, opening and indexing.\n");
 			browse(argv[1], defaultName);
 			
 		} else {// if the initial argument is not a file or a directory, the program exits
@@ -119,7 +115,7 @@ int main(int argc, char * argv[]) {
 	
 	//Case 3: No arguments, use current working directory and open FILE invind as "invind.txt"
 	if (argc == 1) {
-		//printf("No user input, use current working directory and open inverted index as \"invind.txt\".\n");
+		printf("No user input, use current working directory and open inverted index as \"invind.txt\".\n");
 		char currentDir [1024]; //declare a string for the current dir path
 
 		getcwd(currentDir, 1024);

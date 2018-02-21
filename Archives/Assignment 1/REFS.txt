@@ -1,6 +1,0 @@
-Paste all stack overflow here
-https://stackoverflow.com/questions/11736060/how-to-read-all-files-in-a-folder-using-c
-make: *** No rule to make target `prog'.  Stop.
-https://stackoverflow.com/questions/24514783/c-struct-across-multiple-files
-https://stackoverflow.com/questions/28221247/memory-allocation-in-c-linked-list-in-a-heap
-https://stackoverflow.com/questions/9864877/dynamically-allocating-a-struct-within-a-struct

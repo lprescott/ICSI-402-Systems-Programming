@@ -14,7 +14,7 @@ In each node, the instruction names are outputted, for the example opcode. The h
 is considered to be the longest path starting from the root to the deepest node. 
 The last thing that is outputted is the contents of the hash table, that contains one array element per line. 
 Each element is a list of nodes at that specified index and each node displays the symbol and LC value. 
-Each line is represented in the form: index: listNode1 → listNode2 →···→ listNodeN → NULL.   
+Each line is represented in the form: index: listNode1 ? listNode2 ?���? listNodeN ? NULL.   
 */
 
 //included libraries

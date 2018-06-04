@@ -1,4 +1,5 @@
-## Systems-Programming
+## I CSI 402 Systems Programming (3)
+Programming aspects of operating systems. Topics covered include implementation of storage management, resource allocation, multi-processing, scheduling, synchronization, inter-process communication, and terminal I/O. Emphasis on projects to enhance subject understanding, problem solving, and programming skills. Prerequisite(s): Grade of C or better required in I CSI/I CEN 333. 
 
 1. LogFiler This program takes directory full of log files then concatonates them into a single log file, where the order is based on the time of each log.
 
